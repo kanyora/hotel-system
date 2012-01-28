@@ -5,7 +5,7 @@
 		
 		Developed by: Adam Davis
 	*/
-	include("/../config.php");
+	include("/../conf/config.php");
 	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in

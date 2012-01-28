@@ -1,13 +1,7 @@
 <?php
-require_once('data_orm_rb.php');
+require_once('/../orm/rb.php');
 
 class AuthDAO{
-	public $email = NULL;
-	public $hash_pw = NULL;
-	public $user_id = NULL;
-	public $clean_username = NULL;
-	public $display_username = NULL;
-	
 	public $contents = NULL;
 	
 	public function __construct() {
@@ -342,7 +336,7 @@ class AuthDAO{
 		R::store($loggedInUser);
 		
 		//Update last sign in
-		$dao->updateLastSignIn($user);
+		$this->updateLastSignIn($user);
 		$_SESSION["authUser"] = $loggedInUser;
 	}
 	
@@ -355,18 +349,33 @@ class AuthDAO{
 		}
 		else
 		{
-			$user = R::findOne("user", "Password = ? AND id = ?", array($loggedInUser->hash_pw, $loggedInUser->id));
+			$user = R::findOne("user", "Password = ? and id = ?", array($loggedInUser->hash_pw, $loggedInUser->user->id));
 			//Query the database to ensure they haven't been removed or possibly banned?
-			if ($user){
+			if ($user->id){
 				return true;
 			}
 			else
 			{
 				//No result returned kill the user session, user banned or deleted
-				$loggedInUser->userLogOut();
+				$this->userLogOut();
 				return false;
 			}
 		}
+	}
+	
+	function destorySession($name)
+	{
+		if(isset($_SESSION[$name]))
+		{
+			$_SESSION[$name] = NULL;
+			
+			unset($_SESSION[$name]);
+		}
+	}
+	
+	function userLogOut()
+	{
+		$this->destorySession("authUser");
 	}
 	
 	//Generate an activation key 

@@ -21,7 +21,7 @@
 	
 	//Generic website variables
 	$websiteName = "KRA";
-	$websiteUrl = "http://yourdomain.com/"; //including trailing slash
+	$websiteUrl = ""; //including trailing slash
 
 	//Do you wish UserCake to send out emails for confirmation of registration?
 	//We recommend this be set to true to prevent spam bots.

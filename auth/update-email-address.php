@@ -5,7 +5,7 @@
 		
 		Developed by: Adam Davis
 	*/
-	include("/../config.php");
+	include("/../conf/config.php");
 	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
@@ -30,7 +30,7 @@ if(!empty($_POST))
 		{
 			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_EMAIL");
 		}
-		else if(!$dao->isValidEmail($email))
+		else if(!AuthController::isValidEmail($email))
 		{
 			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
 		}

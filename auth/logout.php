@@ -5,10 +5,13 @@
 		
 		Developed by: Adam Davis
 	*/
-	include("models/config.php");
+	include("/../conf/config.php");
 	
+	$dao = new AuthDAO();
 	//Log the user out
-	if(isUserLoggedIn()) $loggedInUser->userLogOut();
+	if($dao->isUserLoggedIn()) {
+		$dao->userLogOut();
+	}
 
 	if(!empty($websiteUrl)) 
 	{
@@ -24,9 +27,7 @@
 	}
 	else
 	{
-		header("Location: http://".$_SERVER['HTTP_HOST']);
+		header("Location: index.php");
 		die();
 	}	
 ?>
-
-

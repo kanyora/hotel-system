@@ -12,12 +12,12 @@
 		die();
 	}
 	
-	require_once("data_settings.php");
+	require_once("settings.php");
 	
-	require_once("lang/en.php");
+	require_once("/../lang/en.php");
 	
-	require_once("data_controllers_AuthController.php");
-	require_once("data_daos_AuthDao.php");
+	require_once("/../data/controllers/AuthController.php");
+	require_once("/../data/daos/AuthDao.php");
 
 	session_start();
 	

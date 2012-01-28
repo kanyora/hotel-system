@@ -5,7 +5,7 @@
 		
 		Developed by: Adam Davis
 	*/
-	require_once("/../config.php");
+	require_once("/../conf/config.php");
 	
 	$dao = new AuthDAO();
 	

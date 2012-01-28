@@ -6,7 +6,7 @@
 		Developed by: Adam Davis
 	*/
 	
-	require_once('/../config.php');
+	require_once('/../conf/config.php');
 	
 	$dao = new AuthDAO();
 	
@@ -70,7 +70,7 @@ if(!empty($_POST))
 						//Construct a new logged in user object
 						//Transfer some db data to the session object
 						$dao->loginUser($user);
-												
+						echo $user;
 						//Redirect to user account page
 						header("Location: account.php");
 						die();
