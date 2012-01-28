@@ -273,12 +273,12 @@
 			}
 		}
 		
-			//Logout
-		public static function userLogOut($request){
+		//Logout
+		public static function userLogout($request){
 			if ($request->method == "GET"){
 				$dao = new AuthDAO();
 				//Log the user out
-				$dao->userLogOut();
+				$dao->userLogOut($request->user);
 				if(!empty($websiteUrl)) 
 				{
 					$add_http = "";
@@ -293,7 +293,6 @@
 					header("Location: index.php");
 					die();
 				}
-				AuthController::destorySession("authUser");
 			}
 		}
 	}

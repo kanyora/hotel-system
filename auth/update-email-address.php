@@ -44,7 +44,7 @@ if(!empty($_POST))
 		{
 			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
 		}
-		else if($email == $request->user->Email)
+		else if($email == $request->user->email)
 		{
 				$errors[] = AuthController::lang("NOTHING_TO_UPDATE");
 		}
@@ -107,7 +107,7 @@ if(!empty($_POST))
             
                 <p>
                     <label>Email:</label>
-                    <input type="text" name="email" value="<?php echo $request->user->Email; ?>" />
+                    <input type="text" name="email" value="<?php echo $request->user->email; ?>" />
                 </p>
         
                 <p>

@@ -59,16 +59,16 @@ if(!empty($_POST))
 				$user = $dao->fetchUserDetails($username);
 			
 				//See if the user's account is activation
-				if($user->Active==0)
+				if($user->is_active==0)
 				{
 					$errors[] = AuthController::lang("ACCOUNT_INACTIVE");
 				}
 				else
 				{
 					//Hash the password and use the salt from the database to compare the password.
-					$entered_pass = AuthController::generateHash($password,$user->Password);
+					$entered_pass = AuthController::generateHash($password,$user->password);
 
-					if($entered_pass != $user->Password)
+					if($entered_pass != $user->password)
 					{
 						//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
 						$errors[] = AuthController::lang("ACCOUNT_USER_OR_PASS_INVALID");

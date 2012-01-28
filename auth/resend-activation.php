@@ -71,13 +71,13 @@ if(!empty($_POST) && $emailActivation)
 				$userdetails = fetchUserDetails($username);
 			
 				//See if the user's account is activation
-				if($userdetails["Active"]==1)
+				if($userdetails->is_active)
 				{
 					$errors[] = AuthController::lang("ACCOUNT_ALREADY_ACTIVE");
 				}
 				else
 				{
-					$hours_diff = round((time()-$userdetails["LastActivationRequest"]) / (3600*$resend_activation_threshold),0);
+					$hours_diff = round((time()-$userdetails->last_activation_request) / (3600*$resend_activation_threshold),0);
 
 					if($resend_activation_threshold!=0 && $hours_diff <= $resend_activation_threshold)
 					{
@@ -101,7 +101,7 @@ if(!empty($_POST) && $emailActivation)
 							//Setup our custom hooks
 							$hooks = array(
 								"searchStrs" => array("#ACTIVATION-URL","#USERNAME#"),
-								"subjectStrs" => array($activation_url,$userdetails["Username"])
+								"subjectStrs" => array($activation_url,$userdetails->username)
 							);
 							
 							if(!$mail->newTemplateMsg("resend-activation.txt",$hooks))
@@ -110,7 +110,7 @@ if(!empty($_POST) && $emailActivation)
 							}
 							else
 							{
-								if(!$mail->sendMail($userdetails["Email"],"Activate your UserCake Account"))
+								if(!$mail->sendMail($userdetails->email,"Activate your UserCake Account"))
 								{
 									$errors[] = AuthController::lang("MAIL_ERROR");
 								}

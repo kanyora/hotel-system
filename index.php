@@ -1,22 +1,17 @@
 <?php
-require_once ('data_controllers_AuthController.php');
-
-session_start();
-$authController = new AuthController();
-
-if (!isset($_SESSION['user_id'])) {
-	//Not logged in, send to login page.
-	header('Location: auth/login.php');
-} else {
-	//Check we have the right user
-	$session = $authController->checkSession();
-	if(!$logged_in){
-		//Bad session, ask to login
-		$authController->logout();
-		header( 'Location: auth/login.php' );
-	} else {
-		//User is logged in, show the page
-		echo "<b>Am logged in</b>";
-	}
-}
-
+	require_once ('conf/config.php');
+	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+	$dao = new AuthDAO();
+	//Prevent the user visiting the logged in page if he/she is already logged in
+	if($dao->isUserLoggedIn($request->user)) { header("Location: auth/account.php"); die(); }
+?>
+<b>Logged in</b>

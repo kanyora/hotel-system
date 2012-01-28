@@ -58,7 +58,7 @@ if(!empty($_GET["confirm"]))
 		//Setup our custom hooks
 		$hooks = array(
 				"searchStrs" => array("#GENERATED-PASS#","#USERNAME#"),
-				"subjectStrs" => array($rand_pass,$userdetails["Username"])
+				"subjectStrs" => array($rand_pass,$userdetails->username)
 		);
 					
 		if(!$mail->newTemplateMsg("your-lost-password.txt",$hooks))
@@ -67,7 +67,7 @@ if(!empty($_GET["confirm"]))
 		}
 		else
 		{	
-			if(!$mail->sendMail($userdetails["Email"],"Your new password"))
+			if(!$mail->sendMail($userdetails->email,"Your new password"))
 			{
 					$errors[] = AuthController::lang("MAIL_ERROR");
 			}
@@ -80,7 +80,7 @@ if(!empty($_GET["confirm"]))
 					else
 					{	
 						//Might be wise if this had a time delay to prevent a flood of requests.
-						flagLostPasswordRequest($userdetails["Username_Clean"],0);
+						flagLostPasswordRequest($userdetails->username_clean,0);
 						
 						$success_message  = AuthController::lang("FORGOTPASS_NEW_PASS_EMAIL");
 					}
@@ -107,7 +107,7 @@ if(!empty($_GET["deny"]))
 	
 		$userdetails = fetchUserDetails(NULL,$token);
 		
-		flagLostPasswordRequest($userdetails['Username_Clean'],0);
+		flagLostPasswordRequest($userdetails->username_clean,0);
 		
 		$success_message = AuthController::lang("FORGOTPASS_REQUEST_CANNED");
 	}
@@ -162,7 +162,7 @@ if(!empty($_POST))
 			//Check if the user has any outstanding lost password requests
 			$userdetails = $dao->fetchUserDetails($username);
 			
-			if($userdetails["LostPasswordRequest"] == 1)
+			if($userdetails->lost_password_request)
 			{
 				$errors[] = AuthController::lang("FORGOTPASS_REQUEST_EXISTS");
 			}
@@ -173,13 +173,13 @@ if(!empty($_POST))
 				
 				//We use the activation token again for the url key it gets regenerated everytime it's used.
 				
-				$confirm_url = AuthController::lang("CONFIRM")."\n".$websiteUrl."forgot-password.php?confirm=".$userdetails["ActivationToken"];
-				$deny_url = ("DENY")."\n".$websiteUrl."forgot-password.php?deny=".$userdetails["ActivationToken"];
+				$confirm_url = AuthController::lang("CONFIRM")."\n".$websiteUrl."forgot-password.php?confirm=".$userdetails->activation_token;
+				$deny_url = ("DENY")."\n".$websiteUrl."forgot-password.php?deny=".$userdetails->activation_token;
 				
 				//Setup our custom hooks
 				$hooks = array(
 					"searchStrs" => array("#CONFIRM-URL#","#DENY-URL#","#USERNAME#"),
-					"subjectStrs" => array($confirm_url,$deny_url,$userdetails["Username"])
+					"subjectStrs" => array($confirm_url,$deny_url,$userdetails->username)
 				);
 				
 				if(!$dao->newTemplateMsg("lost-password-request.txt",$hooks))
@@ -188,7 +188,7 @@ if(!empty($_POST))
 				}
 				else
 				{
-					if(!$dao->sendMail($userdetails["Email"],"Lost password request"))
+					if(!$dao->sendMail($userdetails->email,"Lost password request"))
 					{
 						$errors[] = AuthController::lang("MAIL_ERROR");
 					}

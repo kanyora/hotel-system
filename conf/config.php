@@ -16,6 +16,10 @@
 	//Setup all the Daos
 	require_once("/../data/daos/AuthDao.php");
 	
+	//Setup all the Models
+	require_once("/../data/models/auth/User.php");
+	require_once("/../data/models/auth/Group.php");
+	
 	//start session
 	session_start();
 	
