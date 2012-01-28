@@ -96,25 +96,27 @@ class AuthDAO{
 
 			if(!isset($errors["mail_failure"]))
 			{
-					//Insert the user into the database providing no errors have been found.
-					$user = R::dispense("user");
-					$user->Username = $unclean_username;
-					$user->Username_Clean = $clean_username;
-					$user->Password = $secure_pass; 
-					$user->Email = $clean_email;
-					$user->ActivationToken = $activation_token;
-					$user->LastActivationRequest = time();
-					$user->LostPasswordRequest = '0';
-					$user->Active = $user_active;
-					
-					$group = R::load("group", 1);
-					$user->ownGroup[] = $group;
-					
-					$user->SignUpDate = time();
-					$user->LastSignIn = '0';
-					
+				//Insert the user into the database providing no errors have been found.
+				$user = R::dispense("user");
+				$user->Username = $unclean_username;
+				$user->Username_Clean = $clean_username;
+				$user->Password = $secure_pass; 
+				$user->Email = $clean_email;
+				$user->ActivationToken = $activation_token;
+				$user->LastActivationRequest = time();
+				$user->LostPasswordRequest = '0';
+				$user->Active = $user_active;
+				
+				$group = R::load("group", 1);
+				if ($group->id){
+					R::associate($group, $user);
 					R::store($group);
-					R::store($user);
+				}
+				
+				$user->SignUpDate = time();
+				$user->LastSignIn = '0';
+				
+				R::store($user);
 			}
 		}
 		return $errors;
@@ -197,30 +199,26 @@ class AuthDAO{
 
 	
 	//Simple function to update the last sign in of a user
-	public function updateLastSignIn()
+	public function updateLastSignIn($user)
 	{
-		$user = R::load("user", $this->user_id);
 		$user->LastSignIn = time();
+		R::store($user);
 		return $user;
 	}
 	
-	//Return the timestamp when the user registered
-	public function signupTimeStamp()
-	{
-		$user = R::load("user", $this->user_id);
-		return $user->SignUpDate;
-	}
+	//return $user->SignUpDate;
 	
 	//Update a users password
-	public function updatePassword($pass)
+	public function updatePassword($loggedInUser, $pass)
 	{
-		$secure_pass = generateHash($pass);
-		$this->hash_pw = $secure_pass;
+		$secure_pass = AuthController::generateHash($pass);
+		$user = $loggedInUser->user;
 		
-		$user = R::load("user", $this->user_id);
-		$user->Password = $pass;
+		if ($user->id){
+			$user->Password = $secure_pass;
+			R::store($user);
+		}
 		
-		R::store($user);
 		return $user;
 	}
 	
@@ -238,18 +236,22 @@ class AuthDAO{
 	public function groupID()
 	{
 		$user = R::load("user", $this->user_id);
-		return $user->ownGroup;
+		if ($user->id){
+			return R::related($user);
+		}
+		return $user;
 	}
 	
 	//Is a user member of a group
-	public function isGroupMember($id)
+	public function isGroupMember($user, $id)
 	{
 		$user = R::load("user", $this->user_id);
-		$groups = R::related($user, "group");
-		
-		$group = R::load("user", $id);
-		
-		return in_array($group, $groups);
+		if($user->id){
+			$groups = R::related($user, "group");
+			$group = R::load("group", $id);
+			return in_array($group, $groups);
+		}
+		return false;
 	}
 	
 	function usernameExists($username)
@@ -275,7 +277,7 @@ class AuthDAO{
 		{
 			$user = R::findOne("user", "Active = ? AND LostPasswordRequest = ? AND ActivationToken = ?", array(1, 0, $token));
 		}
-		if ($user){
+		if ($user && $user->id){
 			return $user->ActivationToken;
 		}else{
 			return NULL;
@@ -325,8 +327,23 @@ class AuthDAO{
 	
 	function emailUsernameLinked($email,$username)
 	{
-		$user = R::findOne("user", "Username_Clean = ? AND Email = ?", array($username, $email));
-		return $user;
+		return R::findOne("user", "Username_Clean = ? AND Email = ?", array($username, $email));
+	}
+	
+	public function loginUser($user){
+		$loggedInUser = R::dispense("loggedinuser");
+		
+		$loggedInUser->email = $user->Email;
+		$loggedInUser->user = $user;
+		$loggedInUser->hash_pw = $user->Password;
+		$loggedInUser->display_username = $user->Username;
+		$loggedInUser->clean_username = $user->Username_Clean;
+		
+		R::store($loggedInUser);
+		
+		//Update last sign in
+		$dao->updateLastSignIn($user);
+		$_SESSION["authUser"] = $loggedInUser;
 	}
 	
 	function isUserLoggedIn()
@@ -338,8 +355,9 @@ class AuthDAO{
 		}
 		else
 		{
+			$user = R::findOne("user", "Password = ? AND id = ?", array($loggedInUser->hash_pw, $loggedInUser->id));
 			//Query the database to ensure they haven't been removed or possibly banned?
-			if ($user->Password == $loggedInUser->hash_pw && $user->Active == 1){
+			if ($user){
 				return true;
 			}
 			else

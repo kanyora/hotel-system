@@ -113,7 +113,7 @@
 			//Logout
 		function userLogOut()
 		{
-			destorySession("userCakeUser");
+			destorySession("authUser");
 		}
 		
 	}

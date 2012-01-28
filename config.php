@@ -23,8 +23,8 @@
 	
 	//Global User Object Var
 	//loggedInUser can be used globally if constructed
-	if(isset($_SESSION["userCakeUser"]) && is_object($_SESSION["userCakeUser"]))
+	if(isset($_SESSION["authUser"]) && is_object($_SESSION["authUser"]))
 	{
-		$loggedInUser = $_SESSION["userCakeUser"];
+		$loggedInUser = $_SESSION["authUser"];
 	}
 ?>

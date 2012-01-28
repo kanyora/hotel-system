@@ -7,8 +7,9 @@
 	*/
 	include("/../config.php");
 	
+	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
-	if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
+	if(!$dao->isUserLoggedIn()) { header("Location: login.php"); die(); }
 ?>
 <?php
 	/* 
@@ -27,19 +28,19 @@ if(!empty($_POST))
 		
 		if(trim($email) == "")
 		{
-			$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
+			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_EMAIL");
 		}
-		else if(!isValidEmail($email))
+		else if(!$dao->isValidEmail($email))
 		{
-			$errors[] = lang("ACCOUNT_INVALID_EMAIL");
+			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
 		}
 		else if($email == $loggedInUser->email)
 		{
-				$errors[] = lang("NOTHING_TO_UPDATE");
+				$errors[] = AuthController::lang("NOTHING_TO_UPDATE");
 		}
-		else if(emailExists($email))
+		else if($dao->emailExists($email))
 		{
-			$errors[] = lang("ACCOUNT_EMAIL_TAKEN");	
+			$errors[] = AuthController::lang("ACCOUNT_EMAIL_TAKEN");	
 		}
 		
 		//End data validation
@@ -77,16 +78,18 @@ if(!empty($_POST))
                     {
                 ?>
                 <div id="errors">
-                <?php errorBlock($errors); ?>
+                <?php AuthController::errorBlock($errors); ?>
                 </div>     
                 <?php
                      } else { ?> 
             <div id="success">
             
-               <p><?php echo lang("ACCOUNT_DETAILS_UPDATED"); ?></p>
+               <p><?php echo AuthController::lang("ACCOUNT_DETAILS_UPDATED"); ?></p>
                
             </div>
-            <?php } }?>
+            <?php } 
+				}
+			?>
 
     
             <div id="regbox">

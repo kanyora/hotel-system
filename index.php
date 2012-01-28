@@ -1,5 +1,5 @@
 <?php
-require_once ('controllers_auth_AuthController.php');
+require_once ('data_controllers_AuthController.php');
 
 session_start();
 $authController = new AuthController();

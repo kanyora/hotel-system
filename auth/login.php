@@ -8,8 +8,10 @@
 	
 	require_once('/../config.php');
 	
+	$dao = new AuthDAO();
+	
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if(isUserLoggedIn()) { header("Location: account.php"); die(); }
+	if($dao->isUserLoggedIn()) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -28,58 +30,47 @@ if(!empty($_POST))
 		//Feel free to edit / change as required
 		if($username == "")
 		{
-			$errors[] = lang("ACCOUNT_SPECIFY_USERNAME");
+			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_USERNAME");
 		}
 		if($password == "")
 		{
-			$errors[] = lang("ACCOUNT_SPECIFY_PASSWORD");
+			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_PASSWORD");
 		}
 		
 		//End data validation
 		if(count($errors) == 0)
 		{
 			//A security note here, never tell the user which credential was incorrect
-			if(!usernameExists($username))
+			if(!$dao->usernameExists($username))
 			{
-				$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
+				$errors[] = AuthController::lang("ACCOUNT_USER_OR_PASS_INVALID");
 			}
 			else
 			{
-				$userdetails = fetchUserDetails($username);
+				$user = $dao->fetchUserDetails($username);
 			
 				//See if the user's account is activation
-				if($userdetails["Active"]==0)
+				if($user->Active==0)
 				{
-					$errors[] = lang("ACCOUNT_INACTIVE");
+					$errors[] = AuthController::lang("ACCOUNT_INACTIVE");
 				}
 				else
 				{
 					//Hash the password and use the salt from the database to compare the password.
-					$entered_pass = generateHash($password,$userdetails["Password"]);
+					$entered_pass = AuthController::generateHash($password,$user->Password);
 
-					if($entered_pass != $userdetails["Password"])
+					if($entered_pass != $user->Password)
 					{
 						//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
-						$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
+						$errors[] = AuthController::lang("ACCOUNT_USER_OR_PASS_INVALID");
 					}
 					else
 					{
 						//Passwords match! we're good to go'
-						
 						//Construct a new logged in user object
 						//Transfer some db data to the session object
-						$loggedInUser = new loggedInUser();
-						$loggedInUser->email = $userdetails["Email"];
-						$loggedInUser->user_id = $userdetails["User_ID"];
-						$loggedInUser->hash_pw = $userdetails["Password"];
-						$loggedInUser->display_username = $userdetails["Username"];
-						$loggedInUser->clean_username = $userdetails["Username_Clean"];
-						
-						//Update last sign in
-						$loggedInUser->updateLastSignIn();
-		
-						$_SESSION["userCakeUser"] = $loggedInUser;
-						
+						$dao->loginUser($user);
+												
 						//Redirect to user account page
 						header("Location: account.php");
 						die();
@@ -118,7 +109,7 @@ if(!empty($_POST))
         {
         ?>
         <div id="errors">
-        <?php errorBlock($errors); ?>
+        <?php AuthController::errorBlock($errors); ?>
         </div>     
         <?php
         } }
