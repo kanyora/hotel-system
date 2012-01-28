@@ -10,6 +10,10 @@
 	require_once("/../http/class.request.php");
 	require_once("/../lang/en.php");
 	
+	//Call all the libraries required
+	require_once('/../lib/redbean_orm/rb.php');
+	require_once('/../lib/smarty_templates/Smarty.class.php');
+	
 	//Setup all the Controllers
 	require_once("/../data/controllers/AuthController.php");
 	

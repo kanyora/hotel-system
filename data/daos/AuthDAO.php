@@ -1,6 +1,4 @@
 <?php
-require_once('/../orm/rb.php');
-
 class AuthDAO{
 	public $contents = NULL;
 	
