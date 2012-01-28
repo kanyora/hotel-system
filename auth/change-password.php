@@ -7,9 +7,18 @@
 	*/
 	include("/../conf/config.php");
 	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
-	if(!$dao->isUserLoggedIn()) { header("Location: login.php"); die(); }
+	if(!$dao->isUserLoggedIn($request->user)) { header("Location: login.php"); die(); }
 ?>
 
 <?php
@@ -50,25 +59,25 @@ if(!empty($_POST))
 		if(count($errors) == 0)
 		{
 			//Confirm the hash's match before updating a users password
-			$entered_pass = AuthController::generateHash($password,$loggedInUser->hash_pw);
+			$entered_pass = AuthController::generateHash($password,$request->user->Password);
 			
 			//Also prevent updating if someone attempts to update with the same password
-			$entered_pass_new = AuthController::generateHash($password_new,$loggedInUser->hash_pw);
+			$entered_pass_new = AuthController::generateHash($password_new,$request->user->Password);
 		
-			if($entered_pass != $loggedInUser->hash_pw)
+			if($entered_pass != $request->user->Password)
 			{
 				//No match
 				$errors[] = AuthController::lang("ACCOUNT_PASSWORD_INVALID");
 			}
-			else if($entered_pass_new == $loggedInUser->hash_pw)
+			else if($entered_pass_new == $request->user->Password)
 			{
 				//Don't update, this fool is trying to update with the same password ¬¬
 				$errors[] = AuthController::lang("NOTHING_TO_UPDATE");
 			}
 			else
 			{
-				//This function will create the new hash and update the hash_pw property.
-				$dao->updatePassword($loggedInUser, $password_new);
+				//This function will create the new hash and update the Password property.
+				$dao->updatePassword($request->user, $password_new);
 			}
 		}
 	}
@@ -78,7 +87,7 @@ if(!empty($_POST))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Update Password</title>
-<link href="cakestyle.css" rel="stylesheet" type="text/css" />
+<link href="/KRA/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="wrapper">

@@ -7,9 +7,19 @@
 	*/
 	require_once("/../conf/config.php");
 	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the lost password page if he/she is already logged in
-	if($dao->isUserLoggedIn()) { header("Location: account.php"); die(); }
+	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 

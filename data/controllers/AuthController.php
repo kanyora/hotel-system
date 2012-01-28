@@ -269,16 +269,32 @@
 			if(isset($_SESSION[$name]))
 			{
 				$_SESSION[$name] = NULL;
-				
 				unset($_SESSION[$name]);
 			}
-		}		
-		
-			//Logout
-		function userLogOut()
-		{
-			destorySession("authUser");
 		}
 		
+			//Logout
+		public static function userLogOut($request){
+			if ($request->method == "GET"){
+				$dao = new AuthDAO();
+				//Log the user out
+				$dao->userLogOut();
+				if(!empty($websiteUrl)) 
+				{
+					$add_http = "";
+					if(strpos($websiteUrl,"http://") === false){
+						$add_http = "http://";
+					}
+					header("Location: ".$add_http.$websiteUrl);
+					die();
+				}
+				else
+				{
+					header("Location: index.php");
+					die();
+				}
+				AuthController::destorySession("authUser");
+			}
+		}
 	}
 ?> 

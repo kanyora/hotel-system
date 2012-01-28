@@ -7,9 +7,19 @@
 	*/
 	require_once("/../conf/config.php");
 	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn()) { header("Location: account.php"); die(); }
+	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -50,7 +60,7 @@ else
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Account Activation</title>
-<link href="cakestyle.css" rel="stylesheet" type="text/css" />
+<link href="/KRA/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="wrapper">

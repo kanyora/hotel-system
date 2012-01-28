@@ -6,25 +6,13 @@
 		Developed by: Adam Davis
 	*/
 	include("/../conf/config.php");
-	
-	$dao = new AuthDAO();
-	//Log the user out
-	if($dao->isUserLoggedIn()) {
-		$dao->userLogOut();
-	}
-	
-	if(!empty($websiteUrl)) 
-	{
-		$add_http = "";
-		if(strpos($websiteUrl,"http://") === false){
-			$add_http = "http://";
-		}
-		header("Location: ".$add_http.$websiteUrl);
-		die();
-	}
-	else
-	{
-		header("Location: index.php");
-		die();
-	}
+	AuthController::userLogout(new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	));
 ?>

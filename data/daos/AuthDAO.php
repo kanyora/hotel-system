@@ -44,10 +44,9 @@ class AuthDAO{
 	//return $user->SignUpDate;
 	
 	//Update a users password
-	public function updatePassword($loggedInUser, $pass)
+	public function updatePassword($user, $pass)
 	{
 		$secure_pass = AuthController::generateHash($pass);
-		$user = $loggedInUser->user;
 		
 		if ($user->id){
 			$user->Password = $secure_pass;
@@ -58,23 +57,24 @@ class AuthDAO{
 	}
 	
 	//Update a users email
-	public function updateEmail($email)
+	public function updateEmail($user, $email)
 	{
-		$user = R::load("user", $this->user_id);
-		$user->email = $email;
-		
+		$user->Email = $email;
 		R::store($user);
 		return $user;
 	}
 	
 	//Fetch all user group information
-	public function groupID()
+	public function group($user)
 	{
-		$user = R::load("user", $this->user_id);
 		if ($user->id){
-			return R::related($user);
+			$group = R::related($user, "group");
+			if (isset($group[key($group)])){
+				return $group[key($group)];
+			}
+			return $group;
 		}
-		return $user;
+		return null;
 	}
 	
 	//Is a user member of a group
@@ -166,58 +166,39 @@ class AuthDAO{
 	}
 	
 	public function loginUser($user){
-		$loggedInUser = R::dispense("loggedinuser");
-		
-		$loggedInUser->email = $user->Email;
-		$loggedInUser->user = $user;
-		$loggedInUser->hash_pw = $user->Password;
-		$loggedInUser->display_username = $user->Username;
-		$loggedInUser->clean_username = $user->Username_Clean;
-		
-		R::store($loggedInUser);
-		
 		//Update last sign in
 		$this->updateLastSignIn($user);
-		$_SESSION["authUser"] = $loggedInUser;
+		$_SESSION["authUser"] = $user;
 	}
 	
-	function isUserLoggedIn()
-	{
-		global $loggedInUser;
-		if($loggedInUser == NULL)
+	function isUserLoggedIn($user){
+		if(!isset($user))
 		{
 			return false;
 		}
 		else
 		{
-			$user = R::findOne("user", "Password = ? and id = ?", array($loggedInUser->hash_pw, $loggedInUser->user->id));
+			$user = R::findOne("user", "Password = ? and id = ?", array($user->Password, $user->id));
 			//Query the database to ensure they haven't been removed or possibly banned?
-			if ($user->id){
+			if ($user && $user->id){
 				return true;
 			}
 			else
 			{
 				//No result returned kill the user session, user banned or deleted
-				$this->userLogOut();
+				$this->userLogOut($user);
 				return false;
 			}
 		}
 	}
 	
-	function destorySession($name)
+	function userLogOut($user)
 	{
-		if(isset($_SESSION[$name]))
-		{
-			$_SESSION[$name] = NULL;
-			unset($_SESSION[$name]);
+		if($this->isUserLoggedIn($user)) {
+			AuthController::destorySession("authUser");
 		}
 	}
-	
-	function userLogOut()
-	{
-		$this->destorySession("authUser");
-	}
-	
+
 	//Generate an activation key 
 	function generateActivationToken()
 	{

@@ -7,9 +7,19 @@
 	*/
 	include("/../conf/config.php");
 	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
-	if(!$dao->isUserLoggedIn()) { header("Location: login.php"); die(); }
+	if(!$dao->isUserLoggedIn($request->user)) { header("Location: login.php"); die(); }
 ?>
 <?php
 	/* 
@@ -34,7 +44,7 @@ if(!empty($_POST))
 		{
 			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
 		}
-		else if($email == $loggedInUser->email)
+		else if($email == $request->user->Email)
 		{
 				$errors[] = AuthController::lang("NOTHING_TO_UPDATE");
 		}
@@ -46,7 +56,7 @@ if(!empty($_POST))
 		//End data validation
 		if(count($errors) == 0)
 		{
-			$loggedInUser->updateEmail($email);
+			$dao->updateEmail($request->user, $email);
 		}
 	}
 ?>
@@ -97,7 +107,7 @@ if(!empty($_POST))
             
                 <p>
                     <label>Email:</label>
-                    <input type="text" name="email" value="<?php echo $loggedInUser->email; ?>" />
+                    <input type="text" name="email" value="<?php echo $request->user->Email; ?>" />
                 </p>
         
                 <p>

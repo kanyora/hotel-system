@@ -8,10 +8,19 @@
 	
 	require_once('/../conf/config.php');
 	
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+
 	$dao = new AuthDAO();
-	
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn()) { header("Location: account.php"); die(); }
+	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -70,7 +79,6 @@ if(!empty($_POST))
 						//Construct a new logged in user object
 						//Transfer some db data to the session object
 						$dao->loginUser($user);
-						echo $user;
 						//Redirect to user account page
 						header("Location: account.php");
 						die();

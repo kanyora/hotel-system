@@ -3,7 +3,17 @@
 	require_once("/../../conf/config.php");
 	$dao = new AuthDAO();
 	
-	if(!$dao->isUserLoggedIn()) { 
+	$request = new Request(
+		$_COOKIE,
+		$_FILES,
+		$_GET,
+		$_POST,
+		$_REQUEST,
+		$_SESSION,
+		$_SERVER
+	);
+	
+	if(!$dao->isUserLoggedIn($request->user)) { 
 	?>
         <ul>
             <li><a href="index.php">Home</a></li>
