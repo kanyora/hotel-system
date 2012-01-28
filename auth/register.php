@@ -53,7 +53,7 @@ if(!empty($_POST))
 		//End data validation
 		if(count($errors) == 0)
 		{
-			$_errors = $dao->createUser($username,$password,$email);
+			$_errors = AuthController::createUser($username,$password,$email);
 			if ($_errors){
 				if(isset($_errors["username_taken"])) $errors[] = AuthController::lang("ACCOUNT_USERNAME_IN_USE",array($username));
 				if(isset($_errors["email_taken"])) 	  $errors[] = AuthController::lang("ACCOUNT_EMAIL_IN_USE",array($email));		

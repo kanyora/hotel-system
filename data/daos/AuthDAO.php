@@ -5,192 +5,33 @@ class AuthDAO{
 	public $contents = NULL;
 	
 	public function __construct() {
-		global $db_host, $db_name, $db_user, $db_pass;
-		R::setup("mysql:host=".$db_host.";dbname=".$db_name, $db_user, $db_pass);
+		
 	}
 	
-	public function createUser($user,$pass,$email)
-	{
-		global $emailActivation, $websiteUrl;
+	public function createUser($unclean_username, $clean_username, $secure_pass, $clean_email,
+		$activation_token, $lastActivationRequest, $lostPasswordRequest,$user_active, $group_id){
 		
-		//Used for display only
-		$unclean_username = $user;
-		$status = false;
+		$user = R::dispense("user");
+		$user->Username = $unclean_username;
+		$user->Username_Clean = $clean_username;
+		$user->Password = $secure_pass; 
+		$user->Email = $clean_email;
+		$user->ActivationToken = $activation_token;
+		$user->LastActivationRequest = $lastActivationRequest;
+		$user->LostPasswordRequest = $lostPasswordRequest;
+		$user->Active = $user_active;
 		
-		//Sanitize
-		$clean_email = AuthController::sanitize($email);
-		$clean_password = trim($pass);
-		$clean_username = AuthController::sanitize($user);
-		
-		$errors = array();
-		
-		if($this->usernameExists($clean_username))
-		{
-			$errors["username_taken"] = true;
-		} else if($this->emailExists($clean_email)) {
-			$errors["email_taken"] = true;
-		} else {
-			//No problems have been found.
-			$status = true;
+		$group = R::load("group", $group_id);
+		if ($group->id){
+			R::associate($group, $user);
+			R::store($group);
 		}
-
-		//Prevent this function being called if there were construction errors
-		if($status)
-		{
-			//Construct a secure hash for the plain text password
-			$secure_pass = AuthController::generateHash($clean_password);
-			//Construct a unique activation token
-			$activation_token = $this->generateActivationToken();
-			//Do we need to send out an activation email?
-			if($emailActivation)
-			{
-				//User must activate their account first
-				$user_active = 0;
-
-				//Build the activation message
-				$activation_message = AuthController::lang("ACTIVATION_MESSAGE",array($websiteUrl,$activation_token));
-				//Define more if you want to build larger structures
-				$hooks = array(
-					"searchStrs" => array("#ACTIVATION-MESSAGE","#ACTIVATION-KEY","#USERNAME#"),
-					"subjectStrs" => array($activation_message,$activation_token,$unclean_username)
-				);
-				
-				$message = "
-				Hello #USERNAME#
-
-				Thank you for joining our website #WEBSITENAME#
-				
-				#ACTIVATION-MESSAGE
-				
-				#INC-FOOTER#
-				";
-				
-				/* Build the template - Optional, you can just use the sendMail function 
-				Instead to pass a message. */
-				if(!$this->newTemplateMsg($message,$hooks))
-				{
-					$errors["mail_failure"] = true;
-				}
-				else
-				{
-					//Send the mail. Specify users email here and subject. 
-					//SendMail can have a third parementer for message if you do not wish to build a template.
-					
-					if(!$this->sendMail($clean_email,"New User"))
-					{
-						$errors["mail_failure"] = true;
-					}
-				}
-			}
-			else
-			{
-				//Instant account activation
-				$user_active = 1;
-			}	
-
-			if(!isset($errors["mail_failure"]))
-			{
-				//Insert the user into the database providing no errors have been found.
-				$user = R::dispense("user");
-				$user->Username = $unclean_username;
-				$user->Username_Clean = $clean_username;
-				$user->Password = $secure_pass; 
-				$user->Email = $clean_email;
-				$user->ActivationToken = $activation_token;
-				$user->LastActivationRequest = time();
-				$user->LostPasswordRequest = '0';
-				$user->Active = $user_active;
-				
-				$group = R::load("group", 1);
-				if ($group->id){
-					R::associate($group, $user);
-					R::store($group);
-				}
-				
-				$user->SignUpDate = time();
-				$user->LastSignIn = '0';
-				
-				R::store($user);
-			}
-		}
-		return $errors;
+		
+		$user->SignUpDate = time();
+		$user->LastSignIn = '0';
+		
+		R::store($user);
 	}
-
-	//Function used for replacing hooks in our templates
-	public function newTemplateMsg($content,$additionalHooks)
-	{
-		global $mail_templates_dir,$debug_mode;
-		$this->contents = $content;
-
-		//Check to see we can access the file / it has some contents
-		if(!$this->contents || empty($this->contents))
-		{
-			if($debug_mode)
-			{
-				if(!$this->contents)
-				{ 
-					echo AuthController::lang("MAIL_TEMPLATE_DIRECTORY_ERROR",array(getenv("DOCUMENT_ROOT")));
-					die(); 
-				}
-				else if(empty($this->contents))
-				{
-					echo AuthController::lang("MAIL_TEMPLATE_FILE_EMPTY"); 
-					
-					die();
-				}
-			}
-		
-			return false;
-		}
-		else
-		{
-			//Replace default hooks
-			$this->contents = AuthController::replaceDefaultHook($this->contents);
-		
-			//Replace defined / custom hooks
-			$this->contents = str_replace($additionalHooks["searchStrs"],$additionalHooks["subjectStrs"],$this->contents);
-
-			//Do we need to include an email footer?
-			//Try and find the #INC-FOOTER hook
-			if(strpos($this->contents,"#INC-FOOTER#") !== FALSE)
-			{
-				$footer = 
-				"
-				- Regards
-				UserCake.com
-				";
-				if($footer && !empty($footer)) $this->contents .= AuthController::replaceDefaultHook($footer); 
-				$this->contents = str_replace("#INC-FOOTER#","",$this->contents);
-			}
-			
-			return true;
-		}
-	}
-	
-	public function sendMail($email,$subject,$msg = NULL)
-	{
-		global $websiteName,$emailAddress;
-		
-		$header = "MIME-Version: 1.0\r\n";
-		$header .= "Content-type: text/plain; charset=iso-8859-1\r\n";
-		$header .= "From: ". $websiteName . " <" . $emailAddress . ">\r\n";
-		
-		$message = "";
-		
-		//Check to see if we sending a template email.
-		if($msg == NULL)
-			$msg = $this->contents; 
-
-		$message .= $msg;
-		$message = wordwrap($message, 70);
-
-		//if (mail($email,$subject,$message,$header)){
-			return true;
-		//}
-		//return false;
-	}
-
-
 	
 	//Simple function to update the last sign in of a user
 	public function updateLastSignIn($user)
@@ -368,7 +209,6 @@ class AuthDAO{
 		if(isset($_SESSION[$name]))
 		{
 			$_SESSION[$name] = NULL;
-			
 			unset($_SESSION[$name]);
 		}
 	}

@@ -12,16 +12,13 @@
 	if($dao->isUserLoggedIn()) {
 		$dao->userLogOut();
 	}
-
+	
 	if(!empty($websiteUrl)) 
 	{
 		$add_http = "";
-		
-		if(strpos($websiteUrl,"http://") === false)
-		{
+		if(strpos($websiteUrl,"http://") === false){
 			$add_http = "http://";
 		}
-	
 		header("Location: ".$add_http.$websiteUrl);
 		die();
 	}
@@ -29,5 +26,5 @@
 	{
 		header("Location: index.php");
 		die();
-	}	
+	}
 ?>
