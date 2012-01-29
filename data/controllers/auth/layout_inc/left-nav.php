@@ -3,7 +3,7 @@
 	require_once("/../../conf/config.php");
 	$dao = new AuthDAO();
 	
-	$request = new Request(
+	$request = new HttpRequest(
 		$_COOKIE,
 		$_FILES,
 		$_GET,

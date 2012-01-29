@@ -6,7 +6,7 @@
 		Developed by: Adam Davis
 	*/
 	include("/../conf/config.php");
-	AuthController::userLogout(new Request(
+	AuthController::userLogout(new HttpRequest(
 		$_COOKIE,
 		$_FILES,
 		$_GET,

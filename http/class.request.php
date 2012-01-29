@@ -1,5 +1,5 @@
 <?php
-class Request{
+class HttpRequest{
 	public $method;
 	public $POST;
 	public $GET;
@@ -38,6 +38,10 @@ class Request{
 			$this->user = R::dispense("user");
 		}
 		$this->method = $SERVER["REQUEST_METHOD"];
+	}
+		
+	public function __toString(){
+		return "HttpRequest";
 	}
 } 
 ?>

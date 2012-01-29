@@ -13,10 +13,8 @@
 	
 	//Call all the libraries required
 	require_once('/../lib/redbean_orm/rb.php');
+	require_once('/../lib/php_router/php-router.php');
 	require_once('/../lib/smarty_templates/Smarty.class.php');
-	
-	//Setup all the Controllers
-	require_once("/../data/controllers/AuthController.php");
 	
 	//Setup all the Daos
 	require_once("/../data/daos/AuthDao.php");
@@ -24,6 +22,16 @@
 	//Setup all the Models
 	require_once("/../data/models/auth/User.php");
 	require_once("/../data/models/auth/Group.php");
+	
+	//Setup the Router[ish] instances
+	$router = new Router;
+	//Get an instance of Dispatcher
+	$dispatcher = new Dispatcher;
+	$dispatcher->setSuffix('Controller');
+	$dispatcher->setClassPath('data/controllers/');
+
+	//Set up The Root URLS file
+	require_once("/../urls/routers/urls.php");
 	
 	//start session
 	session_start();

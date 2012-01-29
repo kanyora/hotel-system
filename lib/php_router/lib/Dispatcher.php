@@ -44,7 +44,17 @@ class Dispatcher
         $class      = trim($route->getMapClass());
         $method     = trim($route->getMapMethod());
         $arguments  = $route->getMapArguments();
-
+		
+		$arguments["request"] = new HttpRequest(
+			$_COOKIE,
+			$_FILES,
+			$_GET,
+			$_POST,
+			$_REQUEST,
+			$_SESSION,
+			$_SERVER
+		);
+		
         if( '' === $class )
             throw new classNotSpecifiedException('Class Name not specified');
 

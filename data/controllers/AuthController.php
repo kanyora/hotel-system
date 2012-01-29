@@ -1,5 +1,10 @@
 <?php
 	class AuthController{
+		public function index($args)
+		{
+			echo "Auth Nes!!";
+		}
+		
 		public static function createUser($user,$pass,$email)
 		{
 			global $emailActivation, $websiteUrl;
@@ -100,7 +105,7 @@
 		}
 		
 		//Logout
-		public static function userLogout($request){
+		public static function logout($request){
 			if ($request->method == "GET"){
 				$dao = new AuthDAO();
 				//Log the user out

@@ -1,17 +1,30 @@
 <?php
 	require_once ('conf/config.php');
-	
-	$request = new Request(
-		$_COOKIE,
-		$_FILES,
-		$_GET,
-		$_POST,
-		$_REQUEST,
-		$_SESSION,
-		$_SERVER
-	);
-	$dao = new AuthDAO();
-	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: auth/account.php"); die(); }
+
+	$url = urldecode($_SERVER['REQUEST_URI']);
+	try {
+		$found_route = $router->findRoute($url);
+		$dispatcher->dispatch($found_route);
+	} catch ( RouteNotFoundException $e ) {
+		//PageError::show('404', $url);
+		echo "RouteNotFoundException: ".$e;
+	} catch ( badClassNameException $e ) {
+		//PageError::show('400', $url);
+		echo "badClassNameException: ".$e;
+	} catch ( classFileNotFoundException $e ) {
+		//PageError::show('500', $url);
+		echo "classFileNotFoundException: ".$e;
+	} catch ( classNameNotFoundException $e ) {
+		//PageError::show('500', $url);
+		echo "classNameNotFoundException: ".$e;
+	} catch ( classMethodNotFoundException $e ) {
+		//PageError::show('500', $url);
+		echo "classMethodNotFoundException: ".$e;
+	} catch ( classNotSpecifiedException $e ) {
+		//PageError::show('500', $url);
+		echo "classNotSpecifiedException: ".$e;
+	} catch ( methodNotSpecifiedException $e ) {
+		//PageError::show('500', $url);
+		echo "methodNotSpecifiedException: ".$e;
+	}
 ?>
-<b>Logged in</b>

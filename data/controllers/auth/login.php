@@ -8,7 +8,7 @@
 	
 	require_once('/../conf/config.php');
 	
-	$request = new Request(
+	$request = new HttpRequest(
 		$_COOKIE,
 		$_FILES,
 		$_GET,
