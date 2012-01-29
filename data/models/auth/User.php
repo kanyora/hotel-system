@@ -17,5 +17,21 @@ class Model_User extends RedBean_SimpleModel{
     public function after_update(){}
     public function delete() {}
     public function after_delete() {}
+	
+	public function isUserLoggedIn(){
+		if ($this->id){
+			return true;
+		}else{
+			//No result returned kill the user session, user banned or deleted
+			$this->userLogOut();
+			return false;
+		}
+	}
+	
+	public function userLogOut(){
+		if ($this->id){
+			destorySession("authUser");
+		}
+	}
 }
 ?>

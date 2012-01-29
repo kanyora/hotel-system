@@ -18,7 +18,7 @@
 	$dao = new AuthDAO();
 	
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
+	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
 ?>
 
 <?php
@@ -44,28 +44,28 @@ if(!empty($_POST))
 		
 		if(AuthController::minMaxRange(4,25,$username))
 		{
-			$errors[] = AuthController::lang("ACCOUNT_USER_CHAR_LIMIT",array(4,25));
+			$errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(4,25));
 		}
 		if(AuthController::minMaxRange(2,50,$password) && AuthController::minMaxRange(2,50,$confirm_pass))
 		{
-			$errors[] = AuthController::lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
+			$errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
 		}
 		else if($password != $confirm_pass)
 		{
-			$errors[] = AuthController::lang("ACCOUNT_PASS_MISMATCH");
+			$errors[] = lang("ACCOUNT_PASS_MISMATCH");
 		}
 		if(!AuthController::isValidEmail($email))
 		{
-			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
+			$errors[] = lang("ACCOUNT_INVALID_EMAIL");
 		}
 		//End data validation
 		if(count($errors) == 0)
 		{
 			$_errors = AuthController::createUser($username,$password,$email);
 			if ($_errors){
-				if(isset($_errors["username_taken"])) $errors[] = AuthController::lang("ACCOUNT_USERNAME_IN_USE",array($username));
-				if(isset($_errors["email_taken"])) 	  $errors[] = AuthController::lang("ACCOUNT_EMAIL_IN_USE",array($email));		
-				if(isset($_errors["mail_failure"])) $errors[] = AuthController::lang("MAIL_ERROR");
+				if(isset($_errors["username_taken"])) $errors[] = lang("ACCOUNT_USERNAME_IN_USE",array($username));
+				if(isset($_errors["email_taken"])) 	  $errors[] = lang("ACCOUNT_EMAIL_IN_USE",array($email));		
+				if(isset($_errors["mail_failure"])) $errors[] = lang("MAIL_ERROR");
 			}
 		}
 	}
@@ -97,16 +97,16 @@ if(!empty($_POST))
 				{
             ?>
             <div id="errors">
-            <?php AuthController::errorBlock($errors); ?>
+            <?php errorBlock($errors); ?>
             </div>     
             <?php
            		 } else {
           
-            	$message = AuthController::lang("ACCOUNT_REGISTRATION_COMPLETE_TYPE1");
+            	$message = lang("ACCOUNT_REGISTRATION_COMPLETE_TYPE1");
         
             	if($emailActivation)
 				{
-               		 $message = AuthController::lang("ACCOUNT_REGISTRATION_COMPLETE_TYPE2");
+               		 $message = lang("ACCOUNT_REGISTRATION_COMPLETE_TYPE2");
 				}
         ?> 
         <div id="success">

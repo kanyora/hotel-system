@@ -33,10 +33,11 @@ class Request{
 		{
 			$this->user = $SESSION["authUser"];
 		}else{
-			$this->user = NULL;
+			//Then create a user with no user id: Anonymous User, 
+			//who can be saved later! Swag!
+			$this->user = R::dispense("user");
 		}
 		$this->method = $SERVER["REQUEST_METHOD"];
 	}
 } 
-
 ?>

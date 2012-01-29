@@ -18,7 +18,7 @@
 	);
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
-	if(!$dao->isUserLoggedIn($request->user)) { header("Location: login.php"); die(); }
+	if(!$request->user->isUserLoggedIn()) { header("Location: login.php"); die(); }
 ?>
 
 <?php
@@ -40,39 +40,39 @@ if(!empty($_POST))
 		
 		if(trim($password) == "")
 		{
-			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_PASSWORD");
+			$errors[] = lang("ACCOUNT_SPECIFY_PASSWORD");
 		}
 		else if(trim($password_new) == "")
 		{
-			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_NEW_PASSWORD");
+			$errors[] = lang("ACCOUNT_SPECIFY_NEW_PASSWORD");
 		}
-		else if(AuthController::minMaxRange(8,50,$password_new))
+		else if(minMaxRange(8,50,$password_new))
 		{	
-			$errors[] = AuthController::lang("ACCOUNT_NEW_PASSWORD_LENGTH",array(8,50));
+			$errors[] = lang("ACCOUNT_NEW_PASSWORD_LENGTH",array(8,50));
 		}
 		else if($password_new != $password_confirm)
 		{
-			$errors[] = AuthController::lang("ACCOUNT_PASS_MISMATCH");
+			$errors[] = lang("ACCOUNT_PASS_MISMATCH");
 		}
 		
 		//End data validation
 		if(count($errors) == 0)
 		{
 			//Confirm the hash's match before updating a users password
-			$entered_pass = AuthController::generateHash($password,$request->user->Password);
+			$entered_pass = generateHash($password,$request->user->Password);
 			
 			//Also prevent updating if someone attempts to update with the same password
-			$entered_pass_new = AuthController::generateHash($password_new,$request->user->Password);
+			$entered_pass_new = generateHash($password_new,$request->user->Password);
 		
 			if($entered_pass != $request->user->Password)
 			{
 				//No match
-				$errors[] = AuthController::lang("ACCOUNT_PASSWORD_INVALID");
+				$errors[] = lang("ACCOUNT_PASSWORD_INVALID");
 			}
 			else if($entered_pass_new == $request->user->Password)
 			{
 				//Don't update, this fool is trying to update with the same password ¬¬
-				$errors[] = AuthController::lang("NOTHING_TO_UPDATE");
+				$errors[] = lang("NOTHING_TO_UPDATE");
 			}
 			else
 			{
@@ -111,11 +111,11 @@ if(!empty($_POST))
 				{
             ?>
             <div id="errors">
-            <?php AuthController::errorBlock($errors); ?>
+            <?php errorBlock($errors); ?>
             </div>     
             <?php } else { ?> 
             <div id="success">
-               <p><?php echo AuthController::lang("ACCOUNT_DETAILS_UPDATED"); ?></p>
+               <p><?php echo lang("ACCOUNT_DETAILS_UPDATED"); ?></p>
             </div>
         <?php } }?>
 

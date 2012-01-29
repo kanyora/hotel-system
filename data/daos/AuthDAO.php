@@ -95,7 +95,10 @@ class AuthDAO{
 	function emailExists($email)
 	{
 		$user = R::findOne("user", "email = ?", array($email));
-		return $user;
+		if ($user && $user->id){
+			return true;
+		}
+		return false;
 	}
 	
 	//Function lostpass var if set will check for an active account.
@@ -171,34 +174,6 @@ class AuthDAO{
 		$_SESSION["authUser"] = $user;
 	}
 	
-	function isUserLoggedIn($user){
-		if(!isset($user))
-		{
-			return false;
-		}
-		else
-		{
-			$user = R::findOne("user", "password = ? and id = ?", array($user->password, $user->id));
-			//Query the database to ensure they haven't been removed or possibly banned?
-			if ($user && $user->id){
-				return true;
-			}
-			else
-			{
-				//No result returned kill the user session, user banned or deleted
-				$this->userLogOut($user);
-				return false;
-			}
-		}
-	}
-	
-	function userLogOut($user)
-	{
-		if($this->isUserLoggedIn($user)) {
-			AuthController::destorySession("authUser");
-		}
-	}
-
 	//Generate an activation key 
 	function generateActivationToken()
 	{

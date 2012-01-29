@@ -19,7 +19,7 @@
 	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the lost password page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
+	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -44,7 +44,7 @@ if(!empty($_GET["confirm"]))
 
 	if($token == "" || !validateActivationToken($token,TRUE))
 	{
-		$errors[] = AuthController::lang("FORGOTPASS_INVALID_TOKEN");
+		$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
 	}
 	else
 	{
@@ -63,26 +63,26 @@ if(!empty($_GET["confirm"]))
 					
 		if(!$mail->newTemplateMsg("your-lost-password.txt",$hooks))
 		{
-			$errors[] = AuthController::lang("MAIL_TEMPLATE_BUILD_ERROR");
+			$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
 		}
 		else
 		{	
 			if(!$mail->sendMail($userdetails->email,"Your new password"))
 			{
-					$errors[] = AuthController::lang("MAIL_ERROR");
+					$errors[] = lang("MAIL_ERROR");
 			}
 			else
 			{
 					if(!updatePasswordFromToken($secure_pass,$token))
 					{
-						$errors[] = AuthController::lang("SQL_ERROR");
+						$errors[] = lang("SQL_ERROR");
 					}
 					else
 					{	
 						//Might be wise if this had a time delay to prevent a flood of requests.
 						flagLostPasswordRequest($userdetails->username_clean,0);
 						
-						$success_message  = AuthController::lang("FORGOTPASS_NEW_PASS_EMAIL");
+						$success_message  = lang("FORGOTPASS_NEW_PASS_EMAIL");
 					}
 			}
 		}
@@ -100,7 +100,7 @@ if(!empty($_GET["deny"]))
 	
 	if($token == "" || !validateActivationToken($token,TRUE))
 	{
-		$errors[] = AuthController::lang("FORGOTPASS_INVALID_TOKEN");
+		$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
 	}
 	else
 	{
@@ -109,7 +109,7 @@ if(!empty($_GET["deny"]))
 		
 		flagLostPasswordRequest($userdetails->username_clean,0);
 		
-		$success_message = AuthController::lang("FORGOTPASS_REQUEST_CANNED");
+		$success_message = lang("FORGOTPASS_REQUEST_CANNED");
 	}
 }
 
@@ -131,21 +131,21 @@ if(!empty($_POST))
 	
 	if(trim($email) == "")
 	{
-		$errors[] = AuthController::lang("ACCOUNT_SPECIFY_EMAIL");
+		$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
 	}
 	//Check to ensure email is in the correct format / in the db
-	else if(!AuthController::isValidEmail($email) || !$dao->emailExists($email))
+	else if(!isValidEmail($email) || $dao->emailExists($email))
 	{
-		$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
+		$errors[] = lang("ACCOUNT_INVALID_EMAIL");
 	}
 	
 	if(trim($username) == "")
 	{
-		$errors[] = AuthController::lang("ACCOUNT_SPECIFY_USERNAME");
+		$errors[] = lang("ACCOUNT_SPECIFY_USERNAME");
 	}
 	else if(!$dao->usernameExists($username))
 	{
-		$errors[] = AuthController::lang("ACCOUNT_INVALID_USERNAME");
+		$errors[] = lang("ACCOUNT_INVALID_USERNAME");
 	}
 	
 	
@@ -155,7 +155,7 @@ if(!empty($_POST))
 		//Check that the username / email are associated to the same account
 		if(!$dao->emailUsernameLinked($email,$username))
 		{
-			$errors[] =  AuthController::lang("ACCOUNT_USER_OR_EMAIL_INVALID");
+			$errors[] =  lang("ACCOUNT_USER_OR_EMAIL_INVALID");
 		}
 		else
 		{
@@ -164,7 +164,7 @@ if(!empty($_POST))
 			
 			if($userdetails->lost_password_request)
 			{
-				$errors[] = AuthController::lang("FORGOTPASS_REQUEST_EXISTS");
+				$errors[] = lang("FORGOTPASS_REQUEST_EXISTS");
 			}
 			else
 			{
@@ -173,7 +173,7 @@ if(!empty($_POST))
 				
 				//We use the activation token again for the url key it gets regenerated everytime it's used.
 				
-				$confirm_url = AuthController::lang("CONFIRM")."\n".$websiteUrl."forgot-password.php?confirm=".$userdetails->activation_token;
+				$confirm_url = lang("CONFIRM")."\n".$websiteUrl."forgot-password.php?confirm=".$userdetails->activation_token;
 				$deny_url = ("DENY")."\n".$websiteUrl."forgot-password.php?deny=".$userdetails->activation_token;
 				
 				//Setup our custom hooks
@@ -184,19 +184,19 @@ if(!empty($_POST))
 				
 				if(!$dao->newTemplateMsg("lost-password-request.txt",$hooks))
 				{
-					$errors[] = AuthController::lang("MAIL_TEMPLATE_BUILD_ERROR");
+					$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
 				}
 				else
 				{
 					if(!$dao->sendMail($userdetails->email,"Lost password request"))
 					{
-						$errors[] = AuthController::lang("MAIL_ERROR");
+						$errors[] = lang("MAIL_ERROR");
 					}
 					else
 					{
 						//Update the DB to show this account has an outstanding request
 						$dao->flagLostPasswordRequest($username,1);
-						$success_message = AuthController::lang("FORGOTPASS_REQUEST_SUCCESS");
+						$success_message = lang("FORGOTPASS_REQUEST_SUCCESS");
 					}
 				}
 			}
@@ -232,7 +232,7 @@ if(!empty($_POST))
             {
 		?>
         	<div id="errors">
-            	<?php AuthController::errorBlock($errors); ?>
+            	<?php errorBlock($errors); ?>
             </div> 
         <?php
             }

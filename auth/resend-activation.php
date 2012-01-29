@@ -18,7 +18,7 @@
 	);
 	$dao = new AuthDAO();
 	//Prevent the user visiting the lost password page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
+	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -41,12 +41,12 @@ if(!empty($_POST) && $emailActivation)
 		
 		if(trim($email) == "")
 		{
-			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_EMAIL");
+			$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
 		}
 		//Check to ensure email is in the correct format / in the db
 		else if(!AuthController::isValidEmail($email) || !emailExists($email))
 		{
-			$errors[] = AuthController::lang("ACCOUNT_INVALID_EMAIL");
+			$errors[] = lang("ACCOUNT_INVALID_EMAIL");
 		}
 		
 		if(trim($username) == "")
@@ -55,7 +55,7 @@ if(!empty($_POST) && $emailActivation)
 		}
 		else if(!$dao->usernameExists($username))
 		{
-			$errors[] = AuthController::lang("ACCOUNT_INVALID_USERNAME");
+			$errors[] = lang("ACCOUNT_INVALID_USERNAME");
 		}
 		
 		
@@ -64,7 +64,7 @@ if(!empty($_POST) && $emailActivation)
 			//Check that the username / email are associated to the same account
 			if(!emailUsernameLinked($email,$username))
 			{
-				$errors[] = AuthController::lang("ACCOUNT_USER_OR_EMAIL_INVALID");
+				$errors[] = lang("ACCOUNT_USER_OR_EMAIL_INVALID");
 			}
 			else
 			{
@@ -73,7 +73,7 @@ if(!empty($_POST) && $emailActivation)
 				//See if the user's account is activation
 				if($userdetails->is_active)
 				{
-					$errors[] = AuthController::lang("ACCOUNT_ALREADY_ACTIVE");
+					$errors[] = lang("ACCOUNT_ALREADY_ACTIVE");
 				}
 				else
 				{
@@ -81,7 +81,7 @@ if(!empty($_POST) && $emailActivation)
 
 					if($resend_activation_threshold!=0 && $hours_diff <= $resend_activation_threshold)
 					{
-						$errors[] = AuthController::lang("ACCOUNT_LINK_ALREADY_SENT",array($resend_activation_threshold));
+						$errors[] = lang("ACCOUNT_LINK_ALREADY_SENT",array($resend_activation_threshold));
 					}
 					else
 					{
@@ -90,7 +90,7 @@ if(!empty($_POST) && $emailActivation)
 						
 						if(!updateLastActivationRequest($new_activation_token,$username,$email))
 						{
-							$errors[] = AuthController::lang("SQL_ERROR");
+							$errors[] = lang("SQL_ERROR");
 						}
 						else
 						{
@@ -106,18 +106,18 @@ if(!empty($_POST) && $emailActivation)
 							
 							if(!$mail->newTemplateMsg("resend-activation.txt",$hooks))
 							{
-								$errors[] = AuthController::lang("MAIL_TEMPLATE_BUILD_ERROR");
+								$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
 							}
 							else
 							{
 								if(!$mail->sendMail($userdetails->email,"Activate your UserCake Account"))
 								{
-									$errors[] = AuthController::lang("MAIL_ERROR");
+									$errors[] = lang("MAIL_ERROR");
 								}
 								else
 								{
 									//Success, user details have been updated in the db now mail this information out.
-									$success_message = AuthController::lang("ACCOUNT_NEW_ACTIVATION_SENT");
+									$success_message = lang("ACCOUNT_NEW_ACTIVATION_SENT");
 								}
 							}
 						}
@@ -155,7 +155,7 @@ if(!empty($_POST) && $emailActivation)
             {
 		?>
         	<div id="errors">
-            	<?php AuthController::errorBlock($errors); ?>
+            	<?php errorBlock($errors); ?>
             </div> 
         <?php
             }

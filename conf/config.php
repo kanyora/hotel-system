@@ -8,6 +8,7 @@
 	//Call up all the helper and settings scripts
 	require_once("settings.php");
 	require_once("/../http/class.request.php");
+	require_once("/../util/funcs.general.php");
 	require_once("/../lang/en.php");
 	
 	//Call all the libraries required

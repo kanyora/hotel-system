@@ -18,7 +18,7 @@
 	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is not logged in
-	if(!$dao->isUserLoggedIn($request->user)) { header("Location: login.php"); die(); }
+	if(!$request->user->isUserLoggedIn()) { header("Location: login.php"); die(); }
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,9 +30,7 @@
 </head>
 <body>
 <div id="wrapper">
-
 	<div id="content">
-    
         <div id="left-nav">
         <?php include("layout_inc/left-nav.php"); ?>
             <div class="clear"></div>

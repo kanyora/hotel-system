@@ -20,17 +20,10 @@
 
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
-?>
-<?php
-	/* 
-		Below is a very simple example of how to process a login request.
-		Some simple validation (ideally more is needed).
-	*/
-
-//Forms posted
-if(!empty($_POST))
-{
+	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
+	//Forms posted
+	if(!empty($_POST))
+	{
 		$errors = array();
 		$username = trim($_POST["username"]);
 		$password = trim($_POST["password"]);
@@ -39,11 +32,11 @@ if(!empty($_POST))
 		//Feel free to edit / change as required
 		if($username == "")
 		{
-			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_USERNAME");
+			$errors[] = lang("ACCOUNT_SPECIFY_USERNAME");
 		}
 		if($password == "")
 		{
-			$errors[] = AuthController::lang("ACCOUNT_SPECIFY_PASSWORD");
+			$errors[] = lang("ACCOUNT_SPECIFY_PASSWORD");
 		}
 		
 		//End data validation
@@ -52,7 +45,7 @@ if(!empty($_POST))
 			//A security note here, never tell the user which credential was incorrect
 			if(!$dao->usernameExists($username))
 			{
-				$errors[] = AuthController::lang("ACCOUNT_USER_OR_PASS_INVALID");
+				$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
 			}
 			else
 			{
@@ -61,17 +54,17 @@ if(!empty($_POST))
 				//See if the user's account is activation
 				if($user->is_active==0)
 				{
-					$errors[] = AuthController::lang("ACCOUNT_INACTIVE");
+					$errors[] = lang("ACCOUNT_INACTIVE");
 				}
 				else
 				{
 					//Hash the password and use the salt from the database to compare the password.
-					$entered_pass = AuthController::generateHash($password,$user->password);
+					$entered_pass = generateHash($password,$user->password);
 
 					if($entered_pass != $user->password)
 					{
 						//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
-						$errors[] = AuthController::lang("ACCOUNT_USER_OR_PASS_INVALID");
+						$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
 					}
 					else
 					{
@@ -117,7 +110,7 @@ if(!empty($_POST))
         {
         ?>
         <div id="errors">
-        <?php AuthController::errorBlock($errors); ?>
+        <?php errorBlock($errors); ?>
         </div>     
         <?php
         } }

@@ -19,7 +19,7 @@
 	
 	$dao = new AuthDAO();
 	//Prevent the user visiting the logged in page if he/she is already logged in
-	if($dao->isUserLoggedIn($request->user)) { header("Location: account.php"); die(); }
+	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
 ?>
 <?php
 	/* 
@@ -35,7 +35,7 @@ if(isset($_GET["token"]))
 		
 		if(!isset($token))
 		{
-			$errors[] = AuthController::lang("FORGOTPASS_INVALID_TOKEN");
+			$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
 		}
 		else if(!$dao->validateActivationToken($token)) //Check for a valid token. Must exist and active must be = 0
 		{
@@ -46,13 +46,13 @@ if(isset($_GET["token"]))
 			//Activate the users account
 			if(!setUserActive($token))
 			{
-				$errors[] = AuthController::lang("SQL_ERROR");
+				$errors[] = lang("SQL_ERROR");
 			}
 		}
 }
 else
 {
-	$errors[] = AuthController::lang("FORGOTPASS_INVALID_TOKEN");
+	$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -81,13 +81,13 @@ else
 				{
             ?>
             <div id="errors">
-            <?php AuthController::errorBlock($errors); ?>
+            <?php errorBlock($errors); ?>
             </div>     
             <?php
            		 } else { ?> 
         <div id="success">
         
-           <p><?php echo AuthController::lang("ACCOUNT_NOW_ACTIVE"); ?></p>
+           <p><?php echo lang("ACCOUNT_NOW_ACTIVE"); ?></p>
            
         </div>
         <?php }?>
