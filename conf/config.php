@@ -23,6 +23,14 @@
 	require_once("/../data/models/auth/User.php");
 	require_once("/../data/models/auth/Group.php");
 	
+	//Start Getting smarty up!!!
+	$smarty = new Smarty;
+			
+	//$smarty->force_compile = true;
+	$smarty->debugging = true;
+	$smarty->caching = false;
+	$smarty->cache_lifetime = 120;
+	
 	//Setup the Router[ish] instances
 	$router = new Router;
 	//Get an instance of Dispatcher

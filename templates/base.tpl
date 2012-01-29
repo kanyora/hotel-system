@@ -5,11 +5,11 @@
 		<title>{block "title"}{/block}</title>
 		
 		<link href="/KRA/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
+		
 		{block "extracss"}{/block}
 		{block "extrajs"}{/block}
 	</head>
 	<body>
-		{block "body"}
-		{/block}
+		{block "body"}{/block}
 	</body>
 </html>

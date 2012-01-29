@@ -4,10 +4,10 @@
 	<div id="wrapper">
 		{block "wrapper"}
 			<div id="content">
-				{block "wrapper"}
+				{block "content"}
 			        <div id="left-nav">
 			        	{block "left-nav"}
-				        	{include_php "auth/layout_inc/left-nav.php"}
+				        	{include "auth/left-nav.tpl"}
 				            <div class="clear"></div>
 				        {/block}
 			        </div>

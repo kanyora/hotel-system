@@ -114,19 +114,17 @@
 	
 	function errorBlock($errors)
 	{
-		if(!count($errors) > 0)
-		{
+		$code = "";
+		if(!count($errors) > 0) {
 			return false;
-		}
-		else
-		{
-			echo "<ul>";
-			foreach($errors as $error)
-			{
-				echo "<li>".$error."</li>";
+		} else {
+			$code = "<ul>";
+			foreach($errors as $error) {
+				$code .= "<li>".$error."</li>";
 			}
-			echo "</ul>";
+			$code .= "</ul>";
 		}
+		return $code;
 	}
 	
 	function lang($key,$markers = NULL)

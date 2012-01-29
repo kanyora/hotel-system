@@ -38,7 +38,7 @@
 		"ACCOUNT_DETAILS_UPDATED"				=> "Account details updated",
 		"ACTIVATION_MESSAGE"					=> "You will need first activate your account before you can login, follow the below link to activate your account. \n\n
 													%m1%activate-account.php?token=%m2%",							
-		"ACCOUNT_REGISTRATION_COMPLETE_TYPE1"	=> "You have successfully registered. You can now login <a href=\"login.php\">here</a>.",
+		"ACCOUNT_REGISTRATION_COMPLETE_TYPE1"	=> "You have successfully registered. You can now login <a href=\"/KRA/auth/login/\">here</a>.",
 		"ACCOUNT_REGISTRATION_COMPLETE_TYPE2"	=> "You have successfully registered. You will soon receive an activation email. 
 													You must activate your account before logging in.",
 	));

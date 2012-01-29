@@ -2,10 +2,6 @@
 class AuthDAO{
 	public $contents = NULL;
 	
-	public function __construct() {
-		
-	}
-	
 	public function createUser($unclean_username, $clean_username, $secure_pass, $clean_email,
 		$activation_token, $lastActivationRequest, $lostPasswordRequest,$user_active, $group_id){
 		
@@ -43,7 +39,7 @@ class AuthDAO{
 	//Update a users password
 	public function updatePassword($user, $pass)
 	{
-		$secure_pass = AuthController::generateHash($pass);
+		$secure_pass = generateHash($pass);
 		
 		if ($user->id){
 			$user->password = $secure_pass;

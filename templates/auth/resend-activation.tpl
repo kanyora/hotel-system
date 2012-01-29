@@ -1,31 +1,5 @@
-<?php
-	/*
-		UserCake Version: 1.4
-		http://usercake.com
-		
-		Developed by: Adam Davis
-	*/
-	require_once("/../conf/config.php");
-	
-	$request = new HttpRequest(
-		$_COOKIE,
-		$_FILES,
-		$_GET,
-		$_POST,
-		$_REQUEST,
-		$_SESSION,
-		$_SERVER
-	);
-	$dao = new AuthDAO();
-	//Prevent the user visiting the lost password page if he/she is already logged in
-	if($request->user->isUserLoggedIn()) { header("Location: account.php"); die(); }
-?>
-<?php
-	/* 
-		Below process a new activation link for a user, as they first activation email may have never arrived.
-	*/
-	
-	
+{extends "auth/auth_layout.tpl"}
+
 $errors = array();
 $success_message = "";
 
@@ -126,26 +100,8 @@ if(!empty($_POST) && $emailActivation)
 			}
 		}
 }
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Resend Activation Email</title>
-<link href="/KRA/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<div id="wrapper">
-	<div id="content">
- 
- 	   <div id="left-nav">
-        <?php include("layout_inc/left-nav.php"); ?>
-            <div class="clear"></div>
-        </div>
-        
-     <div id="main">
- 
- 	 <h1>Resend Activation Email</h1>
+{block "main"} 
+	<h1>Resend Activation Email</h1>
  
     <?php
     if(!empty($_POST) || !empty($_GET["confirm"]) || !empty($_GET["deny"]) && $emailActivation)
@@ -205,12 +161,6 @@ if(!empty($_POST) && $emailActivation)
 
 	 <?php } ?> 
      </div>   
-     
-     		<div class="clear"></div>   
-		</div>
-	</div>   
-</div>
-</body>
-</html>
+{/main}
 
 

@@ -1,111 +1,462 @@
 <?php
 	class AuthController{
-		public function index($args)
-		{
-			echo "Auth Nes!!";
+		public function index($args){
+			$request = $args["request"];
+			if($request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/account/"); 
+				die(); 
+			}
+			global $smarty;
+			
+			$smarty->assign("request", $request);
+			$smarty->display('auth/index.tpl');
 		}
 		
-		public static function createUser($user,$pass,$email)
-		{
-			global $emailActivation, $websiteUrl;
-			$dao = new AuthDao();
-			
-			//Used for display only
-			$unclean_username = $user;
-			$status = false;
-			
-			//Sanitize
-			$clean_email = AuthController::sanitize($email);
-			$clean_password = trim($pass);
-			$clean_username = AuthController::sanitize($user);
-			
+		public function activate_account($args){
+			$request = $args["request"];
+			if($request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/account/"); 
+				die(); 
+			}
+			global $smarty;
 			$errors = array();
 			
-			if($dao->usernameExists($clean_username))
-			{
-				$errors["username_taken"] = true;
-			} else if($dao->emailExists($clean_email)) {
-				$errors["email_taken"] = true;
-			} else {
-				//No problems have been found.
-				$status = true;
-			}
-	
-			//Prevent this function being called if there were construction errors
-			if($status)
-			{
-				//Construct a secure hash for the plain text password
-				$secure_pass = AuthController::generateHash($clean_password);
-				//Construct a unique activation token
-				$activation_token = $dao->generateActivationToken();
-				//Do we need to send out an activation email?
-				if($emailActivation)
-				{
-					//User must activate their account first
-					$user_active = 0;
-	
-					//Build the activation message
-					$activation_message = lang("ACTIVATION_MESSAGE",array($websiteUrl,$activation_token));
-					//Define more if you want to build larger structures
-					$hooks = array(
-						"searchStrs" => array("#ACTIVATION-MESSAGE","#ACTIVATION-KEY","#USERNAME#"),
-						"subjectStrs" => array($activation_message,$activation_token,$unclean_username)
-					);
-					
-					$message = "
-					Hello #USERNAME#
-	
-					Thank you for joining our website #WEBSITENAME#
-					
-					#ACTIVATION-MESSAGE
-					
-					#INC-FOOTER#
-					";
-					
-					/* Build the template - Optional, you can just use the sendMail function 
-					Instead to pass a message. */
-					if(!AuthController::newTemplateMsg($message,$hooks))
-					{
-						$errors["mail_failure"] = true;
+			//Get token param
+			if(isset($request->GET["token"])) {
+				$token = $request->GET["token"];
+				
+				if(!isset($token)) {
+					$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
+				} else if(!$dao->validateActivationToken($token)){
+					 //Check for a valid token. Must exist and active must be = 0 {
+					$errors[] = "Token does not exist / Account is already activated";
+				} else {
+					//Activate the users account
+					if(!setUserActive($token)) {
+						$errors[] = lang("SQL_ERROR");
 					}
-					else
+				}
+			} else {
+				$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
+			}
+			
+			$smarty->assign("errors", errorBlock($errors));
+			$smarty->assign("ACCOUNT_NOW_ACTIVE", lang("ACCOUNT_NOW_ACTIVE"));
+			$smarty->assign("ACCOUNT_NOW_ACTIVE", lang("ACCOUNT_NOW_ACTIVE"));
+			$smarty->assign("request", $request);
+			
+			$smarty->display('auth/activate-account.tpl');
+		}
+		
+		public function change_password($args){
+			$request = $args["request"];
+			if(!$request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/login/");
+				die(); 
+			}
+			global $smarty;
+			
+			if($request->method == "POST"){
+				$dao = new AuthDao();
+				$errors = array();
+				
+				$password = $request->POST["password"];
+				$password_new = $request->POST["passwordc"];
+				$password_confirm = $request->POST["passwordcheck"];
+			
+				//Perform some validation
+				//Feel free to edit / change as required
+				if(trim($password) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_PASSWORD");
+				} else if(trim($password_new) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_NEW_PASSWORD");
+				} else if(minMaxRange(8,50,$password_new)) {
+					$errors[] = lang("ACCOUNT_NEW_PASSWORD_LENGTH",array(8,50));
+				} else if($password_new != $password_confirm) {
+					$errors[] = lang("ACCOUNT_PASS_MISMATCH");
+				}
+				
+				//End data validation
+				if(empty($errors)) {
+					//Confirm the hash's match before updating a users password
+					$entered_pass = generateHash($password,$request->user->password);
+					//Also prevent updating if someone attempts to update with the same password
+					$entered_pass_new = generateHash($password_new,$request->user->password);
+				
+					if($entered_pass != $request->user->password)
 					{
-						//Send the mail. Specify users email here and subject. 
-						//SendMail can have a third parementer for message if you do not wish to build a template.
-						
-						if(!AuthController::sendMail($clean_email,"New User"))
-						{
-							$errors["mail_failure"] = true;
+						//No match
+						$errors[] = lang("ACCOUNT_PASSWORD_INVALID");
+					} else if($entered_pass_new == $request->user->password) {
+						//Don't update, this fool is trying to update with the same password ¬¬
+						$errors[] = lang("NOTHING_TO_UPDATE");
+					} else {
+						//This function will create the new hash and update the Password property.
+						$dao->updatePassword($request->user, $password_new);
+						$smarty->assign("success_message", lang("ACCOUNT_DETAILS_UPDATED"));
+					}
+				}
+				$smarty->assign("errors", errorBlock($errors));
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->display('auth/change-password.tpl');
+		}
+		
+		public function account($args){
+			$request = $args["request"];
+			if(!$request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/login/"); 
+				die(); 
+			}
+			
+			global $smarty;
+			$dao = new AuthDao();
+			
+			$smarty->assign("request", $request);
+			$smarty->assign("signup_date", date("l \\t\h\e jS Y", $request->user->signupTimeStamp()));
+			$smarty->assign("group", $dao->group($request->user));
+			$smarty->display('auth/account.tpl');
+		}
+		
+		public function register($args){
+			$request = $args["request"];
+			if($request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/account/"); 
+				die(); 
+			}
+			
+			global $smarty, $emailActivation, $websiteUrl;
+			$dao = new AuthDao();
+			
+			if($request->method == "POST") {
+				$email = trim($request->POST["email"]);
+				$username = trim($request->POST["username"]);
+				$password = trim($request->POST["password"]);
+				$confirm_pass = trim($request->POST["passwordc"]);
+				$errors = array();
+				
+				//Perform some validation
+				//Feel free to edit / change as required
+				if(minMaxRange(4,25,$username)) {
+					$errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(4,25));
+				}
+				if(minMaxRange(2,50,$password) && minMaxRange(2,50,$confirm_pass)) {
+					$errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
+				} else if($password != $confirm_pass) {
+					$errors[] = lang("ACCOUNT_PASS_MISMATCH");
+				}
+				
+				if(!isValidEmail($email)) {
+					$errors[] = lang("ACCOUNT_INVALID_EMAIL");
+				}
+				//End data validation
+				if(empty($errors)) {
+					//Used for display only
+					$unclean_username = $user;
+					$status = false;
+					
+					//Sanitize
+					$clean_email = AuthController::sanitize($email);
+					$clean_password = trim($pass);
+					$clean_username = AuthController::sanitize($user);
+					
+					if($dao->usernameExists($clean_username)) {
+						$errors["username_taken"] = true;
+					} else if($dao->emailExists($clean_email)) {
+						$errors["email_taken"] = true;
+					} else {
+						$status = true;
+					}
+			
+					if($status) {
+						$secure_pass = generateHash($clean_password);
+						$activation_token = $dao->generateActivationToken();
+						if($emailActivation) {
+							$user_active = 0;
+							$activation_message = lang("ACTIVATION_MESSAGE",array($websiteUrl,$activation_token));
+							$hooks = array(
+								"searchStrs" => array("#ACTIVATION-MESSAGE","#ACTIVATION-KEY","#USERNAME#"),
+								"subjectStrs" => array($activation_message,$activation_token,$unclean_username)
+							);
+							
+							$message = "
+							Hello #USERNAME#
+			
+							Thank you for joining our website #WEBSITENAME#
+							
+							#ACTIVATION-MESSAGE
+							
+							#INC-FOOTER#
+							";
+							
+							/* Build the template - Optional, you can just use the sendMail function 
+							Instead to pass a message. */
+							if(!newTemplateMsg($message,$hooks)) {
+								$errors["mail_failure"] = true;
+							} else {
+								if(!sendMail($clean_email,"New User")) {
+									$errors["mail_failure"] = true;
+								}
+							}
+						} else {
+							$user_active = 1;
+						}	
+			
+						if(!isset($errors["mail_failure"])) {
+							$dao->createUser(
+								$unclean_username, 
+								$clean_username, 
+								$secure_pass, 
+								$clean_email, 
+								$activation_token, 
+								time(), 
+								'0', 
+								$user_active,
+								1
+							);
+							$smarty->assign("message", 
+								lang(
+									$emailActivation?
+										"ACCOUNT_REGISTRATION_COMPLETE_TYPE1" 
+									:
+										"ACCOUNT_REGISTRATION_COMPLETE_TYPE2"
+								)
+							);
+						}
+					}
+
+					if ($errors){
+						if(isset($errors["username_taken"])) $errors[] = lang("ACCOUNT_USERNAME_IN_USE",array($username));
+						if(isset($errors["email_taken"])) 	 $errors[] = lang("ACCOUNT_EMAIL_IN_USE",array($email));		
+						if(isset($errors["mail_failure"])) 	 $errors[] = lang("MAIL_ERROR");
+					}
+				}
+				$smarty->assign("errors", errorBlock($errors));
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->display('auth/register.tpl');
+		}
+		
+		public function resend_activation($args){
+			$request = $args["request"];
+			if($request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/account/"); 
+				die(); 
+			}
+			global $smarty;
+			$smarty->display('auth/resend-activation.tpl');
+		}
+		
+		public function update_email_address($args){
+			$request = $args["request"];
+			if(!$request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/login/"); 
+				die(); 
+			}
+			global $smarty;
+			$dao = new AuthDao();
+			
+			//Forms posted
+			if($request->POST){
+				$errors = array();
+				$email = $request->POST["email"];
+		
+				//Perform some validation
+				//Feel free to edit / change as required
+				if(trim($email) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
+				} else if(!isValidEmail($email)) {
+					$errors[] = lang("ACCOUNT_INVALID_EMAIL");
+				} else if($email == $request->user->email) {
+					$errors[] = lang("NOTHING_TO_UPDATE");
+				} else if($dao->emailExists($email)) {
+					$errors[] = lang("ACCOUNT_EMAIL_TAKEN");	
+				}
+				
+				//End data validation
+				if(count($errors) == 0) {
+					$dao->updateEmail($request->user, $email);
+					$smarty->assign("success_message", lang("ACCOUNT_DETAILS_UPDATED"));
+				}
+				$smarty->assign("errors", errorBlock($errors));
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->display('auth/update-email-address.tpl');
+		}
+		
+		public function forgot_password($args){
+			global $smarty, $websiteUrl;
+			
+			$request = $args["request"];
+			$dao = new AuthDao();
+			$errors = array();
+			
+			if($request->method == "POST") {
+				$email = $_POST["email"];
+				$username = $_POST["username"];
+				
+				//Perform some validation
+				//Feel free to edit / change as required
+				
+				if(trim($email) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
+				} else if(!isValidEmail($email) || !$dao->emailExists($email)) {
+					$errors[] = lang("ACCOUNT_INVALID_EMAIL");
+				}
+				
+				if(trim($username) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_USERNAME");
+				} else if(!$dao->usernameExists($username)) {
+					$errors[] = lang("ACCOUNT_INVALID_USERNAME");
+				}
+				
+				if(empty($errors)) {
+					//Check that the username / email are associated to the same account
+					if(!$dao->emailUsernameLinked($email,$username)) {
+						$errors[] =  lang("ACCOUNT_USER_OR_EMAIL_INVALID");
+					} else {
+						//Check if the user has any outstanding lost password requests
+						$user = $dao->fetchUserDetails($username);
+						if($user->lost_password_request) {
+							$errors[] = lang("FORGOTPASS_REQUEST_EXISTS");
+						} else {
+							//We use the activation token again for the url key it gets regenerated everytime it's used.
+							$confirm_url = lang("CONFIRM")."\n".$websiteUrl."/KRA/auth/forgot-password/?confirm=".$user->activation_token;
+							$deny_url = ("DENY")."\n".$websiteUrl."/KRA/auth/forgot-password/?deny=".$user->activation_token;
+							
+							//Setup our custom hooks
+							$hooks = array(
+								"searchStrs" => array("#CONFIRM-URL#","#DENY-URL#","#USERNAME#"),
+								"subjectStrs" => array($confirm_url,$deny_url,$user->username)
+							);
+							
+							if(!newTemplateMsg("lost-password-request.txt",$hooks)) {
+								$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
+							} else {
+								if(!sendMail($user->email,"Lost password request")) {
+									$errors[] = lang("MAIL_ERROR");
+								} else {
+									//Update the DB to show this account has an outstanding request
+									$dao->flagLostPasswordRequest($username,1);
+									$success_message = lang("FORGOTPASS_REQUEST_SUCCESS");
+								}
+							}
 						}
 					}
 				}
-				else
-				{
-					//Instant account activation
-					$user_active = 1;
-				}	
-	
-				if(!isset($errors["mail_failure"]))
-				{
-					//Insert the user into the database providing no errors have been found.
-					$dao->createUser(
-						$unclean_username, 
-						$clean_username, 
-						$secure_pass, 
-						$clean_email, 
-						$activation_token, 
-						time(), 
-						'0', 
-						$user_active,
-						1
-					);
+			}else if ($request->method == "GET"){
+				if(!empty($_GET["deny"])) {
+						$token = trim($_GET["deny"]);
+						
+						if($token == "" || !validateActivationToken($token,TRUE)) {
+							$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
+						} else {
+							$user = fetchUserDetails(NULL,$token);
+							flagLostPasswordRequest($user->username_clean,0);
+							$success_message = lang("FORGOTPASS_REQUEST_CANNED");
+						}
+				}
+				if(!empty($request->GET["confirm"])) {
+					$token = trim($request->GET["confirm"]);
+					if($token == "" || !validateActivationToken($token,TRUE)) {
+						$errors[] = lang("FORGOTPASS_INVALID_TOKEN");
+					} else {
+						$rand_pass = getUniqueCode(15);
+						$secure_pass = generateHash($rand_pass);
+						$user = fetchUserDetails(NULL,$token);
+										
+						$hooks = array(
+								"searchStrs" => array("#GENERATED-PASS#","#USERNAME#"),
+								"subjectStrs" => array($rand_pass,$user->username)
+						);
+									
+						if(!newTemplateMsg("your-lost-password.txt",$hooks)) {
+							$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
+						} else {
+							if(!sendMail($user->email,"Your new password")) {
+									$errors[] = lang("MAIL_ERROR");
+							} else {
+								if(!updatePasswordFromToken($secure_pass,$token)) {
+									$errors[] = lang("SQL_ERROR");
+								} else {
+									//Might be wise if this had a time delay to prevent a flood of requests.
+									flagLostPasswordRequest($user->username_clean,0);
+									$success_message  = lang("FORGOTPASS_NEW_PASS_EMAIL");
+								}
+							}
+						}
+					}
 				}
 			}
-			return $errors;
+			if (isset($success_message)){
+				$smarty->assign("success_message", $success_message);
+			}
+			$smarty->assign("errors", errorBlock($errors));
+			$smarty->assign("request", $request);
+			
+			$smarty->display('auth/forgot-password.tpl');
 		}
 		
-		//Logout
-		public static function logout($request){
+		public function login($args){
+			global $smarty;
+			$request = $args["request"];
+			
+			if($request->user->isUserLoggedIn()) {
+				header("Location: /KRA/auth/account/"); 
+				die(); 
+			}
+			if($request->method == "POST"){
+				$errors = array();
+				$dao = new AuthDao();
+				$username = trim($request->POST["username"]);
+				$password = trim($request->POST["password"]);
+			
+				//Perform some validation
+				//Feel free to edit / change as required
+				if($username == ""){ $errors[] = lang("ACCOUNT_SPECIFY_USERNAME"); }
+				if($password == ""){ $errors[] = lang("ACCOUNT_SPECIFY_PASSWORD"); }
+				
+				//End data validation
+				if(count($errors) == 0)
+				{
+					//A security note here, never tell the user which credential was incorrect
+					if(!$dao->usernameExists($username)){
+						$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
+					} else {
+						$user = $dao->fetchUserDetails($username);
+					
+						//See if the user's account is activation
+						if($user->is_active==0){
+							$errors[] = lang("ACCOUNT_INACTIVE");
+						} else {
+							//Hash the password and use the salt from the database to compare the password.
+							$entered_pass = generateHash($password,$user->password);
+							if($entered_pass != $user->password) {
+								//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
+								$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
+							} else {
+								//Passwords match! we're good to go'
+								//Construct a new logged in user object
+								//Transfer some db data to the session object
+								$dao->loginUser($user);
+								//Redirect to user account page
+								header("Location: /KRA/auth/account/");
+								die();
+							}
+						}
+					}
+				}
+				$smarty->assign("errors", errorBlock($errors));
+			}
+			$smarty->assign("request", $request);
+			$smarty->display('auth/login.tpl');
+		}
+			
+		public function logout($args){
+			$request = $args["request"];
 			if ($request->method == "GET"){
 				$dao = new AuthDAO();
 				//Log the user out
@@ -121,7 +472,7 @@
 				}
 				else
 				{
-					header("Location: index.php");
+					header("Location: /KRA/auth/login/");
 					die();
 				}
 			}
