@@ -245,7 +245,81 @@
 				header("Location: /KRA/auth/account/"); 
 				die(); 
 			}
-			global $smarty;
+			
+			global $smarty, $emailActivation;
+			$dao = new AuthDao();
+			
+			if (!$emailActivation){
+				$smarty->assign("feature_disabled", lang("FEATURE_DISABLED"));
+			}
+
+			if($request->method == "POST" && $emailActivation) {
+				$email 		= $request->POST["email"];
+				$username 	= $request->POST["username"];
+				
+				$errors = array();
+
+				if(trim($email) == "") {
+					$errors[] = lang("ACCOUNT_SPECIFY_EMAIL");
+				} else if(!isValidEmail($email) || !$dao->emailExists($email)) {
+					$errors[] = lang("ACCOUNT_INVALID_EMAIL");
+				}
+				
+				if(trim($username) == "") {
+					$errors[] =  lang("ACCOUNT_SPECIFY_USERNAME");
+				} else if(!$dao->usernameExists($username)) {
+					$errors[] = lang("ACCOUNT_INVALID_USERNAME");
+				}
+			
+				if(count($errors) == 0) {
+					if(!$dao->emailUsernameLinked($email,$username)) {
+						$errors[] = lang("ACCOUNT_USER_OR_EMAIL_INVALID");
+					} else {
+						$userdetails = $dao->fetchUserDetails($username);
+					
+						if($userdetails->is_active) {
+							$errors[] = lang("ACCOUNT_ALREADY_ACTIVE");
+						} else {
+							$hours_diff = round((time()-$userdetails->last_activation_request) / (3600*$resend_activation_threshold),0);
+			
+							if($resend_activation_threshold!=0 && $hours_diff <= $resend_activation_threshold) {
+								$errors[] = lang("ACCOUNT_LINK_ALREADY_SENT",array($resend_activation_threshold));
+							} else {
+								$new_activation_token = generateActivationToken();
+								
+								if(!updateLastActivationRequest($new_activation_token,$username,$email)) {
+									$errors[] = lang("SQL_ERROR");
+								} else {
+									$mail = new userCakeMail();
+									
+									$activation_url = $websiteUrl."activate-account.php?token=".$new_activation_token;
+								
+									$hooks = array(
+										"searchStrs" => array("#ACTIVATION-URL","#USERNAME#"),
+										"subjectStrs" => array($activation_url,$userdetails->username)
+									);
+									
+									if(!$mail->newTemplateMsg("resend-activation.txt",$hooks)) {
+										$errors[] = lang("MAIL_TEMPLATE_BUILD_ERROR");
+									} else {
+										if(!$mail->sendMail($userdetails->email,"Activate your UserCake Account")) {
+											$errors[] = lang("MAIL_ERROR");
+										} else {
+											$success_message = lang("ACCOUNT_NEW_ACTIVATION_SENT");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if (isset($success_message)){
+				$smarty->assign("success_message", $success_message);
+			}
+			
+			$smarty->assign("request", $request);
 			$smarty->display('auth/resend-activation.tpl');
 		}
 		
