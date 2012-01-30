@@ -1,5 +1,5 @@
 <?php
-	class ProductController{
+	class DoctorController{
 		public function index($args){
 			
 		}

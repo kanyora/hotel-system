@@ -6,7 +6,7 @@
 		public function add($args){
 			
 		}
-		public function dalete($args){
+		public function delete($args){
 			
 		}
 		public function edit($args){
