@@ -1,5 +1,5 @@
 <?php
-	class ProductController{
+	class OutpatientController{
 		public function index($args){
 			
 		}
@@ -19,4 +19,5 @@
 			
 		}
 	}
+	
 ?>
