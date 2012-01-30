@@ -14,13 +14,13 @@
 	$db_host = "localhost";
 	$db_user = "root";
 	$db_pass = "";
-	$db_name = "kra";
+	$db_name = "pharmacy";
 	$db_port = "";
 	
 	$langauge = "en";
 	
 	//Generic website variables
-	$websiteName = "KRA";
+	$websiteName = "Pharmacy";
 	$websiteUrl = ""; //including trailing slash
 
 	//Do you wish UserCake to send out emails for confirmation of registration?

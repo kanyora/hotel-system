@@ -11,7 +11,7 @@
     {/if}
 
 	<div id="regbox">
-        <form name="changePass" action="/KRA/auth/change-password/" method="post">
+        <form name="changePass" action="/Pharmacy/auth/change-password/" method="post">
             <p>
                 <label>Password:</label>
                 <input type="password" name="password" />

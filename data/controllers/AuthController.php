@@ -3,7 +3,7 @@
 		public function index($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/account/"); 
+				header("Location: /Pharmacy/auth/account/"); 
 				die(); 
 			}
 			global $smarty;
@@ -15,7 +15,7 @@
 		public function activate_account($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/account/"); 
+				header("Location: /Pharmacy/auth/account/"); 
 				die(); 
 			}
 			global $smarty;
@@ -51,7 +51,7 @@
 		public function change_password($args){
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/login/");
+				header("Location: /Pharmacy/auth/login/");
 				die(); 
 			}
 			global $smarty;
@@ -106,7 +106,7 @@
 		public function account($args){
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/login/"); 
+				header("Location: /Pharmacy/auth/login/"); 
 				die(); 
 			}
 			
@@ -122,7 +122,7 @@
 		public function register($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/account/"); 
+				header("Location: /Pharmacy/auth/account/"); 
 				die(); 
 			}
 			
@@ -242,7 +242,7 @@
 		public function resend_activation($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/account/"); 
+				header("Location: /Pharmacy/auth/account/"); 
 				die(); 
 			}
 			
@@ -326,7 +326,7 @@
 		public function update_email_address($args){
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/login/"); 
+				header("Location: /Pharmacy/auth/login/"); 
 				die(); 
 			}
 			global $smarty;
@@ -398,8 +398,8 @@
 							$errors[] = lang("FORGOTPASS_REQUEST_EXISTS");
 						} else {
 							//We use the activation token again for the url key it gets regenerated everytime it's used.
-							$confirm_url = lang("CONFIRM")."\n".$websiteUrl."/KRA/auth/forgot-password/?confirm=".$user->activation_token;
-							$deny_url = ("DENY")."\n".$websiteUrl."/KRA/auth/forgot-password/?deny=".$user->activation_token;
+							$confirm_url = lang("CONFIRM")."\n".$websiteUrl."/Pharmacy/auth/forgot-password/?confirm=".$user->activation_token;
+							$deny_url = ("DENY")."\n".$websiteUrl."/Pharmacy/auth/forgot-password/?deny=".$user->activation_token;
 							
 							//Setup our custom hooks
 							$hooks = array(
@@ -479,7 +479,7 @@
 			$request = $args["request"];
 			
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /KRA/auth/account/"); 
+				header("Location: /Pharmacy/auth/account/"); 
 				die(); 
 			}
 			if($request->method == "POST"){
@@ -517,7 +517,7 @@
 								//Transfer some db data to the session object
 								$dao->loginUser($user);
 								//Redirect to user account page
-								header("Location: /KRA/auth/account/");
+								header("Location: /Pharmacy/auth/account/");
 								die();
 							}
 						}
@@ -546,7 +546,7 @@
 				}
 				else
 				{
-					header("Location: /KRA/auth/login/");
+					header("Location: /Pharmacy/auth/login/");
 					die();
 				}
 			}

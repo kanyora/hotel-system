@@ -9,7 +9,7 @@
     {/if}
     
     <div id="regbox">
-        <form name="newUser" action="/KRA/auth/login/" method="post">
+        <form name="newUser" action="/Pharmacy/auth/login/" method="post">
             <p>
                 <label>Username:</label>
                 <input type="text" name="username" />

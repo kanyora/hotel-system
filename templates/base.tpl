@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>{block "title"}{/block}</title>
 		
-		<link href="/KRA/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
+		<link href="/Pharmacy/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
 		
 		{block "extracss"}{/block}
 		{block "extrajs"}{/block}
