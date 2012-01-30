@@ -1,7 +1,5 @@
 <?php
 class AuthDAO{
-	public $contents = NULL;
-	
 	public function createUser($unclean_username, $clean_username, $secure_pass, $clean_email,
 		$activation_token, $lastActivationRequest, $lostPasswordRequest,$user_active, $group_id){
 		

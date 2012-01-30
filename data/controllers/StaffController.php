@@ -1,22 +1,12 @@
 <?php
 	class StaffController{
-		public function index($args){
+		public function dashboard($args){
+			$request = $args["request"];
+			global $router, $smarty;
+			checkLoggedIn($request->user);
 			
-		}
-		public function add($args){
-			
-		}
-		public function delete($args){
-			
-		}
-		public function edit($args){
-			
-		}
-		public function view($args){
-			
-		}
-		public function view_list($args){
-			
+			$smarty->assign("request", $request);
+			$smarty->display('staff/stock_personel/dashboard.tpl');
 		}
 	}
 ?>

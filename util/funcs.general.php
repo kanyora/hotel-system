@@ -1,4 +1,16 @@
 <?php
+	function redirectToPage($url_name='default', $args){
+		global $router;
+		header("Location: ".$router->getUrl($url_name, $args));
+		die();	
+	}
+	
+	function checkLoggedIn($user){
+		if(!$user->isUserLoggedIn()) {
+			redirectToPage();
+		}
+	}
+	
 	//Function used for replacing hooks in our templates
 	function newTemplateMsg($contents,$additionalHooks)
 	{

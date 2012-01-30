@@ -1,5 +1,5 @@
 <?php
-	class Model_Pharmacist extends Staff{
+	class Model_Pharmacist extends Model_Staff{
 		
 	}
 ?>

@@ -153,13 +153,13 @@
 				//End data validation
 				if(empty($errors)) {
 					//Used for display only
-					$unclean_username = $user;
+					$unclean_username = $username;
 					$status = false;
 					
 					//Sanitize
-					$clean_email = AuthController::sanitize($email);
-					$clean_password = trim($pass);
-					$clean_username = AuthController::sanitize($user);
+					$clean_email = sanitize($email);
+					$clean_password = trim($password);
+					$clean_username = sanitize($username);
 					
 					if($dao->usernameExists($clean_username)) {
 						$errors["username_taken"] = true;
@@ -501,13 +501,14 @@
 						$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
 					} else {
 						$user = $dao->fetchUserDetails($username);
-					
+						
 						//See if the user's account is activation
-						if($user->is_active==0){
+						if(!$user->is_active){
 							$errors[] = lang("ACCOUNT_INACTIVE");
 						} else {
 							//Hash the password and use the salt from the database to compare the password.
 							$entered_pass = generateHash($password,$user->password);
+							print $entered_pass."<br/>".$user->password;
 							if($entered_pass != $user->password) {
 								//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
 								$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");
@@ -528,7 +529,7 @@
 			$smarty->assign("request", $request);
 			$smarty->display('auth/login.tpl');
 		}
-			
+		
 		public function logout($args){
 			$request = $args["request"];
 			if ($request->method == "GET"){

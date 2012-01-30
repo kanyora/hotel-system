@@ -9,6 +9,7 @@
 	require_once("settings.php");
 	require_once("/../http/class.request.php");
 	require_once("/../util/funcs.general.php");
+	require_once("/../util/PageError.php");
 	require_once("/../lang/en.php");
 	
 	//Call all the libraries required
@@ -17,12 +18,11 @@
 	require_once('/../lib/smarty_templates/Smarty.class.php');
 	
 	//Setup all the Daos
-	require_once("/../data/daos/AuthDao.php");
+	require_once("/../data/daos/daos.php");
 	
 	//Setup all the Models
-	require_once("/../data/models/auth/User.php");
-	require_once("/../data/models/auth/Group.php");
-	
+	require_once("/../data/models/models.php");
+
 	//Start Getting smarty up!!!
 	$smarty = new Smarty;
 			

@@ -2470,6 +2470,7 @@ class RedBean_Cooker {
 	}
 	public function graph( $array, $filterEmpty = false ) {
 		$beans = array();
+		
 		if (is_array($array) && isset($array['type'])) {
 			$type = $array['type'];
 			unset($array['type']);

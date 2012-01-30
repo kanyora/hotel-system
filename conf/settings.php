@@ -19,6 +19,8 @@
 	
 	$langauge = "en";
 	
+	$debug = false;
+	
 	//Generic website variables
 	$websiteName = "Pharmacy";
 	$websiteUrl = ""; //including trailing slash
@@ -27,7 +29,7 @@
 	//We recommend this be set to true to prevent spam bots.
 	//False = instant activation
 	//If this variable is falses the resend-activation file not work.
-	$emailActivation = true;
+	$emailActivation = false;
 
 	//In hours, how long before UserCake will allow a user to request another account activation email
 	//Set to 0 to remove threshold

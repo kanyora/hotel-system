@@ -1,4 +1,7 @@
 {extends 'base.tpl'}
+{block "extracss"}
+	<link href="/Pharmacy/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
+{/block}
 
 {block "body"}
 	<div id="wrapper">
