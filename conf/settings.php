@@ -1,54 +1,48 @@
 <?php
-	/*
-		UserCake Version: 1.4
-		http://usercake.com
-		
-		Developed by: Adam Davis
-	*/
-
 	//General Settings
 	//--------------------------------------------------------------------------
 	
-	//Database Information
-	$dbtype = "mysql";
-	$db_host = "localhost";
-	$db_user = "root";
-	$db_pass = "";
-	$db_name = "pharmacy";
-	$db_port = "";
+	$DATABASES = array(
+	    'default' => array(
+	    	'ENGINE' => 'mysql',
+	        'NAME' => 'pharmacy',
+	        'USER' => 'root',
+	        'PASSWORD' => '',
+	        'HOST' => 'localhost',
+	        'PORT' => ''
+	    )
+	);
 	
-	$langauge = "en";
+	$LANGUAGE = "en";
 	
-	$debug = false;
+	$DEBUG = false;
 	
 	//Generic website variables
-	$websiteName = "Pharmacy";
-	$websiteUrl = ""; //including trailing slash
+	$WEBSITE_NAME = "Pharmacy";
+	$WEBSITE_URL = ""; //including trailing slash
 
 	//Do you wish UserCake to send out emails for confirmation of registration?
 	//We recommend this be set to true to prevent spam bots.
 	//False = instant activation
 	//If this variable is falses the resend-activation file not work.
-	$emailActivation = false;
+	$EMAIL_ACTIVATION = false;
 
 	//In hours, how long before UserCake will allow a user to request another account activation email
 	//Set to 0 to remove threshold
-	$resend_activation_threshold = 1;
+	$RESEND_ACTIVATION_THRESHOLD = 1;
 	
 	//Tagged onto our outgoing emails
-	$emailAddress = "noreply@kra.org";
+	$EMAIL_ADDRESS = "noreply@kra.org";
 	
 	//Date format used on email's
-	$emailDate = date("l \\t\h\e jS");
+	$EMAIL_DATE = date("l \\t\h\e jS");
 
 	//Directory where txt files are stored for the email templates.
-	$mail_templates_dir = "/../templates/mail/";
+	$MAIL_TEMPLATES_DIR = "/../templates/mail/";
 	
-	$default_hooks = array("#WEBSITENAME#","#WEBSITEURL#","#DATE#");
-	$default_replace = array($websiteName,$websiteUrl,$emailDate);
+	$DEFAULT_HOOKS = array("#WEBSITENAME#","#WEBSITEURL#","#DATE#");
+	$DEFAULT_REPLACE = array($WEBSITE_NAME,$WEBSITE_URL,$EMAIL_DATE);
 	
-	//Display explicit error messages?
-	$debug_mode = false;
-	
-	//---------------------------------------------------------------------------
+	$BASE_URL = '/Pharmacy';
+	$MEDIA_URL = '/static/';
 ?>

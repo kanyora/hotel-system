@@ -23,28 +23,36 @@
 	//Setup all the Models
 	require_once("/../data/models/models.php");
 
-	//Start Getting smarty up!!!
-	$smarty = new Smarty;
-			
-	//$smarty->force_compile = true;
-	$smarty->debugging = true;
-	$smarty->caching = false;
-	$smarty->cache_lifetime = 120;
-	
 	//Setup the Router[ish] instances
 	$router = new Router;
 	//Get an instance of Dispatcher
 	$dispatcher = new Dispatcher;
 	$dispatcher->setSuffix('Controller');
 	$dispatcher->setClassPath('data/controllers/');
-
+	
 	//Set up The Root URLS file
 	require_once("/../urls/routers/urls.php");
+	
+	//Start Getting smarty up!!!
+	$smarty = new Smarty;
+			
+	$smarty->configLoad('conf/smarty.conf');
+	$smarty->debugging = $DEBUG;
+	$smarty->force_compile = !$DEBUG;
+	$smarty->caching = !$DEBUG;
+	$smarty->cache_lifetime = 120;
+	
 	
 	//start session
 	session_start();
 	
 	//Set up Redbean Properly
 	//using settings from settings.php
-	R::setup("mysql:host=".$db_host.";dbname=".$db_name, $db_user, $db_pass);
+	R::setup(
+		$DATABASES["default"]["ENGINE"].
+		":host=".$DATABASES["default"]["HOST"].
+		";dbname=".$DATABASES["default"]["NAME"], 
+		$DATABASES["default"]["USER"], 
+		$DATABASES["default"]["PASSWORD"]
+	);
 ?>

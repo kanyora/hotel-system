@@ -11,7 +11,7 @@
 	{/if}
 	
 	<div id="regbox">
-	    <form name="changePass" action="/Pharmacy/auth/update-email-address/" method="post">
+	    <form name="changePass" action="." method="post">
 	    <p>
 	        <label>Email:</label>
 	        <input type="text" name="email" value="{$request->user->email}" />

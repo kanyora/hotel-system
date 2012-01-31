@@ -1,24 +1,26 @@
 <?php
 	class AuthController{
 		public function index($args){
+			global $smarty, $BASE_URL;
+			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/account/"); 
+				header("Location: $BASE_URL/auth/account/"); 
 				die(); 
 			}
-			global $smarty;
 			
 			$smarty->assign("request", $request);
 			$smarty->display('auth/index.tpl');
 		}
 		
 		public function activate_account($args){
+			global $smarty, $BASE_URL;
+			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/account/"); 
+				header("Location: $BASE_URL/auth/account/"); 
 				die(); 
 			}
-			global $smarty;
 			$errors = array();
 			
 			//Get token param
@@ -49,12 +51,13 @@
 		}
 		
 		public function change_password($args){
+			global $smarty, $BASE_URL;
+			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/login/");
+				header("Location: $BASE_URL/auth/login/");
 				die(); 
 			}
-			global $smarty;
 			
 			if($request->method == "POST"){
 				$dao = new AuthDao();
@@ -104,13 +107,14 @@
 		}
 		
 		public function account($args){
+			global $smarty, $BASE_URL;
+			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/login/"); 
+				header("Location: $BASE_URL/auth/login/"); 
 				die(); 
 			}
 			
-			global $smarty;
 			$dao = new AuthDao();
 			
 			$smarty->assign("request", $request);
@@ -122,11 +126,11 @@
 		public function register($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/account/"); 
+				header("Location: $BASE_URL/auth/account/"); 
 				die(); 
 			}
 			
-			global $smarty, $emailActivation, $websiteUrl;
+			global $smarty, $EMAIL_ACTIVATION, $WEBSITE_URL, $BASE_URL;
 			$dao = new AuthDao();
 			
 			if($request->method == "POST") {
@@ -172,9 +176,9 @@
 					if($status) {
 						$secure_pass = generateHash($clean_password);
 						$activation_token = $dao->generateActivationToken();
-						if($emailActivation) {
+						if($EMAIL_ACTIVATION) {
 							$user_active = 0;
-							$activation_message = lang("ACTIVATION_MESSAGE",array($websiteUrl,$activation_token));
+							$activation_message = lang("ACTIVATION_MESSAGE",array($WEBSITE_URL,$activation_token));
 							$hooks = array(
 								"searchStrs" => array("#ACTIVATION-MESSAGE","#ACTIVATION-KEY","#USERNAME#"),
 								"subjectStrs" => array($activation_message,$activation_token,$unclean_username)
@@ -217,7 +221,7 @@
 							);
 							$smarty->assign("message", 
 								lang(
-									$emailActivation?
+									$EMAIL_ACTIVATION?
 										"ACCOUNT_REGISTRATION_COMPLETE_TYPE1" 
 									:
 										"ACCOUNT_REGISTRATION_COMPLETE_TYPE2"
@@ -240,20 +244,21 @@
 		}
 		
 		public function resend_activation($args){
+			global $smarty, $EMAIL_ACTIVATION, $BASE_URL;
+			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/account/"); 
+				header("Location: $BASE_URL/auth/account/"); 
 				die(); 
 			}
 			
-			global $smarty, $emailActivation;
 			$dao = new AuthDao();
 			
-			if (!$emailActivation){
+			if (!$EMAIL_ACTIVATION){
 				$smarty->assign("feature_disabled", lang("FEATURE_DISABLED"));
 			}
 
-			if($request->method == "POST" && $emailActivation) {
+			if($request->method == "POST" && $EMAIL_ACTIVATION) {
 				$email 		= $request->POST["email"];
 				$username 	= $request->POST["username"];
 				
@@ -292,7 +297,7 @@
 								} else {
 									$mail = new userCakeMail();
 									
-									$activation_url = $websiteUrl."activate-account.php?token=".$new_activation_token;
+									$activation_url = $WEBSITE_URL."activate-account.php?token=".$new_activation_token;
 								
 									$hooks = array(
 										"searchStrs" => array("#ACTIVATION-URL","#USERNAME#"),
@@ -324,12 +329,13 @@
 		}
 		
 		public function update_email_address($args){
+			global $smarty, $BASE_URL;
+			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/login/"); 
+				header("Location: $BASE_URL/auth/login/"); 
 				die(); 
 			}
-			global $smarty;
 			$dao = new AuthDao();
 			
 			//Forms posted
@@ -362,7 +368,7 @@
 		}
 		
 		public function forgot_password($args){
-			global $smarty, $websiteUrl;
+			global $smarty, $WEBSITE_URL;
 			
 			$request = $args["request"];
 			$dao = new AuthDao();
@@ -398,8 +404,8 @@
 							$errors[] = lang("FORGOTPASS_REQUEST_EXISTS");
 						} else {
 							//We use the activation token again for the url key it gets regenerated everytime it's used.
-							$confirm_url = lang("CONFIRM")."\n".$websiteUrl."/Pharmacy/auth/forgot-password/?confirm=".$user->activation_token;
-							$deny_url = ("DENY")."\n".$websiteUrl."/Pharmacy/auth/forgot-password/?deny=".$user->activation_token;
+							$confirm_url = lang("CONFIRM")."\n".$WEBSITE_URL.$BASE_URL."/auth/forgot-password/?confirm=".$user->activation_token;
+							$deny_url = ("DENY")."\n".$WEBSITE_URL.$BASE_URL."/auth/forgot-password/?deny=".$user->activation_token;
 							
 							//Setup our custom hooks
 							$hooks = array(
@@ -475,11 +481,11 @@
 		}
 		
 		public function login($args){
-			global $smarty;
+			global $smarty, $BASE_URL;
 			$request = $args["request"];
 			
 			if($request->user->isUserLoggedIn()) {
-				header("Location: /Pharmacy/auth/account/"); 
+				header("Location: $BASE_URL/auth/account/"); 
 				die(); 
 			}
 			if($request->method == "POST"){
@@ -518,7 +524,7 @@
 								//Transfer some db data to the session object
 								$dao->loginUser($user);
 								//Redirect to user account page
-								header("Location: /Pharmacy/auth/account/");
+								header("Location: $BASE_URL/auth/account/");
 								die();
 							}
 						}
@@ -536,18 +542,18 @@
 				$dao = new AuthDAO();
 				//Log the user out
 				$request->user->userLogOut();
-				if(!empty($websiteUrl)) 
+				if(!empty($WEBSITE_URL)) 
 				{
 					$add_http = "";
-					if(strpos($websiteUrl,"http://") === false){
+					if(strpos($WEBSITE_URL,"http://") === false){
 						$add_http = "http://";
 					}
-					header("Location: ".$add_http.$websiteUrl);
+					header("Location: ".$add_http.$WEBSITE_URL);
 					die();
 				}
 				else
 				{
-					header("Location: /Pharmacy/auth/login/");
+					header("Location: $BASE_URL/auth/login/");
 					die();
 				}
 			}

@@ -1,6 +1,6 @@
 {extends 'base.tpl'}
 {block "extracss"}
-	<link href="/Pharmacy/static/css/cakestyle.css" rel="stylesheet" type="text/css" />
+	<link href="{#BASE_URL#}{#STATIC_URL#}css/cakestyle.css" rel="stylesheet" type="text/css" />
 {/block}
 
 {block "body"}
