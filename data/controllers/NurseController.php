@@ -6,7 +6,7 @@
 			$nurse = $request->user->nurse;
 			
 			if($nurse){
-				$args[":nurse_id"] = $nurse;
+				$args[":nurse_id"] = $nurse->id;
 				$this->nurse_orders($args);
 			}else{
 				PageError::show('404',NULL,'Nurse not found!', "Nurse with Id: $id not found!");
@@ -32,9 +32,8 @@
 		
 		public function orders_new($args){
 			$request = $args["request"];
-			userBelongsToGroups($request->user, array('nurses', 'admin'));
+			userBelongsToGroups($request->user, array('nurses'));
 			
-			global $router, $smarty;
 			if($request->method=="POST"){
 				$new_order = R::graph($request->POST['order']);
 				$_id = R::store($new_order);

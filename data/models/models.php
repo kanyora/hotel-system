@@ -12,6 +12,7 @@
 	require_once("prescription/PrescriptionItem.php");
 	
 	require_once("products/Product.php");
+	require_once("products/Category.php");
 	
 	require_once("staff/Staff.php");
 	require_once("staff/Doctor.php");

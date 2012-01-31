@@ -1,10 +1,7 @@
 <?php
-	class Model_Product extends RedBean_SimpleModel{
+	class Model_Category extends RedBean_SimpleModel{
 		public $name;
-		public $description;
-		public $name;
-		public $price;
-		public $date_created;
+		public $ownProduct;
 		
 		public function open() {}
 	    public function dispense(){}
