@@ -17,6 +17,19 @@
 			<input id="id_is_active" type="checkbox" name="user[is_active]" value="{$user->is_active}"/>
 		</p>
 		<p>
+			<label for="id_groups">Groups:</label>
+			<select multiple name="groups[]" size="{$groups|@count}">
+				{foreach $groups as $group}
+					<option value="{$group->id}"
+						{if isset($related_groups[$group->id])}
+							selected="selected"
+						{/if}
+					>{$group->name}</option>
+				{/foreach}
+			</select>
+			
+		</p>
+		<p>
 			<input type="submit" value="Edit">
 		</p>
 	</form>

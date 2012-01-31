@@ -57,12 +57,14 @@
 			}else if ($request->method == "GET"){
 				if ($user->id){
 					$smarty->assign("user", $user);
+					$smarty->assign("related_groups", R::related($user, 'group'));
 				}else{
 					PageError::show('404',NULL,'User not found!', "User with Id: $id not found!");
 				}
 			}
 			
 			$smarty->assign("request", $request);
+			$smarty->assign("groups", R::find('group'));
 			$smarty->display('auth/users/edit.tpl');
 		}
 		

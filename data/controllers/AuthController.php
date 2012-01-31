@@ -514,6 +514,7 @@
 						} else {
 							//Hash the password and use the salt from the database to compare the password.
 							$entered_pass = generateHash($password,$user->password);
+							
 							if($entered_pass != $user->password) {
 								//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
 								$errors[] = lang("ACCOUNT_USER_OR_PASS_INVALID");

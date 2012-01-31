@@ -4,8 +4,7 @@ class AuthDAO{
 		$activation_token, $lastActivationRequest, $lostPasswordRequest,$user_active, $group_id){
 		
 		$user = R::dispense("user");
-		$user->username = $unclean_username;
-		$user->username_clean = $clean_username;
+		$user->username = $clean_username;
 		$user->password = $secure_pass; 
 		$user->email = $clean_email;
 		$user->activationToken = $activation_token;
@@ -82,7 +81,7 @@ class AuthDAO{
 	
 	function usernameExists($username)
 	{
-		$user = R::findOne("user", "username_clean = ?", array($username));
+		$user = R::findOne("user", "username = ?", array($username));
 		return $user;
 	}
 	
@@ -130,7 +129,7 @@ class AuthDAO{
 	{
 		if($username!=NULL) 
 		{
-			$user = R::findOne("user", "username_clean = ?", array($username));  
+			$user = R::findOne("user", "username = ?", array($username));  
 		} else {
 			$user = R::findOne("user", "activation_token = ?", array($token));
 		}
@@ -140,7 +139,7 @@ class AuthDAO{
 	
 	function flagLostPasswordRequest($username,$value)
 	{
-		$user = R::findOne("user", "username_clean = ?", array($username));
+		$user = R::findOne("user", "username = ?", array($username));
 		$user->LostPasswordRequest = $value;
 		
 		return R::store($user);
@@ -159,7 +158,7 @@ class AuthDAO{
 	
 	function emailUsernameLinked($email,$username)
 	{
-		return R::findOne("user", "username_clean = ? AND email = ?", array($username, $email));
+		return R::findOne("user", "username = ? AND email = ?", array($username, $email));
 	}
 	
 	public function loginUser($user){
@@ -181,7 +180,7 @@ class AuthDAO{
 	
 	function updateLastActivationRequest($new_activation_token,$username,$email)
 	{
-		$user = R::findOne("user", "username_clean = ? AND email = ?", array($username, $email));
+		$user = R::findOne("user", "username = ? AND email = ?", array($username, $email));
 		$user->ActivationToken = $new_activation_token;
 		$user->LastActivationRequest = time();
 		

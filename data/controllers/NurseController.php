@@ -2,7 +2,7 @@
 	class NurseController{
 		public function my_orders($args){
 			$request = $args["request"];
-			userBelongsToGroups($request->user, "'nurses'");
+			userBelongsToGroups($request->user, array('nurses'));
 			$nurse = $request->user->nurse;
 			
 			if($nurse){
@@ -15,7 +15,7 @@
 		
 		public function nurse_orders($args){
 			$request = $args["request"];
-			userBelongsToGroups($request->user, "'nurses'");
+			userBelongsToGroups($request->user, array('nurses'));
 			
 			global $smarty;
 			
@@ -32,10 +32,10 @@
 		
 		public function orders_new($args){
 			$request = $args["request"];
-			userBelongsToGroups($request->user, "'nurses', 'admin'");
+			userBelongsToGroups($request->user, array('nurses', 'admin'));
 			
 			global $router, $smarty;
-			if($request->method="POST"){
+			if($request->method=="POST"){
 				$new_order = R::graph($request->POST['order']);
 				$_id = R::store($new_order);
 				if($_id){
@@ -52,7 +52,7 @@
 		public function order_edit($args){
 			$request = $args["request"];
 			global $smarty;
-			userBelongsToGroups($request->user, "'nurses', 'admin'");
+			userBelongsToGroups($request->user, array('nurses', 'admin'));
 			
 			$id = $args[":id"];
 			$order = R::load("order", $id);

@@ -5,12 +5,22 @@
 		die();
 	}
 	
+	function belongsTo($user, $groupNames) {
+		$groups = R::find('group', 'name IN ('.R::genSlots($groupNames).')', $groupNames);
+		foreach($groups as $group){
+			if (R::areRelated($user, $group)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	function userBelongsToGroups($user, $groupName){
-		userPassesTest($user, $user->belongsTo($groupName));
+		userPassesTest($user, belongsTo($user, $groupName));
 	}
 	
 	function userIsAdmin($user){
-		userPassesTest($user, $user->belongsTo('admin'));
+		userPassesTest($user, belongsTo($user, array('admin')));
 	}
 	
 	function userPassesTest($user, $boolean_result){
