@@ -1,10 +1,11 @@
 {extends "base.tpl"}
 
 {block "body"}
-	<H2>Doctors:</H2>
+	<H2>Users:</H2>
+	<a href="{#BASE_URL#}admin/users/add/">Add User</a>
 	<ul>
-		{foreach $doctors as $doctor}
-		    <li>{$doctor->first_name} {$doctor->last_name}</li>
+		{foreach $users as $user}
+		    <li>{$user->username} - {$user->email}</li>
 		{/foreach}
 	</ul>
 {/block}

@@ -10,7 +10,7 @@
 		</p>
 		<p>
 			<label for="id_password">Password:</label>
-			<input id="id_password" type="text" name="user[password]" value="" />
+			<input id="id_password" type="password" name="user[password]" value="" />
 		</p>
 		<p>
 			<label for="id_email">Email:</label>
@@ -19,6 +19,15 @@
 		<p>
 			<label for="id_is_active">Is Active:</label>
 			<input id="id_is_active" type="checkbox" name="user[is_active]"/>
+		</p>
+		<p>
+			<label for="id_groups">Groups:</label>
+			<select multiple name="groups[]" size="{$groups|@count}">
+				{foreach $groups as $group}
+					<option value="{$group->id}">{$group->name}</option>
+				{/foreach}
+			</select>
+			
 		</p>
 		<p>
 			<input type="submit" value="Add">

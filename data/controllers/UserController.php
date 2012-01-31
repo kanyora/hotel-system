@@ -2,17 +2,39 @@
 	class UserController{
 		public function add($args){
 			$request = $args["request"];
-			
+
 			global $router, $smarty;
 			userIsAdmin($request->user);
 			
+			$dao = new AuthDAO();
+			
 			if ($request->method == "POST"){
 				$new_user = R::graph($request->POST['user']);
+				$new_user->password = generateHash(sanitize($new_user->password));
+				$new_user->is_active = ($new_user->is_active == "on");
+				
+				if($dao->usernameExists($new_user->username)) {
+					echo "username exists";exit;
+				} else if($dao->emailExists($new_user->email)) {
+					echo "email taken";exit;
+				}
+				
+				if(isset($request->POST["groups"])){
+					$group_ids = $request->POST["groups"];
+					foreach ($group_ids as $group_id){
+						$group = R::load('group', $group_id);
+						if($group->id){
+							R::associate($new_user, $group);
+						}
+					}
+				}
+				
 				$_id = R::store($new_user);
 				redirectToPage('user-list');
 			}
 			
 			$smarty->assign("request", $request);
+			$smarty->assign("groups", R::find('group'));
 			$smarty->display('auth/users/add.tpl');
 		}
 		
