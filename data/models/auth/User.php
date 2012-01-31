@@ -33,5 +33,14 @@ class Model_User extends RedBean_SimpleModel{
 			destorySession("authUser");
 		}
 	}
+	
+	public function belongsTo($groupName) {
+		$group = R::findOne('group', 'name = ?', array($groupName));
+		
+		if ($group){
+			return in_array($group, R::related($this, 'group'));
+		}
+		return false;
+	}
 }
 ?>

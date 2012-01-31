@@ -3,7 +3,7 @@
 		public function add($args){
 			$request = $args["request"];
 			global $router, $smarty;
-			checkLoggedIn($request->user);
+			checkIfAdmin($request->user);
 			
 			if ($request->method == "POST"){
 				$new_nurse = R::graph($request->POST['staff']);
@@ -34,7 +34,7 @@
 		public function edit($args){
 			$request = $args["request"];
 			global $smarty;
-			checkLoggedIn($request->user);
+			checkIfAdmin($request->user);
 			
 			$id = $args[":id"];
 			$nurse = R::load("nurse", $id);

@@ -5,6 +5,24 @@
 		die();	
 	}
 	
+	function checkIfAdmin($user){
+		checkLoggedIn($user);
+		userPassesTest($user, $user->belongsTo('admin'));
+	}
+	
+	function userPassesTest($user, $boolean_result){
+		if(!$boolean_result) {
+			$user->userLogOut();
+			redirectToPage('auth-login');
+		}
+	}
+	
+	function checkNotLoggedIn($user){
+		if(!$user->isUserLoggedIn()) {
+			redirectToPage('auth-login');
+		}
+	}
+	
 	function checkLoggedIn($user){
 		if(!$user->isUserLoggedIn()) {
 			redirectToPage();
