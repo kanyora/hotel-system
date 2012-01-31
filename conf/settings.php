@@ -45,4 +45,6 @@
 	
 	$BASE_URL = '/Pharmacy';
 	$MEDIA_URL = '/static/';
+	
+	$USER_REGISTRATION = false;
 ?>

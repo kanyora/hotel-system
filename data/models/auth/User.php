@@ -35,9 +35,8 @@ class Model_User extends RedBean_SimpleModel{
 	}
 	
 	public function belongsTo($groupName) {
-		$group = R::findOne('group', 'name = ?', array($groupName));
-		
-		if ($group){
+		$groups = R::find('group', 'name IN (?)', array($groupName));
+		if (!empty($groups)){
 			return in_array($group, R::related($this, 'group'));
 		}
 		return false;

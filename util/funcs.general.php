@@ -2,11 +2,14 @@
 	function redirectToPage($url_name='default', $args){
 		global $router;
 		header("Location: ".$router->getUrl($url_name, $args));
-		die();	
+		die();
 	}
 	
-	function checkIfAdmin($user){
-		checkLoggedIn($user);
+	function userBelongsToGroups($user, $groupName){
+		userPassesTest($user, $user->belongsTo($groupName));
+	}
+	
+	function userIsAdmin($user){
 		userPassesTest($user, $user->belongsTo('admin'));
 	}
 	

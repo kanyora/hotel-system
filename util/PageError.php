@@ -29,8 +29,8 @@
 					</body>
 				</html>
 			<?php
-			global $debug;
-			if ($debug){
+			global $DEBUG;
+			if (!$DEBUG){
 				die();
 			}
 		}
