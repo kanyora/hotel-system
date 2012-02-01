@@ -7,7 +7,7 @@ class AuthDAO{
 		$user->username = $clean_username;
 		$user->password = $secure_pass; 
 		$user->email = $clean_email;
-		$user->activationToken = $activation_token;
+		$user->activation_token = $activation_token;
 		$user->last_activation_request = $lastActivationRequest;
 		$user->lost_password_request = $lostPasswordRequest;
 		$user->is_active = $user_active;
