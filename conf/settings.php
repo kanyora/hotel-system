@@ -5,7 +5,7 @@
 	$DATABASES = array(
 	    'default' => array(
 	    	'ENGINE' => 'mysql',
-	        'NAME' => 'pharmacy',
+	        'NAME' => 'busfleet',
 	        'USER' => 'root',
 	        'PASSWORD' => '',
 	        'HOST' => 'localhost',
@@ -43,7 +43,7 @@
 	$DEFAULT_HOOKS = array("#WEBSITENAME#","#WEBSITEURL#","#DATE#");
 	$DEFAULT_REPLACE = array($WEBSITE_NAME,$WEBSITE_URL,$EMAIL_DATE);
 	
-	$BASE_URL = '/Pharmacy';
+	$BASE_URL = '/bus-fleet';
 	$MEDIA_URL = '/static/';
 	
 	$USER_REGISTRATION = false;

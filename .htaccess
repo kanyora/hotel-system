@@ -2,4 +2,4 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)  /Pharmacy/index.php [L]
+RewriteRule ^(.*)  /bus-fleet/index.php [L]
