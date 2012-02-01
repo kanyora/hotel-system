@@ -2,7 +2,6 @@
 	class Model_Product extends RedBean_SimpleModel{
 		public $name;
 		public $description;
-		public $name;
 		public $price;
 		public $date_created;
 		

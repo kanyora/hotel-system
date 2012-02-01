@@ -24,7 +24,11 @@
 			<label for="id_speciality">User:</label>
 			<select name="user">
 				<option value='null'>----</option>
-				{html_options options=$users selected=$doctor->ownUser[0]->id}
+				{foreach $users as $user}
+					<option value='{$user->id}' {if isset($parent_user)}{if $user->id eq $parent_user->id}selected="selected"{/if}{/if}>
+						{$user->username}
+					</option>
+				{/foreach}
 			</select>
 		</p>
 		<p>

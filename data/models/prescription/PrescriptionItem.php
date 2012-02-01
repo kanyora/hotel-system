@@ -1,5 +1,5 @@
 <?php
-	class Model_Prescription extends RedBean_SimpleModel{
+	class Model_PrescriptionItem extends RedBean_SimpleModel{
 		public $name;
 		public $ownPrescriptionItem;
 		

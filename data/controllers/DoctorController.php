@@ -1,9 +1,11 @@
 <?php
 	class DoctorController{
+		
+		/*-----------------------------ADMIN CRUD-------------------------*/
 		public function add($args){
 			$request = $args["request"];
 			global $router, $smarty;
-			checkLoggedIn($request->user);
+			userIsAdmin($request->user);
 			
 			if ($request->method == "POST"){
 				$new_doctor = R::graph($request->POST['staff']);
@@ -13,19 +15,15 @@
 					if(isset($request->POST['user'])){
 						$user = R::load("user", $request->POST['user']);
 						if ($user->id){
-							$new_doctor->ownUser[] = $user;
-							R::store($new_doctor);
+							$user->ownDoctor[] = $new_doctor;
+							R::store($user);
 						}
 					}
-					redirectToPage('doctor-view', array(':id'=>$_id));
+					redirectToPage('doctor-list');
 				}
 			}
 			
-			$user_ids = array();
-			foreach(R::find('user') as $user){
-				$user_ids[$user->id] = $user->username;
-			}
-			$smarty->assign("users", $user_ids);
+			$smarty->assign("users", R::find('user'));
 			
 			$smarty->assign("request", $request);
 			$smarty->display('staff/doctor/add.tpl');
@@ -34,7 +32,7 @@
 		public function edit($args){
 			$request = $args["request"];
 			global $smarty;
-			checkLoggedIn($request->user);
+			userIsAdmin($request->user);
 			
 			$id = $args[":id"];
 			$doctor = R::load("doctor", $id);
@@ -49,50 +47,26 @@
 						if(isset($request->POST['user'])){
 							$user = R::load("user", $request->POST['user']);
 							if ($user->id){
-								$edited_doctor->ownUser[] = $user;
-								R::store($edited_doctor);
+								$user->ownDoctor[] = $edited_doctor;
+								R::store($user);
 							}
 						}
-						redirectToPage('doctor-view', array(':id'=>$_id));
+						redirectToPage('doctor-list');
 					}
 				}
 			}else if ($request->method == "GET"){
 				if ($doctor->id){
 					$smarty->assign("doctor", $doctor);
 					$smarty->assign("users", R::find('user'));
+					$smarty->assign("parent_user", $doctor->user);
+					
 				}else{
 					PageError::show('404',NULL,'Doctor not found!', "Doctor with Id: $id not found!");
 				}
 			}
-			
-			$user_ids = array();
-			foreach(R::find('user') as $user){
-				$user_ids[$user->id] = $user->username;
-			}
-			$smarty->assign("users", $user_ids);
 			
 			$smarty->assign("request", $request);
 			$smarty->display('staff/doctor/edit.tpl');
-		}
-		
-		public function view($args){
-			$request = $args["request"];
-			checkLoggedIn($request->user);
-			global $smarty;
-			
-			if ($request->method == "GET"){
-				$id = $args[":id"];
-				$doctor = R::load("doctor", $id);
-				
-				if($doctor->id){ 
-					$smarty->assign("doctor", $doctor);
-				}else{
-					PageError::show('404',NULL,'Doctor not found!', "Doctor with Id: $id not found!");
-				}
-			}
-			
-			$smarty->assign("request", $request);
-			$smarty->display('staff/doctor/detailview.tpl');
 		}
 		
 		public function view_list($args){
