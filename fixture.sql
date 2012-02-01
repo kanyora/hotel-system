@@ -30,14 +30,14 @@ CREATE TABLE IF NOT EXISTS `group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `group`
 --
 
-INSERT INTO `group` (`id`, `name`) VALUES
-(1, 'admin'),
+INSERT INTO `group` (`name`) VALUES
+('admin');
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `group_user` (
   UNIQUE KEY `UQ_c4baf0665dbbcd06ff4b9ae5ae4dcd47b1e32cd3` (`group_id`,`user_id`),
   KEY `index_for_group_user_user_id` (`user_id`),
   KEY `index_for_group_user_group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `group_user`
@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `activationToken` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_activation_request` int(11) unsigned DEFAULT NULL,
   `lost_password_request` tinyint(3) unsigned DEFAULT NULL,
   `is_active` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sign_up_date` int(11) unsigned DEFAULT NULL,
   `last_sign_in` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `user`
