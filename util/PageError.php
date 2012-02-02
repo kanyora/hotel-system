@@ -30,7 +30,7 @@
 				</html>
 			<?php
 			global $DEBUG;
-			if (!$DEBUG){
+			if ($DEBUG){
 				die();
 			}
 		}

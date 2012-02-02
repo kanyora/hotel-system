@@ -55,7 +55,7 @@
 				$edited_vehicle = R::graph($request->POST['vehicle']);
 				$edited_vehicle->id = $id;
 				
-				$new_vehicle->date_purchased = date_create_from_format(
+				$edited_vehicle->date_purchased = date_create_from_format(
 					'd/m/Y', $new_vehicle->date_purchased
 				);
 				
