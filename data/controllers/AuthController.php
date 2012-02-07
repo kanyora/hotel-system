@@ -1,4 +1,4 @@
-<?php
+5<?php
 	class AuthController{
 		public function index($args){
 			global $smarty, $BASE_URL;

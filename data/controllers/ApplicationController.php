@@ -1,5 +1,5 @@
 <?php
-	class SupplierController{
+	class ApplicationController{
 		/*-----------------------------ADMIN CRUD-------------------------*/
 		public function add($args){
 			$request = $args["request"];

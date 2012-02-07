@@ -2,4 +2,4 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)  /bus-fleet/index.php [L]
+RewriteRule ^(.*)  /kra_app/index.php [L]

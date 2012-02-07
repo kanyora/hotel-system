@@ -5,7 +5,7 @@
 	$DATABASES = array(
 	    'default' => array(
 	    	'ENGINE' => 'mysql',
-	        'NAME' => 'busfleet',
+	        'NAME' => 'kra_app',
 	        'USER' => 'root',
 	        'PASSWORD' => '',
 	        'HOST' => 'localhost',
@@ -18,14 +18,14 @@
 	$DEBUG = false;
 	
 	//Generic website variables
-	$WEBSITE_NAME = "Pharmacy";
+	$WEBSITE_NAME = "KRA";
 	$WEBSITE_URL = ""; //including trailing slash
 
 	//Do you wish UserCake to send out emails for confirmation of registration?
 	//We recommend this be set to true to prevent spam bots.
 	//False = instant activation
 	//If this variable is falses the resend-activation file not work.
-	$EMAIL_ACTIVATION = false;
+	$EMAIL_ACTIVATION = true;
 
 	//In hours, how long before UserCake will allow a user to request another account activation email
 	//Set to 0 to remove threshold
@@ -43,8 +43,8 @@
 	$DEFAULT_HOOKS = array("#WEBSITENAME#","#WEBSITEURL#","#DATE#");
 	$DEFAULT_REPLACE = array($WEBSITE_NAME,$WEBSITE_URL,$EMAIL_DATE);
 	
-	$BASE_URL = '/bus-fleet';
+	$BASE_URL = '/kra_app';
 	$MEDIA_URL = '/static/';
 	
-	$USER_REGISTRATION = false;
+	$USER_REGISTRATION = true;
 ?>
