@@ -1,5 +1,13 @@
 5<?php
 	class AuthController{
+		public function client_actions($args) {
+			if(isset($args[":action"])){
+				if ($args[":action"] == "register"){
+					$this->register($args);
+				}
+			}
+		}
+		
 		public function index($args){
 			global $smarty, $BASE_URL;
 			
@@ -208,7 +216,7 @@
 						}	
 			
 						if(!isset($errors["mail_failure"])) {
-							$dao->createUser(
+							$user = $dao->createUser(
 								$unclean_username, 
 								$clean_username, 
 								$secure_pass, 
@@ -227,6 +235,7 @@
 										"ACCOUNT_REGISTRATION_COMPLETE_TYPE2"
 								)
 							);
+							redirectToPage('auth-login');
 						}
 					}
 

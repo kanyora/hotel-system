@@ -20,7 +20,7 @@ class AuthDAO{
 			R::store($group);
 		}
 		
-		R::store($user);
+		return R::store($user);
 	}
 	
 	//Simple function to update the last sign in of a user

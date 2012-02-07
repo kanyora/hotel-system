@@ -2,6 +2,7 @@
 	require_once("auth/urls.php");
 	require_once("vehicles/urls.php");
 	require_once("applications/urls.php");
+	require_once("clients/urls.php");
 	
 	//setup the default url
 	$default_route = new Route("$BASE_URL/");
