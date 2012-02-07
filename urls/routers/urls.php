@@ -3,6 +3,7 @@
 	require_once("vehicles/urls.php");
 	require_once("suppliers/urls.php");
 	require_once("services/urls.php");
+	require_once("notifications/urls.php");
 	require_once("service_parts/urls.php");
 	require_once("service_requests/urls.php");
 	

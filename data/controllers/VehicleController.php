@@ -8,16 +8,11 @@
 			
 			if ($request->method == "POST"){
 				$new_vehicle = R::graph($request->POST['vehicle']);
-				$new_vehicle->date_purchased = date_create_from_format(
-					'd/m/Y', $new_vehicle->date_purchased
-				);
-				
 				$_id = R::store($new_vehicle);
 				if ($_id){
 					redirectToPage('vehicle-list');
 				}
 			}
-			
 			$smarty->assign("request", $request);
 			$smarty->display('vehicle/add.tpl');
 		}
@@ -54,10 +49,6 @@
 			if ($request->method == "POST"){
 				$edited_vehicle = R::graph($request->POST['vehicle']);
 				$edited_vehicle->id = $id;
-				
-				$edited_vehicle->date_purchased = date_create_from_format(
-					'd/m/Y', $new_vehicle->date_purchased
-				);
 				
 				$_id = R::store($edited_vehicle);
 				if ($_id){
