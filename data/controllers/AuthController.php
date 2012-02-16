@@ -13,7 +13,7 @@
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -26,7 +26,7 @@
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			$errors = array();
@@ -63,7 +63,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/");
+				redirectToPage('auth-login');
 				die(); 
 			}
 			
@@ -119,7 +119,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/"); 
+				redirectToPage('auth-login'); 
 				die(); 
 			}
 			
@@ -134,7 +134,7 @@
 		public function register($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -257,7 +257,7 @@
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -342,7 +342,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/"); 
+				redirectToPage('auth-login');
 				die(); 
 			}
 			$dao = new AuthDao();
@@ -494,9 +494,10 @@
 			$request = $args["request"];
 			
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
-				die(); 
+				redirectToPage('user-dashboard'); 
+				die();
 			}
+			
 			if($request->method == "POST"){
 				$errors = array();
 				$dao = new AuthDao();
@@ -533,7 +534,7 @@
 								//Transfer some db data to the session object
 								$dao->loginUser($user);
 								//Redirect to user account page
-								header("Location: $BASE_URL/auth/account/");
+								redirectToPage('user-dashboard');
 								die();
 							}
 						}
@@ -564,7 +565,7 @@
 				}
 				else
 				{
-					header("Location: $BASE_URL/auth/login/");
+					redirectToPage('auth-login');
 					die();
 				}
 			}
