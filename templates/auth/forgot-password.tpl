@@ -1,19 +1,24 @@
-{*
-	Below is a very simple example of how to process a lost password request
-	We'll deal with a request in two stages, confirmation or deny then proccess
-	
-	This file handles 3 tasks.
-	
-	1. Construct new request.
-	2. Confirm request. - Generate new password, update the db then email the user
-	3. Deny request. - Close the request
-*}
-{extends 'auth/auth_layout.tpl'}
+{extends "auth/login.tpl"}
 
-{block "title"}Forgot Password{/block}
-{block "main"}
-    <h1>Forgot Password</h1>
+{block "navigation"}
+	<nav id="secondary">
+		<ul>
+			<li>
+				<a href="{#BASE_URL#}/auth/login/">Login</a>
+			</li>
+			<li>
+				<a href="{#BASE_URL#}/auth/register/">Register</a>
+			</li>
+			<li class="current">
+				<a href="{#BASE_URL#}/auth/forgot-password/">Forgot password</a>
+			</li>
+		</ul>
+	</nav>
+{/block}
 
+{block "content"}
+	<br/>
+	<br/>
     {if isset($errors)}
     	<div id="errors">
         	{$errors}
@@ -21,24 +26,27 @@
     {/if}
     {if isset($success_message)} 
         <div id="success">
-            <p>{$success_message}</p>
+            <section>{$success_message}</section>
         </div>
     {/if}
     
     <div id="regbox">
         <form name="newLostPass" action="." method="post">
-	        <p>
+	        <section>
 	            <label>Username:</label>
-	            <input type="text" name="username" />
-	        </p>
-	        <p>    
+	            <div>
+	            	<input type="text" name="username" />
+	            </div>
+	        </section>
+	        <section>    
 	            <label>Email:</label>
-	            <input type="text" name="email" />
-	        </p>
-	        <p>
-	            <label>&nbsp;</label>
-	            <input type="submit" value="Login" class="submit" />
-	        </p>
+	            <div>
+	            	<input type="text" name="email" />
+	            	<br/>
+	            	<br/>
+	            	<input type="submit" value="Resend" class="button primary">
+	            </div>
+	        </section>
         </form>
     </div>
 {/block}

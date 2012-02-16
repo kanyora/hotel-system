@@ -377,7 +377,7 @@
 		}
 		
 		public function forgot_password($args){
-			global $smarty, $WEBSITE_URL;
+			global $smarty, $WEBSITE_URL, $BASE_URL;
 			
 			$request = $args["request"];
 			$dao = new AuthDao();

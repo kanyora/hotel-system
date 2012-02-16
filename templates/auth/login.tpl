@@ -1,4 +1,4 @@
-{extends "common.tpl"}
+{extends "auth/base.tpl"}
 
 {block "container-attrs"}class="logincontainer" style="height: 681px; "{/block}
 
@@ -6,20 +6,16 @@
 	<nav id="secondary">
 		<ul>
 			<li class="current">
-				<a href="#">Login</a>
+				<a href="{#BASE_URL#}/auth/login/">Login</a>
 			</li>
 			<li>
-				<a href="#">Sign up</a>
+				<a href="{#BASE_URL#}/auth/register/">Register</a>
 			</li>
 			<li>
-				<a href="#">Forgot password</a>
+				<a href="{#BASE_URL#}/auth/forgot-password/">Forgot password</a>
 			</li>
 		</ul>
 	</nav>
-{/block}
-
-{block "header"}
-	<h1 id="logo">Admin Control Panel</h1>
 {/block}
 
 {block "content"}
@@ -41,7 +37,7 @@
 					<br>
 					<br>
 					<input type="submit" value="Login" class="button primary">
-					<a href="." class="button">Cancel</a>
+					<a href="." class="button danger">Cancel</a>
 				 </div>
             </section>
         </form>

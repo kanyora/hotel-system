@@ -46,5 +46,5 @@
 	$BASE_URL = '/bus-fleet';
 	$MEDIA_URL = '/static/';
 	
-	$USER_REGISTRATION = false;
+	$USER_REGISTRATION = true;
 ?>
