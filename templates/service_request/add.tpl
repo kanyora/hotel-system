@@ -3,7 +3,7 @@
 {block "content"}	
 	<h2>Add Service Request:</h2>
 	<form method="POST" action=".">
-		<input type="hidden" name="service_request[type]" value="serviceRequest" />
+		<input type="hidden" name="service_request[type]" value="servicerequest" />
 		<section>
 			<label for="id_part_name">Initial date:</label>
 			<div>

@@ -1,4 +1,4 @@
-{extends "common.tpl"}
+{extends "vehicle/base_vehicle.tpl"}
 
 {block "content"}
 	{if isset($edit_success)}

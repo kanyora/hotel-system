@@ -24,20 +24,19 @@
 								<nav id="primary">
 									{block "primary-navigation"}
 										<ul>
-											<li> <a href="/ita/"> <span class="icon dashboard"></span> Dashboard </a> </li>
-											<li class="current"> <a href="/ita/static/Admin Control Panel2.htm"> <span class="icon pencil"></span> Forms </a> </li>
-											<li> <a href="/ita/tables"> <span class="icon tables"></span> DataTables </a> </li>
-											<li> <a href="/ita/charts"> <span class="icon chart"></span> <span class="badge">4</span> Charts </a> </li>
-											<li> <a href="/ita/notifications"> <span class="icon modal"></span> Notifcations </a> </li>
-											<li> <a href="/ita/typography"> <span class="icon newspaper"></span> Typography </a> </li>
-											<li> <a href="/ita/buttons"> <span class="icon anchor"></span> Icons/buttons </a> </li>
+											<li> <a href="{#BASE_URL#}/dashboard/"> <span class="icon dashboard"></span> Dashboard </a> </li>
+											<li> <a href="{#BASE_URL#}/vehicles/"> <span class="icon"></span> Vehicles </a> </li>
+											<li> <a href="{#BASE_URL#}/services/"> <span class="icon"></span> Services </a> </li>
+											<li> <a href="{#BASE_URL#}/suppliers/"> <span class="icon"></span> Suppliers </a> </li>
+											<li> <a href="{#BASE_URL#}/notifications/"> <span class="icon"></span> <span class="badge">4</span>Notifications </a> </li>
+											<li class="current"> <a href="{#BASE_URL#}"> <span class="icon"></span> Forms </a> </li>
+											<li> <a href="{#BASE_URL#}/"> <span class="icon"></span> Icons/buttons </a> </li>
 										</ul>
 										<input type="text" id="search" placeholder="Realtime search..." autocomplete="off">
 									{/block}
 								</nav>
 								<nav id="secondary">
 									{block "secondary-navigation"}
-										
 									{/block}
 								</nav>
 							{/block}

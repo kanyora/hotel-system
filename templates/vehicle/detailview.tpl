@@ -1,12 +1,7 @@
-{extends "base.tpl"}
+{extends "common.tpl"}
 
-{block "body"}
-	{if isset($edit_success)}
-		{$edit_success}
-	{/if}
-	<p>
-		Id: {$vehicle->id}
-	</p>
+{block "content"}
+	<h2>Vehicle: {$vehicle->number_plate}</h2>
 	<p>
 		Number Plate: {$vehicle->number_plate}
 	</p>
@@ -19,4 +14,6 @@
 	<p>
 		Details: {$vehicle->details}
 	</p>
+	<a class="button primary" href="{#BASE_URL#}/vehicles/1/service-requests/">Current Service Requests</a>
+	<a class="button primary" href="{#BASE_URL#}/vehicles/1/service-requests/add/">New Service Requests</a>
 {/block}

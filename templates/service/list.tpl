@@ -1,4 +1,4 @@
-{extends "common.tpl"}
+{extends "service/base_service.tpl"}
 
 {block "content"}
 	<H2>Services:</H2>
@@ -32,7 +32,7 @@
 				{foreach $services as $service}
 					<tr class="{if $service@iteration is even by 1}even{else}odd{/if}">
 						<td>{$service->id}</td>
-						<td>{$service->service_type}</td>
+						<td><a href="{#BASE_URL#}/services/{$service->id}/">{$service->service_type}</a></td>
 						<td>
 							<span class="button-group">
 								<a href="{#BASE_URL#}/services/edit/{$service->id}/" class="button icon edit">Edit</a>

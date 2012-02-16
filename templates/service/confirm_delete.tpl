@@ -1,4 +1,4 @@
-{extends "common.tpl"}
+{extends "service/base_service.tpl"}
 
 {block "content"}
 	<form action="." method="POST">
