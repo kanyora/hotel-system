@@ -1,11 +1,19 @@
-<?php
+5<?php
 	class AuthController{
+		public function client_actions($args) {
+			if(isset($args[":action"])){
+				if ($args[":action"] == "register"){
+					$this->register($args);
+				}
+			}
+		}
+		
 		public function index($args){
 			global $smarty, $BASE_URL;
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -18,7 +26,7 @@
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			$errors = array();
@@ -55,7 +63,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/");
+				redirectToPage('auth-login');
 				die(); 
 			}
 			
@@ -111,7 +119,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/"); 
+				redirectToPage('auth-login'); 
 				die(); 
 			}
 			
@@ -126,7 +134,7 @@
 		public function register($args){
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -208,7 +216,7 @@
 						}	
 			
 						if(!isset($errors["mail_failure"])) {
-							$dao->createUser(
+							$user = $dao->createUser(
 								$unclean_username, 
 								$clean_username, 
 								$secure_pass, 
@@ -227,6 +235,7 @@
 										"ACCOUNT_REGISTRATION_COMPLETE_TYPE2"
 								)
 							);
+							redirectToPage('auth-login');
 						}
 					}
 
@@ -248,7 +257,7 @@
 			
 			$request = $args["request"];
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
+				redirectToPage('user-dashboard'); 
 				die(); 
 			}
 			
@@ -333,7 +342,7 @@
 			
 			$request = $args["request"];
 			if(!$request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/login/"); 
+				redirectToPage('auth-login');
 				die(); 
 			}
 			$dao = new AuthDao();
@@ -485,9 +494,10 @@
 			$request = $args["request"];
 			
 			if($request->user->isUserLoggedIn()) {
-				header("Location: $BASE_URL/auth/account/"); 
-				die(); 
+				redirectToPage('user-dashboard'); 
+				die();
 			}
+			
 			if($request->method == "POST"){
 				$errors = array();
 				$dao = new AuthDao();
@@ -524,7 +534,7 @@
 								//Transfer some db data to the session object
 								$dao->loginUser($user);
 								//Redirect to user account page
-								header("Location: $BASE_URL/auth/account/");
+								redirectToPage('user-dashboard');
 								die();
 							}
 						}
@@ -555,7 +565,7 @@
 				}
 				else
 				{
-					header("Location: $BASE_URL/auth/login/");
+					redirectToPage('auth-login');
 					die();
 				}
 			}

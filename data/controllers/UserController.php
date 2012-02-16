@@ -14,9 +14,7 @@
 				$new_user->is_active = ($new_user->is_active == "on");
 				
 				if($dao->usernameExists($new_user->username)) {
-					echo "username exists";exit;
 				} else if($dao->emailExists($new_user->email)) {
-					echo "email taken";exit;
 				}
 				
 				if(isset($request->POST["groups"])){

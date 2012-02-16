@@ -1,32 +1,27 @@
 <?php
-	function redirectToPage($url_name='default', $args){
+	function redirectToPage($url_name='default', $args=array()){
 		global $router;
 		header("Location: ".$router->getUrl($url_name, $args));
 		die();
 	}
 	
-	function belongsTo($user, $groupNames) {
-		$groups = R::find('group', 'name IN ('.R::genSlots($groupNames).')', $groupNames);
-		foreach($groups as $group){
-			if (R::areRelated($user, $group)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	function userBelongsToGroups($user, $groupName){
-		userPassesTest($user, belongsTo($user, $groupName));
+		userPassesTest($user, $user->belongsToGroups($groupName));
 	}
 	
 	function userIsAdmin($user){
-		userPassesTest($user, belongsTo($user, array('admin')));
+		userPassesTest($user, $user->belongsToGroups(array('admin')));
 	}
 	
-	function userPassesTest($user, $boolean_result){
+	function userPassesTest($user, $boolean_result, $login=false){
 		if(!$boolean_result) {
-			$user->userLogOut();
-			redirectToPage('auth-login');
+			if ($login) {
+				$user->userLogOut();
+				redirectToPage('auth-login');
+			}else{
+				PageError::show('300', '', 'Access Denied', 'Access Denied while trying to access the page.');
+				die();
+			}
 		}
 	}
 	
@@ -38,7 +33,7 @@
 	
 	function checkLoggedIn($user){
 		if(!$user->isUserLoggedIn()) {
-			redirectToPage();
+			redirectToPage('auth-login');
 		}
 	}
 	

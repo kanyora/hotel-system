@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "common.tpl"}
 
-{block "body"}
+{block "content"}
 	<H2>Suppliers:</H2>
 	<table>
 		<tr>

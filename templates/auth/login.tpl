@@ -1,27 +1,49 @@
-{extends 'auth/auth_layout.tpl'}
-{block 'title'}Authentication{/block}
+{extends "common.tpl"}
 
-{block "main"}
-    <h1>Login</h1>
-    
-    {if isset($errors)}
-        <div id="errors">{$errors}</div>
-    {/if}
+{block "container-attrs"}class="logincontainer" style="height: 681px; "{/block}
+
+{block "navigation"}
+	<nav id="secondary">
+		<ul>
+			<li class="current">
+				<a href="#">Login</a>
+			</li>
+			<li>
+				<a href="#">Sign up</a>
+			</li>
+			<li>
+				<a href="#">Forgot password</a>
+			</li>
+		</ul>
+	</nav>
+{/block}
+
+{block "header"}
+	<h1 id="logo">Admin Control Panel</h1>
+{/block}
+
+{block "content"}
+    <br>
+	<br>
     
     <div id="regbox">
         <form name="newUser" action="." method="post">
-            <p>
+			<section>
                 <label>Username:</label>
-                <input type="text" name="username" />
-            </p>
-            <p>
+                <div>
+                	<input type="text" name="username" placeholder="Username" class="required" />
+                </div>
+            </section>
+            <section>
                  <label>Password:</label>
-                 <input type="password" name="password" />
-            </p>
-            <p>
-                <label>&nbsp;</label>
-                <input type="submit" value="Login" class="submit" />
-            </p>
+                 <div>
+					<input type="password" name="password" id="password" placeholder="Password" class="required">
+					<br>
+					<br>
+					<input type="submit" value="Login" class="button primary">
+					<a href="." class="button">Cancel</a>
+				 </div>
+            </section>
         </form>
     </div>
 {/block}

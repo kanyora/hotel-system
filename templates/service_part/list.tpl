@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "common.tpl"}
 
-{block "body"}
+{block "content"}
 	<H2>Services Parts:</H2>
 	<table>
 		<tr>
@@ -8,6 +8,7 @@
 			<th>Name</th>
 			<th>Cost</th>
 			<th>Description</th>
+			<th>Actions</th>
 		</tr>
 		{foreach $service_parts as $service_part}
 			<tr>

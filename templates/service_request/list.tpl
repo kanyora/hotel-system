@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "common.tpl"}
 
-{block "body"}
+{block "content"}
 	<H2>Service Requests:</H2>
 	<table>
 		<tr>
@@ -10,6 +10,7 @@
 			<th>Due date</th>
 			<th>Service</th>
 			<th>Service part</th>
+			<th>Actions</th>
 		</tr>
 		{foreach $service_requests as $service_request}
 			<tr>
