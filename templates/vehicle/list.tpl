@@ -1,4 +1,4 @@
-{extends "vehicle/base_vehicle.tpl"}
+{extends "vehicle/base.tpl"}
 
 {block "content"}
 	<H2>Vehicles:</H2>

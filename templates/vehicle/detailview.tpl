@@ -1,4 +1,4 @@
-{extends "common.tpl"}
+{extends "vehicle/base.tpl"}
 
 {block "content"}
 	<h2>Vehicle: {$vehicle->number_plate}</h2>

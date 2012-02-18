@@ -21,15 +21,15 @@
 				<td>{$service_request->service->service_type}</td>
 				<td>{$service_request->servicepart->name}</td>
 				<td>
-					{if isset($vehicle)}
-						<a href="{#BASE_URL#}/vehicles/{$vehicle->id}/service-requests/{$service_request->id}/">R</a> |
-						<a href="{#BASE_URL#}/vehicles/{$vehicle->id}/service-requests/edit/{$service_request->id}/">U</a> |
-						<a href="{#BASE_URL#}/vehicles/{$vehicle->id}/service-requests/delete/{$service_request->id}/">D</a>
-					{else}
-						<a href="{#BASE_URL#}/service-requests/{$service_request->id}/">R</a> |
-						<a href="{#BASE_URL#}/service-requests/edit/{$service_request->id}/">U</a> |
-						<a href="{#BASE_URL#}service-requests/delete/{$service_request->id}/">D</a>
-					{/if}
+					<span class="button-group">
+						{if isset($vehicle)}
+							<a href="{#BASE_URL#}/vehicles/{$vehicle->id}/service-requests/edit/{$service_request->id}/" class="button icon edit">Edit</a>
+							<a href="{#BASE_URL#}/vehicles/{$vehicle->id}/service-requests/delete/{$service_request->id}/" class="button icon remove danger">Remove</a>
+						{else}
+							<a href="{#BASE_URL#}/service-requests/edit/{$service_request->id}/" class="button icon edit">Edit</a> |
+							<a href="{#BASE_URL#}service-requests/delete/{$service_request->id}/" class="button icon remove danger">Remove</a>
+						{/if}
+					</span>
 				</td>
 			</tr>
 		{/foreach}

@@ -1,4 +1,4 @@
-{extends "vehicle/base_vehicle.tpl"}
+{extends "service_part/base.tpl"}
 
 {block "content"}
 	<h2>Add Service Part:</h2>

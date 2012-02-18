@@ -1,4 +1,4 @@
-{extends "vehicle/base_vehicle.tpl"}
+{extends "service_part/base.tpl"}
 
 {block "content"}
 	<H2>Services Parts:</H2>
@@ -17,9 +17,10 @@
 				<td>{$service_part->cost}</td>
 				<td>{$service_part->description}</td>
 				<td>
-					<a href="{#BASE_URL#}/service-parts/{$service_part->id}/">R</a> |
-					<a href="{#BASE_URL#}/service-parts/edit/{$service_part->id}/">U</a> |
-					<a href="{#BASE_URL#}/service-parts/delete/{$service_part->id}/">D</a>
+					<span class="button-group">
+						<a href="{#BASE_URL#}/service-parts/edit/{$service_part->id}/" class="button icon edit">Edit</a>
+						<a href="{#BASE_URL#}/service-parts/delete/{$service_part->id}/" class="button icon remove danger">Remove</a>
+					</span>
 				</td>
 			</tr>
 		{/foreach}
