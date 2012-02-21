@@ -29,6 +29,7 @@ class Model_Licence extends RedBean_SimpleModel{
 	
 	public function paying_now_is_reasonable() {
 		$latest_payment = $this->latest_payment();
+		if (!$latest_payment){return true;}//No Entry Yet
 		if (time() > $latest_payment->expiry_date){//expired?
 			return  true;
 		}else{
@@ -37,6 +38,5 @@ class Model_Licence extends RedBean_SimpleModel{
 		}
 		return false;
 	}
-	
 }	
 ?>

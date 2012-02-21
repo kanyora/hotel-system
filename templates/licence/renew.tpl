@@ -11,6 +11,10 @@
 			<label>Licence Owner:</label> {$licence->applicant_name}
 		</p>
 		<p>
+			<label>M-Pesa Code:</label>
+			<input name="payment[mpesa_code]" class="text"/>
+		</p>
+		<p>
 			<label>Renewal Duration:</label>
 			<select name="payment[renewal_duration]">
 				<option value="0">Select:</option>

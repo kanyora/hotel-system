@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>{block "title"}{/block}</title>
-		
+				
 		{block "extracss"}{/block}
 		{block "extrajs"}{/block}
 	</head>

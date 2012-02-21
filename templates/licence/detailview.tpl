@@ -1,38 +1,42 @@
 {extends "base.tpl"}
 
 {block "body"}
+	{if $licence->latest_payment() && !$licence->latest_payment()->is_notified}
+		<div class="notice">
+			Your next renewal date is on {$licence->latest_payment()->expiry_date|date_format:'%d/%m/%Y at %I:%M %p'}   
+		</div>
+		<a href="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/notification/close/">close</a>
+	{/if}
+	{block "data-view"}
+	{/block}
 	<p>
-		Applicant Name {$licence->applicant_name}
-	</p>
-	<p>
-		Applicant Address {$licence->address}
-	</p>
-	<p>
-		Licence Number {$licence->licence_number}
-	</p>
-	<p>
-		Certificate of Competence Number {$licence->certificate_of_competence}
-	</p>
-	<p>
-		Driving Test Date {$licence->driving_test_date}
-	</p>
-	<p>
-		Driving Test Place {$licence->driving_test_place}
-	</p>
-	<p>
-		{if !$licence->status == 'approved'}
-			<form action="{#BASE_URL#}/licences/{$licence->id}/approve/" method="POST">
-				<input type="submit" value="Approve Licence"/>
-			</form>
-		{else if !$licence->status == 'rejected'}
-			<form action="{#BASE_URL#}/licences/{$licence->id}/approve/" method="POST">
-				<input type="submit" value="Approve Licence"/>
-			</form>
-		{else $licence->status == 'approved'}
-			{if $licence->paying_now_is_reasonable()}
-				<a href="{#BASE_URL#}/licences/{$licence->id}/renew/">Re-new Licence</a>
-				<a href="{#BASE_URL#}/licences/{$licence->id}/renew/">Re-new Licence</a>
-			{/if}
-		{/if}
+	{if !$licence->status}
+		<form action="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/approve/" method="POST">
+			<input type="submit" value="Approve Licence"/>
+		</form>
+		<form action="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/reject/" method="POST">
+			<input type="submit" value="Reject Licence"/>
+		</form>
+	{/if}
+	{if $licence->status == 'approved'}
+		<form action="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/issue/" method="POST">
+			<input type="submit" value="Issue Licence"/>
+		</form>
+	{/if}
+	{if $licence->status == 'issued'}
+		<form action="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/revoke/" method="POST">
+			<input type="submit" value="Revoke Licence"/>
+		</form>
+	{/if}
+	{if $licence->status == 'revoked'}
+		<form action="{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/issue/" method="POST">
+			<input type="submit" value="Re-Issue Licence"/>
+		</form>
+	{/if}
+	{if $licence->status == 'approved' && $licence->paying_now_is_reasonable()}
+		<button	onclick="window.location='{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/renew/'">
+			Re-new Licence
+		</button>
+	{/if}
 	</p>
 {/block}
