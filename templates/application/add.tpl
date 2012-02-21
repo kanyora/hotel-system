@@ -1,31 +1,41 @@
-{extends "base.tpl"}
-
-{block "body"}
+{extends "supplier/base_supplier.tpl"}
+	
+{block "content"}
 	<h2>Add Supplier:</h2>
 	<form method="POST" action=".">
 		<input type="hidden" name="supplier[type]" value="supplier" />
-		<p>
+		<section>
 			<label for="id_number_plate">Name:</label>
-			<input type="text" name="supplier[name]" value="" />
-		</p>
-		<p>
+			<div>
+				<input type="text" name="supplier[name]" value="" />
+			</div>
+		</section>
+		<section>
 			<label for="id_number_plate">Phone Number:</label>
-			<input type="text" name="supplier[phone_number]" value="" />
-		</p>
-		<p>
+			<div>
+				<input type="text" name="supplier[phone_number]" value="" />
+			</div>
+		</section>
+		<section>
 			<label for="id_date_purchased">Email:</label>
-			<input type="text" name="supplier[email]" value="" />
-		</p>
-		<p>
+			<div>
+				<input type="text" name="supplier[email]" value="" />
+			</div>
+		</section>
+		<section>
 			<label for="id_supplier_type">Address:</label>
-			<input type="text" name="supplier[address]" value="" />
-		</p>
-		<p>
+			<div>
+				<input type="text" name="supplier[address]" value="" />
+			</div>
+		</section>
+		<section>
 			<label for="id_details">Location:</label>
-			<textarea name="supplier[location]"></textarea>
-		</p>
-		<p>
-			<input type="submit" value="Add">
-		</p>
+			<div>
+				<textarea name="supplier[location]"></textarea>
+			</div>
+		</section>
+		<section>
+			<input type="submit" value="Add Supplier" class="submit button primary">
+		</section>
 	</form>
 {/block}

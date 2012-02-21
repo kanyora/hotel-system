@@ -28,6 +28,7 @@
 			
 			$smarty->assign("request", $request);
 			$smarty->display('admin_dashboard.tpl');
+			$smarty->display('admin_dashboard.tpl');
 		}
 	}
 ?>
