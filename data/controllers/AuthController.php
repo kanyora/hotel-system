@@ -1,4 +1,4 @@
-5<?php
+<?php
 	class AuthController{
 		public function client_actions($args) {
 			if(isset($args[":action"])){
