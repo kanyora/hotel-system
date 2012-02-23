@@ -86,14 +86,41 @@
 			checkLoggedIn($request->user);
 			global $smarty;
 			if ($request->method == 'GET'){
-				$users = R::find('user', 'username = ?', array($request->GET['q']));
-				if (!$users){
-					$users = R::find('user', 'email = ?', array($request->GET['q']));
+				$users = array();
+				if (isset($request->GET['q'])){
+					$users = R::find('user', 'username = ?', array($request->GET['q']));
+					if (!$users){
+						$users = R::find('user', 'email = ?', array($request->GET['q']));
+					}
 				}
 				$smarty->assign("users", $users);
 			}
 			$smarty->assign('request', $request);
 			$smarty->display('auth/users/list.tpl');
+		}
+		
+		public function delete($args){
+			$request = $args["request"];
+			userIsAdmin($request->user);
+			
+			global $smarty;
+			
+			if ($request->method == "POST"){
+				$id = $args[":id"];
+				$user = R::load("user", $id);
+				
+				if (!$user->id){
+					PageError::show('404',NULL,'User not found!', "User with Id: $id not found!");
+				}
+				
+				$user->is_active = false;
+				R::store($user);
+				redirectToPage('user-list');
+			}else if ($request->method == "GET"){
+				$smarty->assign("request", $request);
+				$smarty->assign("object_type", "user");
+				$smarty->display('confirm_delete.tpl');
+			}
 		}
 	}
 ?>

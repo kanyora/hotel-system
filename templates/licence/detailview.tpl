@@ -33,7 +33,7 @@
 			<input type="submit" value="Re-Issue Licence"/>
 		</form>
 	{/if}
-	{if $licence->status == 'approved' && $licence->paying_now_is_reasonable()}
+	{if ($licence->status == 'issued' || $licence->status == 'approved') & $licence->paying_now_is_reasonable()}
 		<button	onclick="window.location='{#BASE_URL#}/licences/{$type_slug}/{$licence->id}/renew/'">
 			Re-new Licence
 		</button>

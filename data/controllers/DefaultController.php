@@ -24,6 +24,8 @@
 		
 		public function admin_dashboard($args){
 			$request = $args["request"];
+			global $smarty;
+			
 			userIsAdmin($request->user);
 			
 			$smarty->assign("request", $request);

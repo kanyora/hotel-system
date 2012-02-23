@@ -1,9 +1,8 @@
 <?php
 	require_once("auth/urls.php");
-	require_once("vehicles/urls.php");
-	require_once("licences/urls.php");
+	require_once("dish/urls.php");
 	require_once("clients/urls.php");
-	require_once("payments/urls.php");
+	require_once("categories/urls.php");
 	require_once("search_urls.php");
 	
 	//setup the default url
@@ -15,7 +14,7 @@
 	$user_dashboard->setMapClass("Default")->setMapMethod("user_dashboard");
 	$router->addRoute( "user-dashboard", $user_dashboard );
 	
-	$admin_dashboard = new Route("$BASE_URL/dashboard/admin/");
+	$admin_dashboard = new Route("$BASE_URL/admin/");
 	$admin_dashboard->setMapClass("Default")->setMapMethod("admin_dashboard");
 	$router->addRoute( "admin-dashboard", $admin_dashboard );
 ?>

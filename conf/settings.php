@@ -5,7 +5,7 @@
 	$DATABASES = array(
 	    'default' => array(
 	    	'ENGINE' => 'mysql',
-	        'NAME' => 'kra_app',
+	        'NAME' => 'hotel',
 	        'USER' => 'root',
 	        'PASSWORD' => '',
 	        'HOST' => 'localhost',
@@ -43,7 +43,7 @@
 	$DEFAULT_HOOKS = array("#WEBSITENAME#","#WEBSITEURL#","#DATE#");
 	$DEFAULT_REPLACE = array($WEBSITE_NAME,$WEBSITE_URL,$EMAIL_DATE);
 	
-	$BASE_URL = '/kra_app';
+	$BASE_URL = '/hotel';
 	$MEDIA_URL = '/static/';
 	
 	$USER_REGISTRATION = true;
