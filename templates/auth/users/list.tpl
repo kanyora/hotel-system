@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "body"}
+{block "content"}
 	<H2>Users:</H2>
 	<a href="{#BASE_URL#}/admin/users/add/">Add User</a>
 	<ul>

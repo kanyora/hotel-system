@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "body"}
+{block "content"}
 	<h2>Edit User</h2>
 	<form method="POST" action=".">
 		<table>
