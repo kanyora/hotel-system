@@ -8,7 +8,7 @@
     <div id="login-container" style="">
 		<div id="login" class="i-box">
 			<div class="login-title">
-				<h1>KRA</h1>
+				<h1>M.O.R.S</h1>
 			</div>
 			<form name="login-form" id="login-form" method="POST" action="." novalidate="novalidate">
 				<fieldset>
