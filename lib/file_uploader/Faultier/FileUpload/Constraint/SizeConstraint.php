@@ -82,6 +82,7 @@
 					break;
 
 				case SizeConstraint::GREATER:
+					print "GREATER"; exit;
 					$holds = ($file->getSize() > $this->getSize());
 					break;
 					

@@ -302,17 +302,13 @@
 		 * Parses the files array.
 		 */
 		private function parseFilesArray() {
-			
 			foreach ($_FILES as $field => $uploadedFile) {
-			
 				// multi file upload
 				$this->isMultiFileUpload = is_array($uploadedFile['name']);
 				if ($this->isMultiFileUpload()) {
 					$this->parseFilesArrayMultiUpload($field, $uploadedFile);
 				}
-				
-				// no multi file upload
-				else {
+				else {// no multi file upload
 					$file = new File();
 					$file->setOriginalName($uploadedFile['name']);
 					$file->setTemporaryName($uploadedFile['tmp_name']);
@@ -329,7 +325,6 @@
 		 * Parses the files array in case of a multi file upload.
 		 */
 		private function parseFilesArrayMultiUpload($field, $uploadedFile) {
-
 			$numberOfFiles = count($uploadedFile['name']);
 			for ($i = 0; $i < $numberOfFiles; $i++) {
 			
@@ -377,6 +372,7 @@
 				try {
 					$this->setUploadDirectory($uploadDirectory);
 				} catch (\InvalidArgumentException $e) {
+					print_r($e);exit;
 				  	$this->setUploadDirectory($oldUploadDirectory);
 					$file->setUploaded(false);
 					$this->callErrorClosure(new UploadError(UploadError::ERR_FILESYSTEM, $e->getMessage(), $file));
@@ -427,6 +423,7 @@
 		public function save(\Closure $closure = null) {
 			$uploadDirectory = null;
 			$uploadSuccessful = true;
+			
 			$this->parseFilesArray();
 			
 			foreach ($this->getFiles() as $file) {
