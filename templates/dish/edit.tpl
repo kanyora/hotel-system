@@ -2,7 +2,7 @@
 
 {block "content"}
 	<h2>Add Dish:</h2>
-	<form method="POST" action="." class="i-validate" novalidate="novalidate">
+	<form method="POST" action="." class="i-validate" novalidate="novalidate" enctype="multipart/form-data">
 		<input type="hidden" name="dish[type]" value="dish" />
 		<fieldset>
 			<section>
@@ -33,15 +33,20 @@
 			</section>
 			<section>
 				<label for="id_price">Price:</label>
-				<input type="text" name="dish[price]" value="{$dish->price}" class="i-text"/>
+				<input alt="{$dish->name}-photo" type="text" name="dish[price]" value="{$dish->price}" class="i-text"/>
 			</section>
 			<section>
+				{if $dish->photo }
+					<div class="image">
+						<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" />
+					</div>
+				{/if}
 				<label for="id_price">Price:</label>
-				<input type="file" name="dish[photo]" value="{$dish->photo}" />
+				<input type="file" name="photo" />
 			</section>
 			<section>
 				<label for="id_price">Details:</label>
-				<textarea name="dish[details]" value="{$dish->details}" class="i-text"></textarea>
+				<textarea name="dish[details]" class="i-text">{$dish->details}</textarea>
 			</section>
 			<section>
 				<input type="submit" value="Add">

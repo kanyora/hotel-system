@@ -13,6 +13,7 @@
 	require_once("/../lang/en.php");
 	
 	//Call all the libraries required
+	require_once('/../lib/file_uploader/autoload.php');
 	require_once('/../lib/redbean_orm/rb.php');
 	require_once('/../lib/php_router/php-router.php');
 	require_once('/../lib/smarty_templates/Smarty.class.php');
@@ -41,8 +42,7 @@
 	$smarty->force_compile = !$DEBUG;
 	$smarty->caching = !$DEBUG;
 	$smarty->cache_lifetime = 120;
-	
-	
+	 
 	//start session
 	session_start();
 	
@@ -52,7 +52,17 @@
 		$DATABASES["default"]["ENGINE"].
 		":host=".$DATABASES["default"]["HOST"].
 		";dbname=".$DATABASES["default"]["NAME"], 
-		$DATABASES["default"]["USER"], 
+		$DATABASES["default"]["USER"],
 		$DATABASES["default"]["PASSWORD"]
 	);
+	
+	//---------------FILE UPLOADER---------------------//
+	use Faultier\FileUpload\FileUpload;
+	use Faultier\FileUpload\UploadError;
+
+	$fileUploader = new FileUpload($UPLOAD_DIRECTORY, array());
+
+	$fileUploader->error(function(UploadError $error) {
+  		echo $error->getMessage();die();
+	});
 ?>

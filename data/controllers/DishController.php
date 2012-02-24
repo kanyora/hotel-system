@@ -3,12 +3,29 @@
 		/*-----------------------------ADMIN CRUD-------------------------*/
 		public function add($args){
 			$request = $args["request"];
-			global $router, $smarty;
+			global $router, $smarty, $fileUploader;
 			userIsAdmin($request->user);
 			
 			if ($request->method == "POST"){
 				$new_dish = R::graph($request->POST['dish']);
 				$new_dish->date_added = time();
+				$new_dish->photo = $new_dish->name.'-'.date('d-m-Y').".jpg";
+				
+				if ($request->FILES){
+					$fileUploader->save(function($file) {
+						$file->setName("$new_dish->name-".date('d-m-Y'));
+						global $UPLOAD_DIRECTORY, $new_dish;
+						$file->setName($new_dish->photo);
+						$upload_dir = $UPLOAD_DIRECTORY."dishes/images/";
+						mkdir($upload_dir, null, true);
+						return $upload_dir;
+					});
+				}
+				
+				if($new_dish->category){
+					$category = R::load("category", $new_dish->category);
+					$new_dish->category = $category;
+				}
 				
 				$_id = R::store($new_dish);
 				if ($_id){
@@ -43,7 +60,7 @@
 		
 		public function edit($args){
 			$request = $args["request"];
-			global $smarty;
+			global $smarty, $fileUploader;
 			userIsAdmin($request->user);
 			
 			$id = $args[":id"];
@@ -53,10 +70,26 @@
 			}
 			
 			if ($request->method == "POST"){
+				global $edited_dish;
 				$edited_dish = R::graph($request->POST['dish']);
 				$edited_dish->id = $id;
+				$edited_dish->last_edit_time = time();
+				$edited_dish->photo = $edited_dish->name.'-'.date('d-m-Y').".jpg";
 				
-				$new_dish->date_added = time();
+				$fileUploader->save(function($file) {
+					global $UPLOAD_DIRECTORY, $edited_dish;
+					$file->setName($edited_dish->photo);
+					$upload_dir = $UPLOAD_DIRECTORY."dishes/images/";
+					if(!file_exists($upload_dir)){
+						mkdir($upload_dir, null, true);
+					}
+					return $upload_dir;
+				});
+				
+				if($edited_dish->category){
+					$category = R::load("category", $edited_dish->category);
+					$edited_dish->category = $category;
+				}
 				
 				$_id = R::store($edited_dish);
 				if ($_id){
@@ -66,6 +99,7 @@
 				$smarty->assign("dish", $dish);
 			}
 			
+			$smarty->assign("categories", R::find('category'));
 			$smarty->assign("request", $request);
 			$smarty->display('dish/edit.tpl');
 		}

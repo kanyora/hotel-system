@@ -15,7 +15,7 @@
 	
 	$LANGUAGE = "en";
 	
-	$DEBUG = false;
+	$DEBUG = true;
 	
 	//Generic website variables
 	$WEBSITE_NAME = "KRA";
@@ -47,4 +47,5 @@
 	$MEDIA_URL = '/static/';
 	
 	$USER_REGISTRATION = true;
+	$UPLOAD_DIRECTORY = __DIR__.'/../media/uploads';
 ?>

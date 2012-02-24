@@ -34,6 +34,10 @@ class Model_User extends RedBean_SimpleModel{
 		}
 	}
 	
+	public function getFullName(){
+		return $this->bean->first_name." ".$this->bean->last_name; 
+	}
+	
 	public function belongsToGroups($groupNames){
 		$groups = R::find('group', 'name IN ('.R::genSlots($groupNames).')', $groupNames);
 		foreach($groups as $group){

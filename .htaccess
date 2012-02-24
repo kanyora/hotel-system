@@ -1,6 +1,7 @@
 RewriteEngine on
 
 RewriteRule ^hotel/static/(.*) /hotel/static/$1
+RewriteRule ^hotel/media/(.*) /hotel/media/$1
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

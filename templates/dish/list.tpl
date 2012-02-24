@@ -27,12 +27,12 @@
 						<tr class="odd">
 							<td>{$dish->id}</td>
 							<td>{$dish->name}</td>
-							<td>{$dish->category}</td>
+							<td>{$dish->category->name}</td>
 							<td>{$dish->price}</td>
 							<td>
 								<a href="{#BASE_URL#}/dishes/{$dish->id}/">R</a> |
-								<a href="{#BASE_URL#}/dishes/{$dish->id}/edit/">U</a> |
-								<a href="{#BASE_URL#}/dishes/{$dish->id}/delete/">D</a>
+								<a href="{#BASE_URL#}/admin/dishes/{$dish->id}/edit/">U</a> |
+								<a href="{#BASE_URL#}/admin/dishes/{$dish->id}/delete/">D</a>
 							</td>
 						</tr>
 					{/foreach}

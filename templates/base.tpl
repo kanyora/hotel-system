@@ -58,9 +58,9 @@
 							</div>
 							<div id="profile">
 								<div id="user-data">
-									Welcome: John Doe
+									Welcome: {$request->user->getFullName() || $request->user->username}
 									<br>
-									name@domain.com
+									{$request->user->email}
 								</div>
 								<div class="clearfix"></div>
 								<div id="user-notifications">
@@ -78,7 +78,7 @@
 											<a class="profile-16 tt-top-center"></a>
 										</li>
 										<li>
-											<a href="#login" id="logout" class="logout-16 tt-top-center">logout</a>
+											<a href="{#BASE_URL#}/auth/logout/" id="logout" class="logout-16 tt-top-center">logout</a>
 										</li>
 									</ul>
 									<div class="clearfix"></div>

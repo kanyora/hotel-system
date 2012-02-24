@@ -26,10 +26,7 @@
 			$smarty->assign("long_message", $long_message);
 			
 			$smarty->display($template_name);
-			
-			if ($DEBUG){
-				die();
-			}
+			die();
 		}
 	}
 ?>
