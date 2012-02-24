@@ -31,5 +31,19 @@
 			$smarty->assign("request", $request);
 			$smarty->display('admin_dashboard.tpl');
 		}
+		
+		public function search($args){
+			$request = $args["request"];
+			global $smarty;
+			checkLoggedIn($request->user);
+			
+			if($request->method == "GET" && isset($request->GET['q'])){
+				$results = R::find("category", "name = ?", array($request->GET['q']));
+				$smarty->assign("results", $results);
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->display('search_results.tpl');
+		}
 	}
 ?>

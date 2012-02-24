@@ -3,6 +3,7 @@
 	require_once("dish/urls.php");
 	require_once("clients/urls.php");
 	require_once("categories/urls.php");
+	require_once("orders/urls.php");
 	require_once("search_urls.php");
 	
 	//setup the default url

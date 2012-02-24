@@ -66,15 +66,6 @@
 								<div id="user-notifications">
 									<ul>
 										<li>
-											<a class="notifications-16 tt-top-center"><span class="notification">2</span></a>
-										</li>
-										<li>
-											<a class="messages-16 tt-top-center"><span class="notification">3</span></a>
-										</li>
-										<li>
-											<a class="settings-16 tt-top-center"></a>
-										</li>
-										<li>
 											<a class="profile-16 tt-top-center"></a>
 										</li>
 										<li>
@@ -92,19 +83,19 @@
 								<div id="sub-navigation">
 									{block "main"}
 										<div id="navigation-search">
-											<form>
-												<input type="text" name="search" id="search" placeholder="Search" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+											<form method="GET" action="{#BASE_URL#}/search/">
+												<input type="text" name="q" id="search" placeholder="Search" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
 											</form>
 										</div>
 										<ul>
 											<li>
-												<a class="tt-top-center">7</a><span>new tickets</span>
+												<a href="{#BASE_URL#}/orders/undelivered/" class="tt-top-center">7</a><span>undelivered orders</span>
 											</li>
 											<li>
-												<a class="blue tt-top-center">12</a><span>new tasks</span>
+												<a href="{#BASE_URL#}/orders/new/" class="blue tt-top-center">12</a><span>new orders</span>
 											</li>
 											<li>
-												<a class="green tt-top-center">3</a><span>completed milestones</span>
+												<a href="{#BASE_URL#}/orders/delivered/" class="green tt-top-center">3</a><span>delivered orders</span>
 											</li>
 										</ul>
 										<a class="comment-16 tt-top-center" id="show-modal">modal</a>
