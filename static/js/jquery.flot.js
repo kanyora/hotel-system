@@ -44,14 +44,14 @@
                 colors: ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"],
                 legend: {
                     show: true,
-                    noColumns: 1, // number of colums in legend table
-                    labelFormatter: null, // fn: string -> string
-                    labelBoxBorderColor: "#ccc", // border color for the little label boxes
-                    container: null, // container (as jQuery object) to put legend in, null means default on top of graph
-                    position: "ne", // position of default legend container within plot
-                    margin: 5, // distance from grid edge to default legend container within plot
-                    backgroundColor: null, // null means auto-detect
-                    backgroundOpacity: 0.85 // set to 0 to avoid background
+                    noColumns: 0,
+                    labelFormatter: null,
+                    labelBoxBorderColor: "none",
+                    container: null,
+                    position: "ne",
+                    margin: 0,
+                    backgroundColor: null,
+                    backgroundOpacity: 0
                 },
                 xaxis: {
                     show: null, // null = auto-detect, true = always, false = never
@@ -73,7 +73,7 @@
                     alignTicksWithAxis: null, // axis number or null for no sync
                     
                     // mode specific options
-                    tickDecimals: null, // no. of decimals, null means auto
+                    tickDecimals: 0, // no. of decimals, null means auto
                     tickSize: null, // number or [number, "unit"]
                     minTickSize: null, // number or [number, "unit"]
                     monthNames: null, // list of names of months
@@ -88,7 +88,7 @@
                 yaxes: [],
                 series: {
                     points: {
-                        show: false,
+                        show: true,
                         radius: 3,
                         lineWidth: 2, // in pixels
                         fill: true,
@@ -101,7 +101,8 @@
                         lineWidth: 2, // in pixels
                         fill: false,
                         fillColor: null,
-                        steps: false
+                        steps: false,
+						show: true,
                     },
                     bars: {
                         show: false,
@@ -123,16 +124,16 @@
                     tickColor: null, // color for the ticks, e.g. "rgba(0,0,0,0.15)"
                     labelMargin: 5, // in pixels
                     axisMargin: 8, // in pixels
-                    borderWidth: 2, // in pixels
+                    borderWidth: 1, // in pixels
                     minBorderMargin: null, // in pixels, null means taken from points radius
                     markings: null, // array of ranges or fn: axes -> array of ranges
                     markingsColor: "#f4f4f4",
                     markingsLineWidth: 2,
                     // interactive stuff
                     clickable: false,
-                    hoverable: false,
+                    hoverable: true,
                     autoHighlight: true, // highlight in case mouse is near
-                    mouseActiveRadius: 10 // how far the mouse can be away to activate an item
+                    mouseActiveRadius: 5 // how far the mouse can be away to activate an item
                 },
                 hooks: {}
             },
@@ -618,13 +619,16 @@
             }
 
             // give the hooks a chance to run
+			var bars_total_width = 0;
             for (i = 0; i < series.length; ++i) {
                 s = series[i];
                 
                 executeHooks(hooks.processDatapoints, [ s, s.datapoints]);
+				bars_total_width += s.bars.barWidth;
             }
 
             // second pass: find datamax/datamin for auto-scaling
+			var bar_offset = 0;
             for (i = 0; i < series.length; ++i) {
                 s = series[i];
                 points = s.datapoints.points,
@@ -659,8 +663,12 @@
                 }
                 
                 if (s.bars.show) {
+                    //store barLeft to prevent recalculation allowing overwrite in procDatapoints hook.
+                    if (s.bars.barLeft == undefined)
+                        s.bars.barLeft= s.bars.align == "left" ? bar_offset : bar_offset-bars_total_width/2;
+                    bar_offset += s.bars.barWidth;
                     // make sure we got room for the bar on the dancing floor
-                    var delta = s.bars.align == "left" ? 0 : -s.bars.barWidth/2;
+                    var delta = s.bars.barLeft;
                     if (s.bars.horizontal) {
                         ymin += delta;
                         ymax += delta + s.bars.barWidth;
@@ -2149,7 +2157,7 @@
             // FIXME: figure out a way to add shadows (for instance along the right edge)
             ctx.lineWidth = series.bars.lineWidth;
             ctx.strokeStyle = series.color;
-            var barLeft = series.bars.align == "left" ? 0 : -series.bars.barWidth/2;
+            var barLeft = series.bars.barLeft;
             var fillStyleCallback = series.bars.fill ? function (bottom, top) { return getFillStyle(series.bars, series.color, bottom, top); } : null;
             plotBars(series.datapoints, barLeft, barLeft + series.bars.barWidth, 0, fillStyleCallback, series.xaxis, series.yaxis);
             ctx.restore();
@@ -2164,7 +2172,7 @@
                 return getColorOrGradient(filloptions.fillColor, bottom, top, seriesColor);
             
             var c = $.color.parse(seriesColor);
-            c.a = typeof fill == "number" ? fill : 0.4;
+            c.a = typeof fill == "number" ? fill : 0.7;
             c.normalize();
             return c.toString();
         }
@@ -2203,7 +2211,7 @@
             if (fragments.length == 0)
                 return;
 
-            var table = '<table style="font-size:smaller;color:' + options.grid.color + '">' + fragments.join("") + '</table>';
+            var table = '<table style="font-size:11px;color:' + options.grid.color + '">' + fragments.join("") + '</table>';
             if (options.legend.container != null)
                 $(options.legend.container).html(table);
             else {
@@ -2220,7 +2228,7 @@
                     pos += 'right:' + (m[0] + plotOffset.right) + 'px;';
                 else if (p.charAt(1) == "w")
                     pos += 'left:' + (m[0] + plotOffset.left) + 'px;';
-                var legend = $('<div class="legend">' + table.replace('style="', 'style="position:absolute;' + pos +';') + '</div>').appendTo(placeholder);
+                var legend = $('<div class="legend">' + table.replace('style="', 'style="position:absolute;' + pos +'; margin:-27px 0 0 -5px;') + '</div>').appendTo(placeholder);
                 if (options.legend.backgroundOpacity != 0.0) {
                     // put in the transparent background
                     // separately to avoid blended labels and
@@ -2302,8 +2310,9 @@
                 }
                     
                 if (s.bars.show && !item) { // no other point can be nearby
-                    var barLeft = s.bars.align == "left" ? 0 : -s.bars.barWidth/2,
-                        barRight = barLeft + s.bars.barWidth;
+                    var barLeft = s.bars.align == "left" ? 0 : -s.bars.barWidth/2;
+                    var barLeft = s.bars.barLeft,
+                         barRight = barLeft + s.bars.barWidth;
                     
                     for (j = 0; j < points.length; j += ps) {
                         var x = points[j], y = points[j + 1], b = points[j + 2];
@@ -2492,8 +2501,7 @@
             octx.lineWidth = series.bars.lineWidth;
             octx.strokeStyle = $.color.parse(series.color).scale('a', 0.5).toString();
             var fillStyle = $.color.parse(series.color).scale('a', 0.5).toString();
-            var barLeft = series.bars.align == "left" ? 0 : -series.bars.barWidth/2;
-            drawBar(point[0], point[1], point[2] || 0, barLeft, barLeft + series.bars.barWidth,
+			drawBar(point[0], point[1], point[2] || 0, series.bars.barLeft, series.bars.barLeft + series.bars.barWidth,
                     0, function () { return fillStyle; }, series.xaxis, series.yaxis, octx, series.bars.horizontal, series.bars.lineWidth);
         }
 

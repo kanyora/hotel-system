@@ -158,7 +158,7 @@
 
 			html: {
 				groupIndex: 10,
-				visible: false,
+				visible: true,
 				exec: function () {
 					var elementHeight;
 
@@ -494,7 +494,7 @@
 		};
 
 		this.defaults = {
-html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" style="margin:0"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body style="margin:0;color:#444;font-size:12px;padding:10px;font-family:ans-serif;">INITIAL_CONTENT</body></html>',
+html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" style="margin:0"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body style="margin:0;">INITIAL_CONTENT</body></html>',
 			debug: false,
 			controls: {},
 			css: {},
@@ -1276,7 +1276,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				this.editor.css({
 					minHeight: (newY - 6).toString() + "px",
 					// fix for issue 12 ( http://github.com/akzhan/jwysiwyg/issues/issue/12 )
-					width: (newX > 50) ? (newX - 8).toString() + "px" : ""
+					width: "100%"
 				});
 				if ($.browser.msie && parseInt($.browser.version, 10) < 7) {
 					this.editor.css("height", newY.toString() + "px");
@@ -1302,7 +1302,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 
 			if (!this.options.iFrameClass) {
 				this.element.css({
-					width: (newX > 0) ? newX.toString() + "px" : "100%"
+					  width: "100%"
 				});
 			}
 
@@ -2363,7 +2363,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				if (this.options.modal) {
 					var dimensions = $.wysiwyg.dialog.getDimensions(),
 						wrapper    = $('<div class="wysiwyg-dialog-modal-div"></div>')
-						.css({"width": dimensions[0], "height": dimensions[1]});
+						.css({"width": dimensions[0]});
 					that._$dialog.wrap(wrapper);
 				}
 				

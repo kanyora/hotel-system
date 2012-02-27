@@ -27,19 +27,21 @@
 
 			dialogReplacements = {
 				legend: "Insert Link",
-				url   : "Link URL",
+				select: "Link to page",
+				url   : "Link to page",
 				title : "Link Title",
 				target: "Link Target",
-				submit: "Insert Link",
+				submit: "Insert",
 				reset: "Cancel"
 			};
 
-			formLinkHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
-				'<label>{url}: <input type="text" name="linkhref" value=""/></label>' +
-				'<label>{title}: <input type="text" name="linktitle" value=""/></label>' +
-				'<label>{target}: <input type="text" name="linktarget" value=""/></label>' +
-				'<input type="submit" class="button" value="{submit}"/> ' +
-				'<input type="reset" value="{reset}"/></fieldset></form>';
+			formLinkHtml = '<form class="wysiwyg"><fieldset>' +
+				//'<div class="form-row"><label>{select}:</label> <div class="form-row-value"><select name="innerlink" id="innerlink"><option value="">- SELECT -</option></select></div></div>' +
+				'<div class="form-row"><label>{url}:</label> <div class="form-row-value"><input type="text" name="linkhref" id="linkhref" value="" /></div></div>' +
+				'<div class="form-row"><label>{title}:</label> <div class="form-row-value"><input type="text" name="linktitle" value=""/></div></div>' +
+				'<div class="form-row"><label>{target}:</label> <div class="form-row-value"><input type="text" name="linktarget" value=""/></div></div>' +
+				'<div class="form-row"><label></label><button type="submit" class="green medium" value="{submit}"><span>Sumbit</span></button> ' +
+				'<button type="submit" class="red medium" value="{reset}"><span>Reset</span></button></fieldset></form></div>';
 
 			for (key in dialogReplacements) {
 				if ($.wysiwyg.i18n) {
@@ -58,162 +60,116 @@
 
 			a = {
 				self: Wysiwyg.dom.getElement("a"), // link to element node
-				href: "http://",
-				title: "",
-				target: ""
+				href: "http://"
 			};
 
 			if (a.self) {
 				a.href = a.self.href ? a.self.href : a.href;
-				a.title = a.self.title ? a.self.title : "";
-				a.target = a.self.target ? a.self.target : "";
-			}
-
-			if ($.fn.dialog) {
-				elements = $(formLinkHtml);
-				elements.find("input[name=linkhref]").val(a.href);
-				elements.find("input[name=linktitle]").val(a.title);
-				elements.find("input[name=linktarget]").val(a.target);
-
-				if ($.browser.msie) {
-					try {
-						dialog = elements.appendTo(Wysiwyg.editorDoc.body);
-					} catch (err) {
-						dialog = elements.appendTo("body");
-					}
-				} else {
-					dialog = elements.appendTo("body");
+				baseUrl = window.location.protocol + "//" + window.location.hostname;
+				if (0 === a.href.indexOf(baseUrl)) {
+					a.href = a.href.substr(baseUrl.length);
 				}
+			}
+			
+			formLinkHtml = formLinkHtml.replace ('id="linkhref" value=""', 'id="linkhref" value="' + a.href + '"');
 
-				dialog.dialog({
-					modal: true,
-					open: function (ev, ui) {
-						$("input:submit", dialog).click(function (e) {
-							e.preventDefault();
+			$.getJSON ('/admin/wysiwyg/links', function (res) {
+				var link, s = $('#innerlink');
 
-							var url = $('input[name="linkhref"]', dialog).val(),
-								title = $('input[name="linktitle"]', dialog).val(),
-								target = $('input[name="linktarget"]', dialog).val(),
-								baseUrl,
-								img;
-
-							if (Wysiwyg.options.controlLink.forceRelativeUrls) {
-								baseUrl = window.location.protocol + "//" + window.location.hostname;
-								if (0 === url.indexOf(baseUrl)) {
-									url = url.substr(baseUrl.length);
-								}
-							}
-
-							if (a.self) {
-								if ("string" === typeof (url)) {
-									if (url.length > 0) {
-										// to preserve all link attributes
-										$(a.self).attr("href", url).attr("title", title).attr("target", target);
-									} else {
-										$(a.self).replaceWith(a.self.innerHTML);
-									}
-								}
-							} else {
-								if ($.browser.msie) {
-									Wysiwyg.ui.returnRange();
-								}
-
-								//Do new link element
-								selection = Wysiwyg.getRangeText();
-								img = Wysiwyg.dom.getElement("img");
-
-								if ((selection && selection.length > 0) || img) {
-									if ($.browser.msie) {
-										Wysiwyg.ui.focus();
-									}
-
-									if ("string" === typeof (url)) {
-										if (url.length > 0) {
-											Wysiwyg.editorDoc.execCommand("createLink", false, url);
-										} else {
-											Wysiwyg.editorDoc.execCommand("unlink", false, null);
-										}
-									}
-
-									a.self = Wysiwyg.dom.getElement("a");
-
-									$(a.self).attr("href", url).attr("title", title);
-
-									/**
-									 * @url https://github.com/akzhan/jwysiwyg/issues/16
-									 */
-									$(a.self).attr("target", target);
-								} else if (Wysiwyg.options.messages.nonSelection) {
-									window.alert(Wysiwyg.options.messages.nonSelection);
-								}
-							}
-
-							Wysiwyg.saveContent();
-
-							$(dialog).dialog("close");
-						});
-						$("input:reset", dialog).click(function (e) {
-							e.preventDefault();
-							$(dialog).dialog("close");
-						});
-					},
-					close: function (ev, ui) {
-						dialog.dialog("destroy");
-						dialog.remove();
+				s.change (function () {
+					var val = $(this).val (), l = $('#linkhref');
+					if (val.length != '' && l.val () == '') {
+						l.val (val);
 					}
 				});
-			} else {
-				if (a.self) {
-					url = window.prompt("URL", a.href);
 
-					if (Wysiwyg.options.controlLink.forceRelativeUrls) {
-						baseUrl = window.location.protocol + "//" + window.location.hostname;
-						if (0 === url.indexOf(baseUrl)) {
-							url = url.substr(baseUrl.length);
-						}
-					}
+				for (var i = 0; i < res.length; i++) {
+					link = res[i];
+					s.append ('<option value="' + link.url + '">' + link.title + '</option>');
+				}
+			});
 
-					if ("string" === typeof (url)) {
-						if (url.length > 0) {
-							$(a.self).attr("href", url);
-						} else {
-							$(a.self).replaceWith(a.self.innerHTML);
-						}
-					}
-				} else {
-					//Do new link element
-					selection = Wysiwyg.getRangeText();
-					img = Wysiwyg.dom.getElement("img");
+			dialog = new $.wysiwyg.dialog (Wysiwyg, {
+				title: dialogReplacements.legend,
+				content: formLinkHtml,
+				open: function (ev, ui) {
+					$('div.wysiwyg-fileManager').bind('click', function () {
+						$.wysiwyg.fileManager.init(function (selected) {
+							$('#linkhref').val(selected);
+							$('#linkhref').trigger('change');
+						});
+					});
 
-					if ((selection && selection.length > 0) || img) {
-						if ($.browser.msie) {
-							Wysiwyg.ui.focus();
-							Wysiwyg.editorDoc.execCommand("createLink", true, null);
-						} else {
-							url = window.prompt(dialogReplacements.url, a.href);
+					$("#link-dialog-submit").click(function (e) {
+						e.preventDefault();
 
-							if (Wysiwyg.options.controlLink.forceRelativeUrls) {
-								baseUrl = window.location.protocol + "//" + window.location.hostname;
-								if (0 === url.indexOf(baseUrl)) {
-									url = url.substr(baseUrl.length);
-								}
+						var url = $('input[name="linkhref"]').val(),
+							inner = $('select[name="innerlink"]').val (),
+							baseUrl,
+							img;
+						
+						url = (inner.length > 0) ? inner : url;
+
+						if (Wysiwyg.options.controlLink.forceRelativeUrls) {
+							baseUrl = window.location.protocol + "//" + window.location.hostname;
+							if (0 === url.indexOf(baseUrl)) {
+								url = url.substr(baseUrl.length);
 							}
+						}
 
+						if (a.self) {
 							if ("string" === typeof (url)) {
 								if (url.length > 0) {
-									Wysiwyg.editorDoc.execCommand("createLink", false, url);
+									// to preserve all link attributes
+									$(a.self).attr("href", url);
 								} else {
-									Wysiwyg.editorDoc.execCommand("unlink", false, null);
+									$(a.self).replaceWith(a.self.innerHTML);
 								}
 							}
-						}
-					} else if (Wysiwyg.options.messages.nonSelection) {
-						window.alert(Wysiwyg.options.messages.nonSelection);
-					}
-				}
+						} else {
+							if ($.browser.msie) {
+								Wysiwyg.ui.returnRange();
+							}
 
-				Wysiwyg.saveContent();
-			}
+							//Do new link element
+							selection = Wysiwyg.getRangeText();
+							img = Wysiwyg.dom.getElement("img");
+
+							if ((selection && selection.length > 0) || img) {
+								if ($.browser.msie) {
+									Wysiwyg.ui.focus();
+								}
+
+								if ("string" === typeof (url)) {
+									if (url.length > 0) {
+										Wysiwyg.editorDoc.execCommand("createLink", false, url);
+									} else {
+										Wysiwyg.editorDoc.execCommand("unlink", false, null);
+									}
+								}
+
+								a.self = Wysiwyg.dom.getElement("a");
+
+								$(a.self).attr("href", url);
+							} else if (Wysiwyg.options.messages.nonSelection) {
+								window.alert(Wysiwyg.options.messages.nonSelection);
+							}
+						}
+
+						Wysiwyg.saveContent();
+
+						dialog.close ();
+					});
+					$("input:reset", dialog).click(function (e) {
+						e.preventDefault();
+						dialog.close ();
+					});
+				},
+				close: function (ev, ui) {
+					dialog = null;
+				}
+			});
+			dialog.open ();
 
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		}
