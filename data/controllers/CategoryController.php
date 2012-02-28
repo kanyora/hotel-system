@@ -92,8 +92,7 @@
 					die();
 				}
 				
-				$category->is_active = false;
-				R::store($category);
+				R::trash($category);
 				redirectToPage('category-list');
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);

@@ -18,7 +18,7 @@
 					<label for="id_category">Category:</label>
 				</div>
 				<div class="section-right">
-					<select name="dish[category]" size="{$categories|@count}">
+					<select name="dish[category]">
 						<option>----</option>
 						{foreach $categories as $category}
 							<option value="{$category->id}" 
@@ -41,7 +41,7 @@
 						<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" />
 					</div>
 				{/if}
-				<label for="id_price">Price:</label>
+				<label for="id_price">Photo:</label>
 				<input type="file" name="photo" />
 			</section>
 			<section>

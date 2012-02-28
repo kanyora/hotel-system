@@ -13,11 +13,12 @@
 				<td>{$category->id}</td>
 				<td>{$category->name}</td>
 				<td>
-					<a href="{#BASE_URL#}/categories/{$category->id}/">R</a> |
-					<a href="{#BASE_URL#}/categories/{$category->id}/edit/">U</a> |
-					<a href="{#BASE_URL#}/categories/{$category->id}/delete/">D</a>
+					<a href="{#BASE_URL#}/categories/{$category->id}/">View</a> |
+					<a href="{#BASE_URL#}/admin/categories/{$category->id}/edit/">Edit</a> |
+					<a href="{#BASE_URL#}/admin/categories/{$category->id}/delete/">Remove</a>
 				</td>
 			</tr>
 		{/foreach}
 	</table>
+	<button onclick="window.location='{#BASE_URL#}/admin/categories/add/'">Add Category</button>
 {/block}

@@ -46,22 +46,25 @@
 									<a href="#" class="user"><span class="bar">Welcome {$request->user->username}</span></a>
 								</li>
 								<li>
-									<a href="#" class="logout"></a>
+									<a href="{#BASE_URL#}/auth/logout/" class="logout"></a>
 								</li>
 							</ul>
+							<div>
+								<a href="{#BASE_URL#}/orders/cart/">{if isset($request->SESSION.cart)}{count($request->SESSION.cart)}{else}0{/if} items in cart</a>
+							</div>
 						</div>
 						<div id="menu">
 							<ul class="sf-js-enabled">
 								{if $request->user->belongsToGroups('admin')}
 									<li class="current">
-										<a href="dashboard.html">Dashboard</a>
+										<a href="{#BASE_URL#}/">Dashboard</a>
 									</li>
 								{/if}
 								<li>
-									<a href="{#BASE_URL#}/">Menu</a>
+									<a href="{#BASE_URL#}/menu/">Menu</a>
 								</li>
 								<li class="">
-									<a href="{#BASE_URL#}/services/">Services</a>
+									<a href="{#BASE_URL#}/orders/">Orders</a>
 								</li>
 								<li>
 									<a href="{#BASE_URL#}/feedback/">Feedback</a>
@@ -91,37 +94,6 @@
 										{/if}
 									{/block}
 								</ul>
-							</div>
-						</div>
-						<div class="box statics">
-							<div class="content">
-								{block "statistics-content"}
-									{if $request->user->belongsToGroups('admin')}
-										<ul>
-											<li>
-												<h2>Statistics</h2>
-											</li>
-											<li>
-												Total pages
-												<div class="info red">
-													<span>999</span>
-												</div>
-											</li>
-											<li>
-												Comments
-												<div class="info blue">
-													<span>654</span>
-												</div>
-											</li>
-											<li>
-												Users
-												<div class="info green">
-													<span>7</span>
-												</div>
-											</li>
-										</ul>
-									{/if}
-								{/block}
 							</div>
 						</div>
 					</div>

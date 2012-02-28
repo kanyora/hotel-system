@@ -85,7 +85,7 @@
 		    	$order_item = R::dispense('orderitem');
 		        $order_item->import(array(
 					   "quantity" => $item['quantity'],
-	                   "order" => order,
+	                   "order" => $order,
 	                   "price_per_item" => $item['price'],
 	                   "dish" => $item['id'],
 	                   "notes" => $item['notes'])
@@ -325,8 +325,7 @@
 					die();
 				}
 				
-				$order->is_active = false;
-				R::store($order);
+				R::trash($order);
 				return redirectToPage('order-list', array(':type' => $type_));
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);

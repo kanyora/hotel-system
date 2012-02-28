@@ -5,9 +5,9 @@
 		{$edit_success}
 	{/if}
 	<p>
-		Id: {$category->id}
+		Reference No: {$order->reference}
 	</p>
 	<p>
-		Name: {$category->name}
+		Items: {$order->name}
 	</p>
 {/block}

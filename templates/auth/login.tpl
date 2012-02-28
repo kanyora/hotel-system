@@ -1,27 +1,36 @@
 {extends 'base.tpl'}
 {block 'title'}Authentication{/block}
 
-{block "body-container"}
-    {if isset($errors)}
-        <div id="errors">{$errors}</div>
-    {/if}
-    <div id="login-container" style="">
-		<div id="login" class="i-box">
-			<div class="login-title">
-				<h1>M.O.R.S</h1>
+{block "body"}
+	<div id="wrapper" class="login">
+		<div class="box">
+			<div class="title">
+				Please login
+				<span class="hide"></span>
 			</div>
-			<form name="login-form" id="login-form" method="POST" action="." novalidate="novalidate">
-				<fieldset>
-					<section>
-						<input class="i-text required" type="text" name="username" placeholder="Username">
-					</section>
-					<section>
-						<input class="i-text required" type="password" name="password" placeholder="Password">
-					</section>
-				</fieldset>
-				<a href="#">Forgot your password?</a>
-				<input class="i-button" type="submit" value="Login">
-			</form>
+			<div class="content">
+				{if isset($errors)}
+					<div class="message inner red">
+						<span><b>Error</b>{$errors}</span>
+					</div>
+			    {/if}
+				<form action="." method="POST">
+					<div class="row">
+						<label>Username</label>
+						<div class="right"><input name="username" type="text" value="" /></div>
+					</div>
+					<div class="row">
+						<label>Password</label>
+						<div class="right"><input name="password" type="password" value="" /></div>
+					</div>
+					<div class="row">
+						<div class="right">
+							<button type="submit"><span>Submit</span></button>
+						</div>
+					</div>
+				</form>
+				<a href="{#BASE_URL#}/auth/register/">Register</a>
+			</div>
 		</div>
 	</div>
 {/block}

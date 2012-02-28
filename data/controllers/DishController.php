@@ -7,16 +7,17 @@
 			userIsAdmin($request->user);
 			
 			if ($request->method == "POST"){
+				global $new_dish;
 				$new_dish = R::graph($request->POST['dish']);
 				$new_dish->date_added = time();
 				$new_dish->photo = $new_dish->name.'-'.date('d-m-Y').".jpg";
 				
 				if ($request->FILES){
 					$fileUploader->save(function($file) {
-						$file->setName("$new_dish->name-".date('d-m-Y'));
 						global $UPLOAD_DIRECTORY, $new_dish;
+						$file->setName("$new_dish->name-".date('d-m-Y'));
 						$file->setName($new_dish->photo);
-						$upload_dir = $UPLOAD_DIRECTORY."dishes/images/";
+						$upload_dir = $UPLOAD_DIRECTORY."/dishes/images/";
 						mkdir($upload_dir, null, true);
 						return $upload_dir;
 					});
@@ -80,7 +81,7 @@
 				$fileUploader->save(function($file) {
 					global $UPLOAD_DIRECTORY, $edited_dish;
 					$file->setName($edited_dish->photo);
-					$upload_dir = $UPLOAD_DIRECTORY."dishes/images/";
+					$upload_dir = $UPLOAD_DIRECTORY."/dishes/images/";
 					if(!file_exists($upload_dir)){
 						mkdir($upload_dir, null, true);
 					}

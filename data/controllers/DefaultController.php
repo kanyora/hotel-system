@@ -31,6 +31,17 @@
 			$smarty->assign("request", $request);
 			$smarty->display('admin_dashboard.tpl');
 		}
+		public function menu($args){
+			$request = $args["request"];
+			global $smarty;
+			
+			checkLoggedIn($request->user);
+			
+			$smarty->assign("dishes", R::find('dish'));
+			$smarty->assign("categories", R::find('category'));
+			$smarty->assign("request", $request);
+			$smarty->display('menu.tpl');
+		}
 		
 		public function search($args){
 			$request = $args["request"];

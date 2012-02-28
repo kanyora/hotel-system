@@ -6,15 +6,15 @@
 		{if $orders}
 			<table>
 				<tr>
-					<th>Id</th>
+					<th>Reference</th>
 					<th>Actions</th>
 				</tr>
 				{foreach $orders as $order}
 					<tr>	
-						<td>{$order->id}</td>
+						<td>{$order->reference}</td>
 						<td>
-							<a href="{#BASE_URL#}/orders/{$order->id}/">R</a> |
-							<a href="{#BASE_URL#}/admin/orders/{$order->id}/delete/">D</a>
+							<a href="{#BASE_URL#}/orders/{$order->id}/">View</a> |
+							<a href="{#BASE_URL#}/admin/orders/{$order->id}/delete/">Delete</a>
 						</td>
 					</tr>
 				{foreachelse}
