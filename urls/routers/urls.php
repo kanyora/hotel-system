@@ -11,7 +11,7 @@
 	$default_route->setMapClass("Default")->setMapMethod("index");
 	$router->addRoute( "default", $default_route );
 	
-	$user_dashboard = new Route("$BASE_URL/dashboard/");
+	$user_dashboard = new Route("$BASE_URL/home/");
 	$user_dashboard->setMapClass("Default")->setMapMethod("user_dashboard");
 	$router->addRoute( "user-dashboard", $user_dashboard );
 	

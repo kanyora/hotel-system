@@ -1,22 +1,21 @@
 {extends "base.tpl"}
 
-{block "content"}
-	{if isset($edit_success)}
-		{$edit_success}
-	{/if}
+{block "right"}
 	<p>
-		Id: {$vehicle->id}
+		Id: {$dish->id}
 	</p>
 	<p>
-		Name: {$vehicle->number_plate}
+		Name: {$dish->name}
 	</p>
 	<p>
-		Category: {$vehicle->vehicle_type}
+		Price: {$dish->date_purchased}
 	</p>
 	<p>
-		Price: {$vehicle->date_purchased}
+		Details: {$dish->details}
 	</p>
 	<p>
-		Details: {$vehicle->details}
+		<div class="image">
+			<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" />
+		</div>
 	</p>
 {/block}

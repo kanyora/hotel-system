@@ -1,54 +1,31 @@
 <?php
 	class OrderController{
-		public function create_order_reference($args){
-			$str = 'abcdefghijklmnopqrstuvwxyz0123456789';
-		    while (true){
-		    	$count = 10;
-		        while($count != 0){
-		        	$reference .= $str[rand(0, count()-1)];
-					$count--;
-		        }
-	            if(is_null(R::findOne("order", 'reference = ?', array($reference)))){
-	            	return $reference;
-	            }
-			}
-		}
-		
-		public function leave_comment($args){
-			$request = $args["request"];
-			global $router, $smarty;
-			
-		    if ($request->method == 'POST'){
-		        $feedback = R::graph($request->POST['feedback']);
-				$feedback->time = time();
-				R::store($feedback);
-				redirectToPage('default', array(':type' => $type_, ':id' => $order->id));
-			}
-			return $smarty->display('order/leave_comment.tpl');
-		}
-		
 		public function cart($args){
 			$request = $args["request"];
 			global $router, $smarty;
 			
 			if ($request->method == 'GET'){
-			    $item_list = array_values(isset($request->SESSION['cart']) ? $request->SESSION['cart'] : array());
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
 			    $smarty->assign("cart", $item_list);
 				
 				$sum = 0;
 				foreach ($item_list as $item) {
-					$sum += array_sum($item['subtotal']);
+					$sum += intval($item['subtotal']);
 				}
 				$smarty->assign("total", $sum);
 			}
+			$smarty->assign("request", $request);
 			return $smarty->display('order/view_cart.tpl');
 		}
 		
 		public function cart_alter($args){
+			$request = $args["request"];
+			global $router, $smarty;
+			
 			if (isset($args[":id"])){
 				$id = $args[":id"];
-				$product = R::load("product", $id);
-				if(!$product->id){
+				$dish = R::load("dish", $id);
+				if(!$dish->id){
 					PageError::show('404',NULL,'Product not found!', "Product with Id: $id not found!");
 					die();
 				}
@@ -58,43 +35,50 @@
 				$alter = $args[":alter"];
 				
 			    if ($request->method == 'POST'){
-			    	$product_ = R::graph($request->POST['product']);
-	            	$cart = isset($request->SESSION['cart']) ? $request->SESSION['cart'] : array();
+			    	$dish_ = R::graph($request->POST['order']);
+	            	$cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
 					
 					if ($alter == "add"){
 			            $cart[$id] = array(
-			            	'id' => product.id,
-	                        'name' => product.name, 
-	                        'quantity' => $product_->quantity,
-	                        'price' => product.price,
-	                        'subtotal'=> product.price * quantity,
-	                        'notes'=> $product_->notes
+			            	'id' => $dish->id,
+	                        'name' => $dish->name,
+	                        'quantity' => $dish_->quantity,
+	                        'price' => $dish->price,
+	                        'subtotal'=> $dish->price * $dish_->quantity,
+	                        'notes'=> $dish_->notes
 	                    );
-			        }else{
+						$_SESSION['cart'] = $cart;
+						return redirectToPage('order-cart');
+			        }
+				}else{
+					if ($alter == "remove"){
 					    if ($cart){
 					    	unset($cart[$id]);
 						}
-			        }
-								
-		            $request->SESSION['cart'] = $cart;
-		            redirectToPage('order-view-cart');
-				}
+						$_SESSION['cart'] = $cart;
+		            	return redirectToPage('order-cart');
+					}
+		        }
 			}
+			$smarty->assign("request", $request);
 			return $smarty->display('order/add_product.tpl');
 		}
 		
 		public function submit($args){
+			$request = $args["request"];
+			global $router, $smarty;
+			
 		    $order = R::dispense('order');
 		    
-		    $order->reference = $this->create_order_reference();
+		    $order->reference = create_order_reference();
 		    $order->user = $request->user;
-		    $order->location_id = $request->SESSION['location'];
+		    $order->location_id = isset($_SESSION['location'])?$_SESSION['location']:'';
 		    
 			R::store($order);
 		    
 		    # Attach order items
-		    $cart = $request->SESSION['cart'];
-		    $cart_items = array_values(cart);
+		    $cart = !is_null($_SESSION['cart'])? $_SESSION['cart'] : array();
+		    $cart_items = array_values($cart);
 			$item_summary="";
 			
 		    foreach ($cart_items as $item){
@@ -103,7 +87,7 @@
 					   "quantity" => $item['quantity'],
 	                   "order" => order,
 	                   "price_per_item" => $item['price'],
-	                   "product" => $item['id'],
+	                   "dish" => $item['id'],
 	                   "notes" => $item['notes'])
 				);
 				R::store($order_item);
@@ -117,7 +101,7 @@
 		    destorySession("cart");
 		    
 		    # Redirect to menu
-		    return HttpResponseRedirect(reverse('home'));
+		    return redirectToPage(('default'));
 		}
 		
 		public function confirm($args){
@@ -144,6 +128,7 @@
 			# Set a confirmation message for user
 			$smarty->assign('messages', $messages);
 			$smarty->assign('order_reference', $order_reference);
+			$smarty->assign("request", $request);
 			return $smarty->display('order/accept_or_decline.tpl');
 		}			
 		
@@ -151,17 +136,18 @@
 			$request = $args["request"];
 			global $router, $smarty;
 			
-		    if (request.method == 'POST'){
-	            $product = R::graph($request->POST['product']);
+		    if ($request->method == 'POST'){
+	            $dish = R::graph($request->POST['order']);
 	            
 	            # Make sure we have items in cart
-	            if (!isset($request->SESSION['cart'])){
+	            if (!isset($_SESSION['cart'])){
 	                PageError::show('404',NULL,'No items to checkout!', "No items found on the cart to checkout");
 				}
 	            
-                $request->SESSION['location'] = $product->location;
-                return HttpResponseRedirect(reverse('submit_order'));
+                $_SESSION['location'] = $dish->location;
+                return redirectToPage(('order-submit'));
 		    }
+		    $smarty->assign("request", $request);
 			return $smarty->display('order/check_out.tpl');
 		}
 		
@@ -171,6 +157,7 @@
 			
 			$order_reference = $args["order_reference"];
 			$smarty->assign("order_reference", $order_reference);
+			$smarty->assign("request", $request);
 			return $smarty->display('order/confirm_order.tpl');
 		}
 		
@@ -182,8 +169,9 @@
 		        $feedback = R::graph($request->POST['feedback']);
 				$feedback->time = time();
 				R::store($feedback);
-				redirectToPage('default', array(':type' => $type_, ':id' => $order->id));
+				return redirectToPage('default');
 			}
+			$smarty->assign("request", $request);
 			return $smarty->display('order/leave_comment.tpl');
 		}
 				
@@ -221,7 +209,7 @@
 							$order->status = "$action".'d';
 						}
 						R::store($order);
-						redirectToPage('order-view', array(':type' => $type_, ':id' => $order->id));
+						return redirectToPage('order-view', array(':type' => $type_, ':id' => $order->id));
 					}else if ($request->method == "GET"){
 						if ($action == 'renew'){
 							if ($order->paying_now_is_reasonable() || 
@@ -283,7 +271,7 @@
 				$edited_order->id = $id;
 				
 				if (R::store($edited_order)){
-					redirectToPage('order-list');
+					return redirectToPage('order-list');
 				}
 			}else if ($request->method == "GET"){
 
@@ -339,7 +327,7 @@
 				
 				$order->is_active = false;
 				R::store($order);
-				redirectToPage('order-list', array(':type' => $type_));
+				return redirectToPage('order-list', array(':type' => $type_));
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);
 				$smarty->display('order/confirm_delete.tpl');

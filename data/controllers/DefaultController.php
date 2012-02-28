@@ -16,8 +16,8 @@
 				redirectToPage('admin-dashboard');
 			}
 			
-			$smarty->assign("licences", $request->user->ownLicence);
-			$smarty->assign("applications", $request->user->ownLicence);
+			$smarty->assign("dishes", R::find('dish'));
+			$smarty->assign("categories", R::find('category'));
 			$smarty->assign("request", $request);
 			$smarty->display('dashboard.tpl');
 		}
@@ -38,7 +38,7 @@
 			checkLoggedIn($request->user);
 			
 			if($request->method == "GET" && isset($request->GET['q'])){
-				$results = R::find("category", "name = ?", array($request->GET['q']));
+				$results = R::find("products", "name = ?", array($request->GET['q']));
 				$smarty->assign("results", $results);
 			}
 			

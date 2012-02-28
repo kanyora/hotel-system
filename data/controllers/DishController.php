@@ -55,6 +55,7 @@
 			}
 			
 			$smarty->assign("request", $request);
+			$smarty->assign("categories", R::find('category'));
 			$smarty->display('dish/detailview.tpl');
 		}
 		
@@ -109,12 +110,22 @@
 			checkLoggedIn($request->user);
 			global $smarty;
 			
+			if(isset($args[":category_id"])){
+				$category_id = $args[":category_id"];
+				$category = R::load("category", $category_id);
+			}
+			
 			if ($request->method == "GET"){
-				$dishes = R::find("dish");
-				$smarty->assign("dishes", $dishes);	
+				if (isset($category)){
+					$dishes = $category->ownDish;
+				}else{
+					$dishes = R::find("dish");
+				}
+				$smarty->assign("dishes", $dishes);
 			}
 			
 			$smarty->assign("request", $request);
+			$smarty->assign("categories", R::find('category'));
 			$smarty->display('dish/list.tpl');
 		}
 		

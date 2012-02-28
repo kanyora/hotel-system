@@ -2,7 +2,7 @@
 
 {block "title"}404{/block}
 
-{block "body-container"}
+{block "body"}
 	<div id="error-page-container" style="">
 	    <h1>404 :(</h1>
 	    <hr>

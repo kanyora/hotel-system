@@ -2,14 +2,14 @@
 
 {block subheader}<h4>Your items:</h4>{/block}
 
-{block "content"}
+{block "right"}
 	<table class="cart">
-	    {for $cart as $item}
+	    {foreach $cart as $item}
 		    <tr>
-		        <td valign="top"><a href="{#BASE_URL#}/orders/cart/remove/product/{$item.id}/">[x]</a></td>
+		        <td valign="top"><a href="{#BASE_URL#}/orders/dish/{$item.id}/remove/">[x]</a></td>
 		        <td>
-		            {$item.quantity|apnumber|capfirst} 
-		            {$item.name}{$item.quantity|pluralize} 
+		            {$item.quantity}
+		            {$item.name}
 		            ({$item.notes})
 		        </td>
 		        <td valign="top">{$item.subtotal}/-</td>
@@ -18,7 +18,7 @@
 		    <tr>
 		        <td colspan="2">You haven't selected anything yet.</td>
 		    </tr>
-	    {/for}
+	    {/foreach}
 	    {if cart}
 		    <tr id="total">
 		        <td></td>
@@ -27,8 +27,8 @@
 	    {/if}
 	</table>
 	<br />
-	{if $cart} 
-		<a class = 'button' href="{% url check_out %}">Submit order</a>
+	{if $cart}
+		<button onclick="window.location='{#BASE_URL#}/orders/check-out/'" class='button' type='submit'>  Submit order  </button>
 	{/if}
 {/block}
 

@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "content"}
+{block "right"}
 	<h2>Add Dish:</h2>
 	<form method="POST" action="." class="i-validate" novalidate="novalidate" enctype="multipart/form-data">
 		<input type="hidden" name="dish[type]" value="dish" />

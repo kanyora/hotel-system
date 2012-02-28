@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "content"}
+{block "right"}
 	<form method="POST" action="." class="i-validate" novalidate="novalidate">
 		<input type="hidden" name="category[type]" value="category" />
 		<fieldset>

@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "content"}
+{block "right"}
 	{if isset($edit_success)}
 		{$edit_success}
 	{/if}

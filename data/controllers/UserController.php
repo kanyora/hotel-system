@@ -4,7 +4,7 @@
 			$request = $args['request'];
 
 			global $router, $smarty;
-			userIsAdmin($request->user);
+			checkLoggedIn($request->user);
 			
 			$dao = new AuthDAO();
 			
@@ -34,14 +34,15 @@
 			}
 			
 			$smarty->assign('request', $request);
+			$smarty->assign('user', R::dispense('user'));
 			$smarty->assign("groups", R::find('group'));
-			$smarty->display('auth/users/add.tpl');
+			$smarty->display('auth/users/edit.tpl');
 		}
 		
 		public function edit($args){
 			$request = $args['request'];
 			global $smarty;
-			userIsAdmin($request->user);
+			checkLoggedIn($request->user);
 			
 			$id = $args[":id"];
 			$user = R::load("user", $id);
@@ -101,7 +102,7 @@
 		
 		public function delete($args){
 			$request = $args["request"];
-			userIsAdmin($request->user);
+			checkLoggedIn($request->user);
 			
 			global $smarty;
 			

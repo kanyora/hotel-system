@@ -1,18 +1,24 @@
 {extends "base.tpl"}
 
-{block content}
+{block "right"}
 	<form method="POST" action=".">
 		<input type="hidden" name="order[type]" value="order" />
-	    <div class="fieldWrapper">
+	    <div class="row">
 	        <label for="quantity">Enter the quantity:</label>
-	        <input type="text" name="order[quantity]" />
+	        <div class="right">
+	        	<input type="text" name="order[quantity]" />
+	        </div>
 	    </div>
-	    <div class="fieldWrapper">
+	    <div class="row">
 	        <label for="note">Additional notes (e.g. milk, two sugars):</label>
-	        <textarea id="note" name="order[notes]"></textarea>
+	        <div class="right">
+	        	<textarea id="note" name="order[notes]"></textarea>
+	        </div>
 	    </div>
-	    <br />
-	    <br />
-	    <input type="submit" value="Add to My Order" />
+	    <div class="row">
+	    	<div class="right">
+	    		<input type="submit" value="Add to My Order" />
+	    	</div>
+	    </div>
 	</form>
 {/block}

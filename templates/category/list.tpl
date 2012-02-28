@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 
-{block "content"}
+{block "right"}
 	<H2>Categories:</H2>
 	<table>
 		<tr>

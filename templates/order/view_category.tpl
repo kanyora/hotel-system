@@ -2,7 +2,7 @@
 
 {% block subheader %} <h4>{{ category }} </h4> {% endblock %}
 
-{% block content %}
+{% block right %}
     <table id="product-table">
         {% for product in category.products.all %}
             <tr>

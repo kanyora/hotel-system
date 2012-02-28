@@ -32,6 +32,7 @@
 				$smarty->assign("category", $category);
 			}
 			
+			$smarty->assign("categories", R::find('category'));
 			$smarty->assign("request", $request);
 			$smarty->display('category/detailview.tpl');
 		}

@@ -5,6 +5,19 @@
 		die();
 	}
 	
+	function create_order_reference(){
+		$characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+	    while (true){
+			$reference = '';
+	        for ($i = 0; $i < 10; $i++) {
+	        	$reference .= $characters[rand(0, strlen($characters)-1)];
+	        }
+            if(!R::find("order", 'reference = ?', array($reference))){ 
+            	return $reference;
+            }
+		}
+	}
+	
 	function userBelongsToGroups($user, $groupName){
 		userPassesTest($user, $user->belongsToGroups($groupName));
 	}

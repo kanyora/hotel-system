@@ -1,103 +1,22 @@
 {extends "base.tpl"}
 
-{block "content"}
-	<div class="c-overview">
-		<div class="bredcrumbs">
-			<ul>
-				<li>
-					<a href="#">dashboard</a>
-				</li>
-				<li>
-					<a href="#">overview</a>
-				</li>
-			</ul>
-			<div class="clearfix"></div>
+{block "right"}
+	<div class="btn-box">
+		<div class="content">
+			{if $request->user->belongsToGroups('admin')}
+				<a href="#" class="item"> <img src="{#BASE_URL#}/static/images/dashboard.png" alt="Dashboard"> <span>Dashboard</span></a>
+				<a href="#" class="item"> <img src="{#BASE_URL#}/static/images/messages.png" alt="Messages"> <span>Dishes</span></a>
+				<a href="#" class="item"> <img src="{#BASE_URL#}/static/images/settings.png" alt="Settings"> <span>Categories</span> </a>
+				<a href="#" class="item"> <img src="{#BASE_URL#}/static/images/support.png" alt="Support"> <span>Orders</span> </a>
+				<a href="#" class="item"> <img src="{#BASE_URL#}/static/images/statics.png" alt="Reports"> <span>Reports</span></a>
+			{else}
+				{foreach $dishes as $dish}
+					<a class="item"> 
+						<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" /> <span>{$dish->name} @{$dish->price}/-</span>
+						<button onclick="window.location='{#BASE_URL#}/orders/dish/{$dish->id}/add/'">Add to chart</button>
+					</a>
+				{/foreach}
+			{/if}
 		</div>
-		<div class="box-element">
-			<div class="box-head-light box-head-icon forms-16">
-				Quick actions<a href="" class="collapsable"></a>
-			</div>
-			<div class="	box-content">
-				<ul class="actions">
-					<li>
-						<div>
-							<a href="#" class="edit-32">Posts</a><span>add new post</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="{#BASE_URL#}/admin/users/" class="users-32">Users</a><span>edit users</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="data-32">Data</a><span>edit data</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="charts-32">Statistics</a><span>view statistics</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="settings-32">Settings</a><span>edit settings</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="finance-32">Finance</a><span>view finance</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="alert-32">Notifications</a><span>view notifications</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							<a href="#" class="email-32">Messages</a><span>view messages</span>
-						</div>
-					</li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-		<div class="box-element">
-			<div class="box-head-light box-head-icon info-16">
-				Notification board<a href="" class="collapsable"></a>
-			</div>
-			<div class="box-content">
-				<ul class="notifications">
-					<li>
-						<div>
-							321<span>total visitors</span><span class="green">+13%</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							321<span>total visitors</span><span class="red">-7%</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							321<span>total visitors</span><span class="green">+13%</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							321<span>total visitors</span><span class="grey">0%</span>
-						</div>
-					</li>
-					<li>
-						<div>
-							321<span>total visitors</span><span class="green">-2%</span>
-						</div>
-					</li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-		<div class="clearfix"></div>
 	</div>
 {/block}
