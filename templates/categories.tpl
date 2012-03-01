@@ -30,7 +30,9 @@
 	{else}
 		<ol>
 			{foreach $categories as $category}
-				<li><a href="{#BASE_URL#}/categories/{$category->id}/dishes/">{$category->name}</li><br/>
+				<li style="clear:both">
+					<a href="{#BASE_URL#}/categories/{$category->id}/dishes/">{$category->name}</a>
+				</li>
 			{/foreach}
 		</ol>
 	{/if}

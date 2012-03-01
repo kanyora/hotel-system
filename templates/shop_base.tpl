@@ -252,7 +252,7 @@
 										<a class="home" href="{#BASE_URL#}/">Home</a> &rsaquo; <a href="{#BASE_URL#}/orders/cart/">Shop</a>
 									</div>
 									<h1 class="page-title">{block "title"}All Products{/block}</h1>
-									<ul class="products">
+									<ul class="products" style="width: 100%;">
 										{block "dishes"}
 										{/block}
 									</ul>

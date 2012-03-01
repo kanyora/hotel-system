@@ -12,7 +12,7 @@
 		    </div>
 		</div>
 		<div>
-	    <input class="button" type="submit" value="Submit" />
+	    <input class="button" type="submit" value="Place Order" />
 	</form>
 	<br />
 {/block}

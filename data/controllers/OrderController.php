@@ -55,6 +55,7 @@
 	                        'name' => $dish->name,
 	                        'quantity' => $dish_->quantity,
 	                        'price' => $dish->price,
+	                        'photo' => $dish->photo,
 	                        'subtotal'=> $dish->price * $dish_->quantity,
 	                        'notes'=> $dish_->notes
 	                    );
