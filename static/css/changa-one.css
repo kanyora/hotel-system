@@ -1,0 +1,8 @@
+@media screen {
+@font-face {
+  font-family: 'Changa One';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Changa One'), local('ChangaOne'), url('http://themes.googleusercontent.com/static/fonts/changaone/v6/QmTOgNNWM9ly3K3B2X29HBsxEYwM7FgeyaSgU71cLG0.woff') format('woff');
+}
+}

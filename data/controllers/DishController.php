@@ -18,7 +18,9 @@
 						$file->setName("$new_dish->name-".date('d-m-Y'));
 						$file->setName($new_dish->photo);
 						$upload_dir = $UPLOAD_DIRECTORY."/dishes/images/";
-						mkdir($upload_dir, null, true);
+						if(!file_exists($upload_dir)){
+							mkdir($upload_dir, null, true);
+						}
 						return $upload_dir;
 					});
 				}
