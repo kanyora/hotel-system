@@ -1,14 +1,13 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "right"}
-	<div class="btn-box">
-		<div class="content">
-			{foreach $dishes as $dish}
-				<a class="item"> 
-					<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" /> <span>{$dish->name} @{$dish->price}/-</span>
-					<button onclick="window.location='{#BASE_URL#}/orders/dish/{$dish->id}/add/'">Add to cart</button>
-				</a>
-			{/foreach}
-		</div>
-	</div>
+{block "dishes"}
+	{foreach $dishes as $dish}
+		<li class="product {if $dish@first}first{else if $dish@last}last{/if}">
+			<a href="{#BASE_URL#}/dishes/{$dish->id}/"> 
+				<img width="300" height="300" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" class="attachment-shop_small wp-post-image" alt="{$dish->details}" title="{$dish->details}" /> 
+				<strong>{$dish->name}</strong> <span class="price">KES. {$dish->price}</span> 
+			</a>
+			<a href="{#BASE_URL#}/orders/dish/{$dish->id}/add/" class="button">Add to cart</a>
+		</li>
+	{/foreach}
 {/block}

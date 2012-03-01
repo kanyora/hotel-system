@@ -1,12 +1,9 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "subheader"}
-	<h4>Tell us how to reach you</h4>
-{/block}
+{block "title"}Delivery Location{/block}
 
-{block "right"}
+{block "dishes"}
 	<form method="POST" action=".">
-		<h2>Delivery location</h2>
 		<input type="hidden" name="order[type]" value="order" />
 		<div class="row">
 		    <label>Location</label>

@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "right"}
+{block "dishes"}
 	<form method="POST" action=".">
 		<input type="hidden" name="order[type]" value="order" />
 	    <div class="row">

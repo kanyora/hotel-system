@@ -57,7 +57,7 @@
 				/* ]]> */
 			{/literal}
 		</script>
-		<script type='text/javascript' src='{#BASE_URL#}/static/js/script.js?ver=1.0'></script>
+		<script type='text/javascript' src='{#BASE_URL#}/static/js/script.js'></script>
 		<script type='text/javascript'>
 			/* <![CDATA[ */
 			var BP_DTheme = {
@@ -132,7 +132,7 @@
 				#content h1, #content h2 {font-family:Yanone Kaffeesatz;}
 	
 				/* TEXT */
-				body,body.woocommerce li.product a h3  {}
+				body,body.woocommerce li.dish a h3  {}
 	
 				/* BOX SHADOW */
 				.box,#content-bottom {-moz-box-shadow: 0px 0px 6px #000;-webkit-box-shadow: 0px 0px 6px #000;box-shadow: 0px 0px 6px #000;}
@@ -163,13 +163,13 @@
 	
 				/* BUTTON COLORS */
 	
-				input[type="submit"], a.button,a.button.alt, button.button.alt, input.button.alt, #review_form #submit.alt,body.woocommerce-cart form.shipping_calculator button.button,body.jigoshop .button-alt,body.jigoshop .cart-collaterals .shipping_calculator .button,body.jigoshop a.button, body.jigoshop button.button, body.jigoshop input.button, body #review_form #submit,.searchedproduct a.button,body a.button {
+				input[type="submit"], a.button,a.button.alt, button.button.alt, input.button.alt, #review_form #submit.alt,body.woocommerce-cart form.shipping_calculator button.button,body.jigoshop .button-alt,body.jigoshop .cart-collaterals .shipping_calculator .button,body.jigoshop a.button, body.jigoshop button.button, body.jigoshop input.button, body #review_form #submit,.searcheddish a.button,body a.button {
 				border-color: #87bf00!important; border-bottom-color: #7ca122!important; background-color: #8dc11e;
 				background: #87c000;
 				background: -webkit-gradient(linear,left top,left bottom,color-stop(.2, #a0d53a),color-stop(1, #60b513));
 				background: -moz-linear-gradient(center top,#a0d53a 20%,#60b513 100%);
 				}
-				a.button:hover,.custombutton:hover, .custombutton.hover, .custombutton.active, #content input[type="submit"]:hover, #content input[type="submit"].hover, #content input[type="submit"].active, #content input[type="button"]:hover, #content input[type="button"].hover, #content input[type="button"].active,a.button.alt:hover,a.button.alt.hover,a.button.alt.active, button.button.alt:hover,button.button.alt.hover,button.button.alt:active, input.button.alt:hover,input.button.alt.hover,input.button.alt:active, #review_form #submit.alt:hover,#review_form #submit.alt.hover,#review_form #submit.alt:active,body.woocommerce-cart form.shipping_calculator button.button:hover,body.woocommerce-cart form.shipping_calculator button.button:active,body.woocommerce-cart form.shipping_calculator button.button.hover,body.jigoshop .button-alt:hover,body.jigoshop .button-alt.hover,body.jigoshop .button-alt:active,body.jigoshop .cart-collaterals .shipping_calculator .button:hover,body.jigoshop a.button:hover, body.jigoshop button.button:hover, body.jigoshop input.button:hover, body #review_form #submit:hover,.searchedproduct a.button:hover,body a.button:hover
+				a.button:hover,.custombutton:hover, .custombutton.hover, .custombutton.active, #content input[type="submit"]:hover, #content input[type="submit"].hover, #content input[type="submit"].active, #content input[type="button"]:hover, #content input[type="button"].hover, #content input[type="button"].active,a.button.alt:hover,a.button.alt.hover,a.button.alt.active, button.button.alt:hover,button.button.alt.hover,button.button.alt:active, input.button.alt:hover,input.button.alt.hover,input.button.alt:active, #review_form #submit.alt:hover,#review_form #submit.alt.hover,#review_form #submit.alt:active,body.woocommerce-cart form.shipping_calculator button.button:hover,body.woocommerce-cart form.shipping_calculator button.button:active,body.woocommerce-cart form.shipping_calculator button.button.hover,body.jigoshop .button-alt:hover,body.jigoshop .button-alt.hover,body.jigoshop .button-alt:active,body.jigoshop .cart-collaterals .shipping_calculator .button:hover,body.jigoshop a.button:hover, body.jigoshop button.button:hover, body.jigoshop input.button:hover, body #review_form #submit:hover,.searcheddish a.button:hover,body a.button:hover
 				{
 				background: -webkit-gradient(linear,left top,left bottom,color-stop(.2, #ace53e),color-stop(1, #8dca16));
 				background: -moz-linear-gradient(center top,#ace53e 20%,#6bca16 100%);
@@ -189,13 +189,13 @@
 				}
 	
 				#content-bottom h3 {font-size:18px;}
-				/* WooCommerce, JigoShop product pages */
+				/* WooCommerce, JigoShop dish pages */
 	
-				body.jigoshop #content #entry ul.products li {width:23%!important;}
-				#entry div.product div.summary,#entry div.product .woocommerce_tabs,body.jigoshop #content #entry #tabs {width:60.673913043478%;}
-				#entry div.product div.images {width:35.326086956522%;max-width:314px!important;}
+				body.jigoshop #content #entry ul.dishes li {width:23%!important;}
+				#entry div.dish div.summary,#entry div.dish .woocommerce_tabs,body.jigoshop #content #entry #tabs {width:60.673913043478%;}
+				#entry div.dish div.images {width:35.326086956522%;max-width:314px!important;}
 				@media handheld, only screen and (max-width: 540px) {
-				#content #entry ul.products li img {max-width:300px!important;}
+				#content #entry ul.dishes li img {max-width:300px!important;}
 	
 				/*WOO SHOW BREADCRUMBS */
 	
@@ -211,27 +211,28 @@
 			<div id="header" class="row">
 				{block "header"}
 					<div class="alignleft" id="logo">
-						<a href="{#BASE_URL#}/demo/echojigo" title="Just another Storefront Themes Demo site"><img src="{#BASE_URL#}/static/img/themeforest_logo1.png" /></a>
+						<a href="{#BASE_URL#}/demo/echojigo" title="Just another Storefront Themes Demo site">
+							<img src="{#BASE_URL#}/static/img/themeforest_logo1.png" />
+						</a>
 					</div>
 					<div class="alignright pad20bottom" id="header-right">
 						<div class="box" id="nav-container">
 							<div id="navwrap">
-								<ul id=nav class=>
-									<li id="menu-item-207" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-207">
-										<a href="{#BASE_URL#}/">Home</a>
-									</li>
-									<li id="menu-item-209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-209">
-										<a href="{#BASE_URL#}/shop/">Shop</a>
-									</li>
-									<li id="menu-item-208" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-208">
-										<a href="{#BASE_URL#}/blog/">Blog</a>
-									</li>
-									<li></li>
+								<ul id=nav class="header">
+									{block "upper-links"}
+										<li id="menu-item-207" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-207">
+											<a href="{#BASE_URL#}/menu/">Menu</a>
+										</li>
+										<li id="menu-item-209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-209">
+											<a href="{#BASE_URL#}/categories/">Categories</a>
+										</li>
+										<li></li>
+									{/block}
 								</ul>
-								<a class="navcart" href="{#BASE_URL#}/cart/" title="View your shopping cart"><span class='cartcount'>&#36;0.00</span></a>
+								<a class="navcart" href="{#BASE_URL#}/orders/cart/" title="View your shopping cart"><span class='cartcount'>KES. {$total}</span></a>
 								<div class="navsearch">
 									<form method="GET" id="searchform" class="searchform" action="{#BASE_URL#}/search/">
-										<input type="text" class="field" name="s" id="s" placeholder="Search" />
+										<input type="text" class="field" name="q" id="q" placeholder="Search" />
 									</form>
 								</div>
 								<div class="clear"></div>
@@ -248,104 +249,20 @@
 							<div class="col_12">
 								<div id="entry" class="pad20both pad20vertical">
 									<div id="breadcrumb">
-										<a class="home" href="{#BASE_URL#}/">Home</a> &rsaquo; <a href="{#BASE_URL#}/shop/">Shop</a>
+										<a class="home" href="{#BASE_URL#}/">Home</a> &rsaquo; <a href="{#BASE_URL#}/orders/cart/">Shop</a>
 									</div>
-									<h1 class="page-title">All Products</h1>
+									<h1 class="page-title">{block "title"}All Products{/block}</h1>
 									<ul class="products">
-										{block "products"}
-											<li class="product first">
-												<a href="{#BASE_URL#}/shop/apple-tv/"> <img width="300" height="300" src="{#BASE_URL#}/static/img/whatis_gallery_slide120100901-300x300.jpg" class="attachment-shop_small wp-post-image" alt="whatis_gallery_slide120100901" title="whatis_gallery_slide120100901" /> <strong>Apple TV</strong> <span class="price">&#36;99.00</span> </a>
-												<a href="/demo/echojigo/shop/?add-to-cart=166&#038;_n=f8bbb34e72" class="button">Add to cart</a>
-											</li>
-											<li class="product last">
-												<a href="{#BASE_URL#}/shop/macbook-air/"> <img width="300" height="300" src="{#BASE_URL#}/static/img/ma1-300x300.png" class="attachment-shop_small wp-post-image" alt="ma1" title="ma1" /> <strong>Macbook Air</strong> <span class="price">&#36;1,299.00</span> </a>
-												<a href="/demo/echojigo/shop/?add-to-cart=200&#038;_n=f8bbb34e72" class="button">Add to cart</a>
-											</li>
+										{block "dishes"}
 										{/block}
-									</ul><div class="clear"></div>
+									</ul>
+									<div class="clear"></div>
 								</div><!-- #pad20both -->
 							</div><!-- #col_12 -->
 							<div class="clear"></div>
 							<div id="content-bottom-border" class="col_12"></div>
 							<div id="content-bottom" class="col_12">
-								<div class="widget col_3">
-									<div class="footwidget1">
-										<h3>Recent Posts</h3><div class="underline"></div>
-										<ul>
-											<li>
-												<a href="{#BASE_URL#}/2011/11/01/new-faster-macbook-air/" title="New, Faster Macbook Air">New, Faster Macbook Air</a>
-											</li>
-											<li>
-												<a href="{#BASE_URL#}/2011/11/01/mac-osx-lion-available-today/" title="Mac OSX Lion Available Today">Mac OSX Lion Available Today</a>
-											</li>
-											<li>
-												<a href="{#BASE_URL#}/2011/11/01/apple-updates-mac-mini/" title="Apple Updates Mac Mini">Apple Updates Mac Mini</a>
-											</li>
-											<li>
-												<a href="{#BASE_URL#}/2011/11/01/apple-unveils-the-worlds-first-thunderbolt-display/" title="Apple Unveils the World&#039;s First Thunderbolt Display">Apple Unveils the World&#039;s First Thunderbolt Display</a>
-											</li>
-										</ul>
-										<div class="clear"></div>
-									</div>
-								</div>
-								<div class="widget col_3">
-									<div class="footwidget2">
-										<h3>Shop by Category</h3><div class="underline"></div>
-										<ul>
-											<li class="cat-item cat-item-28">
-												<a href="{#BASE_URL#}/product-category/tv-media/" title="View all posts filed under TV &amp; Media">TV &amp; Media</a>
-											</li>
-											<li class="cat-item cat-item-27">
-												<a href="{#BASE_URL#}/product-category/mobile-computers/" title="View all posts filed under Mobile Computers">Mobile Computers</a>
-											</li>
-											<li class="cat-item cat-item-26">
-												<a href="{#BASE_URL#}/product-category/portable-computers/" title="View all posts filed under Portable Computers">Portable Computers</a>
-											</li>
-											<li class="cat-item cat-item-25">
-												<a href="{#BASE_URL#}/product-category/desktop-computers/" title="View all posts filed under Desktop Computers">Desktop Computers</a>
-											</li>
-										</ul><div class="clear"></div>
-									</div>
-								</div>
-								<div class="widget col_3">
-									<div class="footwidget3">
-										<h3>Learn More</h3><div class="underline"></div>
-										<div class="menu-learn-more-container">
-											<ul id="menu-learn-more" class="menu">
-												<li id="menu-item-247" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-247">
-													<a href="{#BASE_URL#}/macbook-pro-2/">Macbook Pro</a>
-												</li>
-												<li id="menu-item-246" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-246">
-													<a href="{#BASE_URL#}/macbook-air-2/">Macbook Air</a>
-												</li>
-												<li id="menu-item-245" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-245">
-													<a href="{#BASE_URL#}/mac-mini-2/">Mac Mini</a>
-												</li>
-											</ul>
-										</div><div class="clear"></div>
-									</div>
-								</div>
-								<div class="widget col_3 last">
-									<div class="footwidget4">
-										<h3>Social Links</h3><div class="underline"></div>
-										<div class="menu-social-links-container">
-											<ul id="menu-social-links" class="menu">
-												<li id="menu-item-244" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-244">
-													<a href="http://storefrontthemes.com">Storefront Themes</a>
-												</li>
-												<li id="menu-item-243" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-243">
-													<a href="http://themeforest.net/user/storefrontthemes">ThemeForest Profile</a>
-												</li>
-												<li id="menu-item-241" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-241">
-													<a target="_blank" href="http://facebook.com/storefrontthemes">Facebook</a>
-												</li>
-												<li id="menu-item-242" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-242">
-													<a target="_blank" href="http://twitter.com/storefronttheme">Twitter</a>
-												</li>
-											</ul>
-										</div><div class="clear"></div>
-									</div>
-								</div>
+								&nbsp;&nbsp; <a href="#">Menu</a> | <a href="#">Services</a> | <a href="#">Contact Us</a> | <a href="#">Blog</a> | <a href="#">Cart</a>
 							</div><!-- #content-bottom -->
 						</div><!-- #content -->
 					</div><!-- #primary -->

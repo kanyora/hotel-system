@@ -1,8 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block subheader}<h4>Your items:</h4>{/block}
-
-{block "right"}
+{block "dishes"}
 	<table class="cart">
 	    {foreach $cart as $item}
 		    <tr>
@@ -28,7 +26,7 @@
 	</table>
 	<br />
 	{if $cart}
-		<button onclick="window.location='{#BASE_URL#}/orders/check-out/'" class='button' type='submit'>  Submit order  </button>
+		<button onclick="window.location='{#BASE_URL#}/orders/check-out/'" class='button' type='submit'>Checkout order</button>
 	{/if}
 {/block}
 

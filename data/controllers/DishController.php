@@ -48,7 +48,16 @@
 			global $smarty;
 			checkLoggedIn($request->user);
 			
-			if ($request->method == "GET"){
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+
 				$id = $args[":id"];
 				$dish = R::load("dish", $id);
 				if (!$dish->id){
@@ -118,7 +127,16 @@
 				$category = R::load("category", $category_id);
 			}
 			
-			if ($request->method == "GET"){
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+
 				if (isset($category)){
 					$dishes = $category->ownDish;
 				}else{
@@ -129,7 +147,11 @@
 			
 			$smarty->assign("request", $request);
 			$smarty->assign("categories", R::find('category'));
-			$smarty->display('dish/list.tpl');
+			if(!$request->user->belongsToGroups('admin')){
+				$smarty->display('menu.tpl');
+			}else{
+				$smarty->display('dish/list.tpl');
+			}
 		}
 		
 		public function delete($args){

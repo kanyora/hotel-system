@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "right"}
+{block "dishes"}
 	{if isset($edit_success)}
 		{$edit_success}
 	{/if}

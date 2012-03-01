@@ -72,10 +72,24 @@
 			if ($request->method == "GET"){
 				$categories = R::find("category");
 				$smarty->assign("categories", $categories);	
+
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
 			}
 			
 			$smarty->assign("request", $request);
-			$smarty->display('category/list.tpl');
+			
+			if($request->user->belongsToGroups('admin')){
+				$smarty->display('category/list.tpl');
+			}else{
+				$smarty->display('categories.tpl');
+			}
 		}
 		
 		public function delete($args){

@@ -1,4 +1,4 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
 {block "right"}
 	<div class="btn-box">

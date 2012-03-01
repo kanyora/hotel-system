@@ -31,6 +31,17 @@
 				}
 			}
 			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
+			
 			if (isset($args[":alter"])){
 				$alter = $args[":alter"];
 				
@@ -113,6 +124,17 @@
 			}
 			$confirm = $args[":confirm"];
 			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
+			
 		    if ($order->status == "confirmed"){
 				# Set a already confirmed message for user
 				$messages = "Order # $order->reference". ($confirm == 'decline'?'was already confirmed and cannot be':'is') ." cancelled";
@@ -146,7 +168,16 @@
 	            
                 $_SESSION['location'] = $dish->location;
                 return redirectToPage(('order-submit'));
-		    }
+		    }else if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
 		    $smarty->assign("request", $request);
 			return $smarty->display('order/check_out.tpl');
 		}
@@ -154,6 +185,17 @@
 		public function respond($args){
 			$request = $args["request"];
 			global $smarty;
+			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
 			
 			$order_reference = $args["order_reference"];
 			$smarty->assign("order_reference", $order_reference);
@@ -170,7 +212,17 @@
 				$feedback->time = time();
 				R::store($feedback);
 				return redirectToPage('default');
+			}else if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
 			}
+			
 			$smarty->assign("request", $request);
 			return $smarty->display('order/leave_comment.tpl');
 		}
@@ -186,6 +238,17 @@
 					PageError::show('404',NULL,'Order not found!', "Order with Id: $id not found!");
 					die();
 				}
+			}
+			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
 			}
 			
 			if (isset($args[":action"])){

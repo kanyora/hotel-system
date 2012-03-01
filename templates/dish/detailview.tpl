@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "right"}
+{block "dishes"}
 	<p>
 		Id: {$dish->id}
 	</p>
@@ -18,5 +18,5 @@
 			<img width="110px" height="110px" src="{#BASE_URL#}/media/uploads/dishes/images/{$dish->photo}" />
 		</div>
 	</p>
-	<button onclick="window.location='{#BASE_URL#}/orders/dish/{$dish->id}/add/'">Add to chart</button>
+	<button class="button" onclick="window.location='{#BASE_URL#}/orders/dish/{$dish->id}/add/'">Add to Cart</button>
 {/block}

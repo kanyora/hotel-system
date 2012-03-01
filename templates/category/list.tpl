@@ -1,7 +1,6 @@
 {extends "base.tpl"}
 
 {block "right"}
-	<H2>Categories:</H2>
 	<table>
 		<tr>
 			<th>Id</th>
@@ -12,13 +11,17 @@
 			<tr>	
 				<td>{$category->id}</td>
 				<td>{$category->name}</td>
-				<td>
-					<a href="{#BASE_URL#}/categories/{$category->id}/">View</a> |
-					<a href="{#BASE_URL#}/admin/categories/{$category->id}/edit/">Edit</a> |
-					<a href="{#BASE_URL#}/admin/categories/{$category->id}/delete/">Remove</a>
-				</td>
+				{if $request->user->belongsToGroups('admin')}
+					<td>
+						<a href="{#BASE_URL#}/categories/{$category->id}/">View</a> |
+						<a href="{#BASE_URL#}/admin/categories/{$category->id}/edit/">Edit</a> |
+						<a href="{#BASE_URL#}/admin/categories/{$category->id}/delete/">Remove</a>
+					</td>
+				{/if}
 			</tr>
 		{/foreach}
 	</table>
-	<button onclick="window.location='{#BASE_URL#}/admin/categories/add/'">Add Category</button>
+	{if $request->user->belongsToGroups('admin')}
+		<button onclick="window.location='{#BASE_URL#}/admin/categories/add/'">Add Category</button>
+	{/if}
 {/block}

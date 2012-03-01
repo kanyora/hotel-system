@@ -1,10 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "subheader"}
-    <h4>We'd love to hear your feedback! Tell us how we can make us better:</h4>
-{/block}
-
-{block "content"}
+{block "dishes"}
     <form method="POST" action=".">
         {{ form.as_p }}
         <br />

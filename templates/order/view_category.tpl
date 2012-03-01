@@ -1,8 +1,6 @@
-{% extends "mobile/base.html" %}
+{extends "shop_base.tpl"}
 
-{% block subheader %} <h4>{{ category }} </h4> {% endblock %}
-
-{% block right %}
+{block "dishes"}
     <table id="product-table">
         {% for product in category.products.all %}
             <tr>

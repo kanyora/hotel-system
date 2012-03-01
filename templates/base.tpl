@@ -1,4 +1,4 @@
-<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en">
+<html>
 	<!--<![endif]-->
 	<head>
 		<head>
@@ -8,24 +8,24 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 			<meta name="description" content="">
 			<style type="text/css">
-				@import url("{#BASE_URL#}/static/css/style.css");
-				@import url("{#BASE_URL#}/static/css/forms.css");
-				@import url("{#BASE_URL#}/static/css/forms-btn.css");
-				@import url("{#BASE_URL#}/static/css/menu.css");
-				@import url('{#BASE_URL#}/static/css/style_text.css');
-				@import url("{#BASE_URL#}/static/css/datatables.css");
-				@import url("{#BASE_URL#}/static/css/fullcalendar.css");
-				@import url("{#BASE_URL#}/static/css/pirebox.css");
-				@import url("{#BASE_URL#}/static/css/modalwindow.css");
-				@import url("{#BASE_URL#}/static/css/statics.css");
-				@import url("{#BASE_URL#}/static/css/tabs-toggle.css");
-				@import url("{#BASE_URL#}/static/css/system-message.css");
-				@import url("{#BASE_URL#}/static/css/tooltip.css");
-				@import url("{#BASE_URL#}/static/css/wizard.css");
-				@import url("{#BASE_URL#}/static/css/wysiwyg.css");
-				@import url("{#BASE_URL#}/static/css/wysiwyg.modal.css");
-				@import url("{#BASE_URL#}/static/css/wysiwyg-editor.css");
-				@import url("{#BASE_URL#}/static/css/handheld.css");
+				@import url("{#BASE_URL#}/static/admin/css/style.css");
+				@import url("{#BASE_URL#}/static/admin/css/forms.css");
+				@import url("{#BASE_URL#}/static/admin/css/forms-btn.css");
+				@import url("{#BASE_URL#}/static/admin/css/menu.css");
+				@import url('{#BASE_URL#}/static/admin/css/style_text.css');
+				@import url("{#BASE_URL#}/static/admin/css/datatables.css");
+				@import url("{#BASE_URL#}/static/admin/css/fullcalendar.css");
+				@import url("{#BASE_URL#}/static/admin/css/pirebox.css");
+				@import url("{#BASE_URL#}/static/admin/css/modalwindow.css");
+				@import url("{#BASE_URL#}/static/admin/css/statics.css");
+				@import url("{#BASE_URL#}/static/admin/css/tabs-toggle.css");
+				@import url("{#BASE_URL#}/static/admin/css/system-message.css");
+				@import url("{#BASE_URL#}/static/admin/css/tooltip.css");
+				@import url("{#BASE_URL#}/static/admin/css/wizard.css");
+				@import url("{#BASE_URL#}/static/admin/css/wysiwyg.css");
+				@import url("{#BASE_URL#}/static/admin/css/wysiwyg.modal.css");
+				@import url("{#BASE_URL#}/static/admin/css/wysiwyg-editor.css");
+				@import url("{#BASE_URL#}/static/admin/css/handheld.css");
 			</style>
 
 			{block "extracss"}{/block}
@@ -149,35 +149,35 @@
 				</li>
 			</ul>
 			<!-- scripts -->
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery-1.7.1.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.backgroundPosition.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.placeholder.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.ui.1.8.17.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.ui.select.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.ui.spinner.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/superfish.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/supersubs.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.datatables.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/fullcalendar.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.smartwizard-2.0.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/pirobox.extended.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.tipsy.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.elastic.source.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.customInput.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.validate.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.metadata.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.filestyle.mini.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.filter.input.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.flot.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.flot.pie.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.flot.resize.min.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.graphtable-0.2.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.wysiwyg.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/wysiwyg.image.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/wysiwyg.link.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/wysiwyg.table.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/wysiwyg.rmFormat.js"></script>
-			<script type="text/javascript" src="{#BASE_URL#}/static/js/costum.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery-1.7.1.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.backgroundPosition.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.placeholder.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.ui.1.8.17.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.ui.select.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.ui.spinner.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/superfish.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/supersubs.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.datatables.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/fullcalendar.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.smartwizard-2.0.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/pirobox.extended.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.tipsy.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.elastic.source.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.customInput.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.validate.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.metadata.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.filestyle.mini.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.filter.input.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.flot.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.flot.pie.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.flot.resize.min.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.graphtable-0.2.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/jquery.wysiwyg.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/wysiwyg.image.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/wysiwyg.link.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/wysiwyg.table.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/wysiwyg.rmFormat.js"></script>
+			<script type="text/javascript" src="{#BASE_URL#}/static/admin/js/costum.js"></script>
 			<!-- end scripts-->
 			<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
 			chromium.org/developers/how-tos/chrome-frame-getting-started -->

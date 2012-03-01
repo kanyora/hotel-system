@@ -1,6 +1,6 @@
-{extends "base.tpl"}
+{extends "shop_base.tpl"}
 
-{block "right"}
+{block "dishes"}
 	<form method="POST" action="." class="i-validate" novalidate="novalidate">
 		<input type="hidden" name="category[type]" value="category" />
 		<fieldset>
