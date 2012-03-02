@@ -43,10 +43,36 @@
 			$smarty->display('dish/edit.tpl');
 		}
 		
+		public function admin_view($args){
+			$request = $args["request"];
+			global $smarty;
+			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+
+				$id = $args[":id"];
+				$dish = R::load("dish", $id);
+				if (!$dish->id){
+					PageError::show('404',NULL,'Dish not found!', "Dish with Id: $id not found!");
+				}
+				$smarty->assign("dish", $dish);
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->assign("categories", R::find('category'));
+			$smarty->display('dish/detailview.tpl');
+		}
+		
 		public function view($args){
 			$request = $args["request"];
 			global $smarty;
-			checkLoggedIn($request->user);
 			
 			if ($request->method == 'GET'){
 			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
@@ -119,7 +145,42 @@
 		
 		public function view_list($args){
 			$request = $args["request"];
-			checkLoggedIn($request->user);
+			global $smarty;
+			
+			if(isset($args[":category_id"])){
+				$category_id = $args[":category_id"];
+				$category = R::load("category", $category_id);
+			}
+			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+
+				if (isset($category)){
+					$dishes = $category->ownDish;
+				}else{
+					$dishes = R::find("dish");
+				}
+				$smarty->assign("dishes", $dishes);
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->assign("categories", R::find('category'));
+			if(!$request->user->belongsToGroups('admin')){
+				$smarty->display('menu.tpl');
+			}else{
+				$smarty->display('dish/list.tpl');
+			}
+		}
+		
+		public function admin_view_list($args){
+			$request = $args["request"];
 			global $smarty;
 			
 			if(isset($args[":category_id"])){

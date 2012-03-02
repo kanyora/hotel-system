@@ -22,10 +22,9 @@
 						<option>----</option>
 						{foreach $categories as $category}
 							<option value="{$category->id}" 
-								{if $dish->category eq $category }
+								{if $category->id eq $dish->category->id }
 									selected="selected"
 								{/if}>
-								{$category->name}
 							</option>
 						{/foreach}
 					</select>

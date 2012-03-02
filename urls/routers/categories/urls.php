@@ -8,6 +8,15 @@
 				   ->addDynamicElement( ":id", '^\d+$' );
 	$router->addRoute("category-view",$category_view);
 
+	$category_list = new Route("$BASE_URL/admin/categories/");
+	$category_list->setMapClass("Category")->setMapMethod("admin_view_list");
+	$router->addRoute( "admin-category-list", $category_list );
+
+	$category_view = new Route("$BASE_URL/admin/categories/:id/");
+	$category_view->setMapClass("Category")->setMapMethod("admin_view")
+				   ->addDynamicElement( ":id", '^\d+$' );
+	$router->addRoute("admin-category-view",$category_view);
+
 	$category_edit = new Route("$BASE_URL/admin/categories/:id/edit/");
 	$category_edit->setMapClass("Category")->setMapMethod("edit")
 				   ->addDynamicElement( ":id", '^\d+$' );

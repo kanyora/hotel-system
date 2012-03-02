@@ -6,7 +6,7 @@
 	<div id="wrapper" class="login">
 		<div class="box">
 			<div class="title">
-				Please login
+				Please Register to proceed
 				<span class="hide"></span>
 			</div>
 			<div class="content">

@@ -114,8 +114,7 @@
 					PageError::show('404',NULL,'User not found!', "User with Id: $id not found!");
 				}
 				
-				$user->is_active = false;
-				R::store($user);
+				R::trash($user);
 				redirectToPage('user-list');
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);

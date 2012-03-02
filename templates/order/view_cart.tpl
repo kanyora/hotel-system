@@ -43,7 +43,6 @@
 						<td colspan="6" class="actions">
 						<input type="hidden" id="_n" name="_n" value="64165cdf0b">
 						<input type="hidden" name="_wp_http_referer" value="/demo/echojigo/cart/">
-						<input type="submit" class="button" name="update_cart" value="Update Shopping Cart">
 						<a href="{#BASE_URL#}/orders/check-out/" class="checkout-button button">Proceed to Checkout →</a></td>
 					</tr>
 				</tfoot>

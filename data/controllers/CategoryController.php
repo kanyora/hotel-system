@@ -10,7 +10,7 @@
 				$new_category = R::graph($request->POST['category']);
 				$_id = R::store($new_category);
 				if ($_id){
-					redirectToPage('category-list');
+					redirectToPage('admin-category-list');
 				}
 			}
 			$smarty->assign("category", R::dispense('category'));
@@ -19,6 +19,25 @@
 		}
 		
 		public function view($args){
+			$request = $args["request"];
+			global $smarty;
+			checkLoggedIn($request->user);
+			
+			if ($request->method == "GET"){
+				$id = $args[":id"];
+				$category = R::load("category", $id);
+				if (!$category->id){
+					PageError::show('404',NULL,'Category not found!', "Category with Id: $id not found!");
+				}
+				$smarty->assign("category", $category);
+			}
+			
+			$smarty->assign("categories", R::find('category'));
+			$smarty->assign("request", $request);
+			$smarty->display('category/detailview.tpl');
+		}
+		
+		public function admin_view($args){
 			$request = $args["request"];
 			global $smarty;
 			checkLoggedIn($request->user);
@@ -54,7 +73,7 @@
 				
 				$_id = R::store($edited_category);
 				if ($_id){
-					redirectToPage('category-list');
+					redirectToPage('admin-category-list');
 				}
 			}else if ($request->method == "GET"){
 				$smarty->assign("category", $category);
@@ -66,7 +85,28 @@
 		
 		public function view_list($args){
 			$request = $args["request"];
-			checkLoggedIn($request->user);
+			global $smarty;
+			
+			if ($request->method == "GET"){
+				$categories = R::find("category");
+				$smarty->assign("categories", $categories);	
+
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
+			
+			$smarty->assign("request", $request);
+			$smarty->display('categories.tpl');
+		}
+		
+		public function admin_view_list($args){
+			$request = $args["request"];
 			global $smarty;
 			
 			if ($request->method == "GET"){
@@ -107,7 +147,7 @@
 				}
 				
 				R::trash($category);
-				redirectToPage('category-list');
+				redirectToPage('admin-category-list');
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);
 				$smarty->assign("object_type", "category");

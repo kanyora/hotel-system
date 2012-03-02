@@ -39,7 +39,7 @@
 					<div class="hide-btn center"></div>
 					<div class="hide-btn bottom"></div>
 					<div id="top">
-						<h1 id="logo"><a href="./"></a></h1>
+						<h1><a href="./">M.O.R.S</a></h1>
 						<div id="labels">
 							<ul>
 								<li>
@@ -49,25 +49,20 @@
 									<a href="{#BASE_URL#}/auth/logout/" class="logout"></a>
 								</li>
 							</ul>
-							<div>
-								<a href="{#BASE_URL#}/orders/cart/">{if isset($request->SESSION.cart)}{count($request->SESSION.cart)}{else}0{/if} items in cart</a>
-							</div>
 						</div>
 						<div id="menu">
 							<ul class="sf-js-enabled">
-								{if $request->user->belongsToGroups('admin')}
-									<li class="current">
-										<a href="{#BASE_URL#}/">Dashboard</a>
-									</li>
-								{/if}
-								<li>
-									<a href="{#BASE_URL#}/menu/">Menu</a>
-								</li>
 								<li class="">
 									<a href="{#BASE_URL#}/orders/">Orders</a>
 								</li>
-								<li>
-									<a href="{#BASE_URL#}/feedback/">Feedback</a>
+								<li class="">
+									<a href="{#BASE_URL#}/admin/users/">Users</a>
+								</li>
+								<li class="">
+									<a href="{#BASE_URL#}/admin/dishes/">Dishes</a>
+								</li>
+								<li class="">
+									<a href="{#BASE_URL#}/admin/categories/">Categories</a>
 								</li>
 							</ul>
 						</div>

@@ -2,7 +2,7 @@
 
 {block "title"}500{/block}
 
-{block "body"}
+{block "right"}
 	<div id="error-page-container" style="">
 	    <h1>500 :(</h1>
 	    <hr>

@@ -565,7 +565,7 @@
 				}
 				else
 				{
-					redirectToPage('auth-login');
+					redirectToPage('default');
 					die();
 				}
 			}

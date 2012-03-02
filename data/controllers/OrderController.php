@@ -18,6 +18,23 @@
 			return $smarty->display('order/view_cart.tpl');
 		}
 		
+		public function order_attend($args){
+			$request = $args["request"];
+			global $router, $smarty;
+			
+			if (isset($args[":id"])){
+				$id = $args[":id"];
+				$order = R::load("order", $id);
+				if (!$order->id){
+					PageError::show('404',NULL,'Order not found!', "Order with Id: $id not found!");
+					die();
+				}
+			}
+			$order->delivered = 1;
+			R::store($order);
+			redirectToPage('order-list');
+		}
+		
 		public function cart_alter($args){
 			$request = $args["request"];
 			global $router, $smarty;
@@ -84,7 +101,7 @@
 		    
 		    $order->reference = create_order_reference();
 		    $order->user = $request->user;
-		    $order->location_id = isset($_SESSION['location'])?$_SESSION['location']:'';
+		    $order->location = isset($_SESSION['location'])?$_SESSION['location']:'';
 		    
 			R::store($order);
 		    
@@ -99,7 +116,7 @@
 					   "quantity" => $item['quantity'],
 	                   "order" => $order,
 	                   "price_per_item" => $item['price'],
-	                   "dish" => $item['id'],
+	                   "dish_id" => $item['id'],
 	                   "notes" => $item['notes'])
 				);
 				R::store($order_item);
@@ -158,6 +175,10 @@
 		public function checkout($args){
 			$request = $args["request"];
 			global $router, $smarty;
+			
+			if(!$request->user->isUserLoggedIn()){
+				redirectToPage('auth-register');
+			}
 			
 		    if ($request->method == 'POST'){
 	            $dish = R::graph($request->POST['order']);
@@ -310,7 +331,6 @@
 					PageError::show('404',NULL,'Order not found!', "Order with Id: $id not found!");
 					die();
 				}
-
 				$smarty->assign("order", $order);
 			}
 			

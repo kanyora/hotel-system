@@ -211,8 +211,8 @@
 			<div id="header" class="row">
 				{block "header"}
 					<div class="alignleft" id="logo">
-						<a href="{#BASE_URL#}/demo/echojigo" title="Just another Storefront Themes Demo site">
-							<img src="{#BASE_URL#}/static/img/themeforest_logo1.png" />
+						<a style="color: white; font-style: normal" href="{#BASE_URL#}/" title="Just another Storefront Themes Demo site">
+							M.O.R.S
 						</a>
 					</div>
 					<div class="alignright pad20bottom" id="header-right">
@@ -229,7 +229,18 @@
 										<li></li>
 									{/block}
 								</ul>
-								<a class="navcart" href="{#BASE_URL#}/orders/cart/" title="View your shopping cart"><span class='cartcount'>KES. {$total}</span></a>
+								{if $request->user->isUserLoggedIn()}
+									<a class="navcart" href="{#BASE_URL#}/logout/" title="logout">
+										<span class='cartcount'>Logout</span>
+									</a>
+								{else}
+									<a class="navcart" href="{#BASE_URL#}/login/" title="login">
+										<span class='cartcount'>Login</span>
+									</a>
+								{/if}
+								<a class="navcart" href="{#BASE_URL#}/orders/cart/" title="View your shopping cart">
+									<span class='cartcount'>Kes. {$total}</span>
+								</a>
 								<div class="navsearch">
 									<form method="GET" id="searchform" class="searchform" action="{#BASE_URL#}/search/">
 										<input type="text" class="field" name="q" id="q" placeholder="Search" />
@@ -262,7 +273,9 @@
 							<div class="clear"></div>
 							<div id="content-bottom-border" class="col_12"></div>
 							<div id="content-bottom" class="col_12">
-								&nbsp;&nbsp; <a href="#">Menu</a> | <a href="#">Services</a> | <a href="#">Contact Us</a> | <a href="#">Blog</a> | <a href="#">Cart</a>
+								&nbsp;&nbsp; <a href="{#BASE_URL#}/menu/">Menu</a> | 
+								<a href="{#BASE_URL#}/services/">Services</a> | 
+								<a href="{#BASE_URL#}/orders/cart/">Cart</a>
 							</div><!-- #content-bottom -->
 						</div><!-- #content -->
 					</div><!-- #primary -->
@@ -271,7 +284,7 @@
 			<div class="row" id="footer">
 				<div class="col_12">
 					<p>
-						Copyright &copy; 2011 <a href="{#BASE_URL#}/demo/echojigo">Storefront Echo JigoShop</a>
+						Copyright &copy; 2012 <a href="{#BASE_URL#}/">Kanyora</a>
 					</p>
 				</div>
 			</div>

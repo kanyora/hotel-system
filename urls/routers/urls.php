@@ -15,6 +15,10 @@
 	$user_dashboard->setMapClass("Default")->setMapMethod("menu");
 	$router->addRoute( "user-dashboard", $user_dashboard );
 	
+	$user_dashboard = new Route("$BASE_URL/services/");
+	$user_dashboard->setMapClass("Default")->setMapMethod("service");
+	$router->addRoute( "service", $user_dashboard );
+	
 	$admin_dashboard = new Route("$BASE_URL/admin/");
 	$admin_dashboard->setMapClass("Default")->setMapMethod("admin_dashboard");
 	$router->addRoute( "admin-dashboard", $admin_dashboard );

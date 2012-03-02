@@ -10,15 +10,9 @@ class AuthDAO{
 		$user->activation_token = $activation_token;
 		$user->last_activation_request = $lastActivationRequest;
 		$user->lost_password_request = $lostPasswordRequest;
-		$user->is_active = $user_active;
+		$user->is_active = 1;
 		$user->sign_up_date = time();
 		$user->last_sign_in = '0';
-		
-		$group = R::load("group", $group_id);
-		if ($group->id){
-			R::associate($group, $user);
-			R::store($group);
-		}
 		
 		return R::store($user);
 	}

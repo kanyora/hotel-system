@@ -8,6 +8,10 @@
 	$dish_list->setMapClass("Dish")->setMapMethod("view_list");
 	$router->addRoute( "dish-list", $dish_list );
 	
+	$dish_list = new Route("$BASE_URL/admin/dishes/");
+	$dish_list->setMapClass("Dish")->setMapMethod("admin_view_list");
+	$router->addRoute( "admin-dish-list", $dish_list );
+	
 	$dish_view = new Route("$BASE_URL/dishes/:id/");
 	$dish_view->setMapClass("Dish")->setMapMethod("view")
 				   ->addDynamicElement( ":id", '^\d+$' );

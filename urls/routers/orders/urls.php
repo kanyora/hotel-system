@@ -3,6 +3,11 @@
 	$order_list->setMapClass("Order")->setMapMethod("view_list");
 	$router->addRoute("order-list", $order_list);
 	
+	$order_list = new Route("$BASE_URL/orders/:id/attend/");
+	$order_list->setMapClass("Order")->setMapMethod("order_attend")
+				->addDynamicElement(":id", '^\d+$');
+	$router->addRoute("order-attend", $order_list);
+	
 	$order_cart_alter = new Route("$BASE_URL/orders/dish/:id/:alter/");
 	$order_cart_alter->setMapClass("Order")->setMapMethod("cart_alter")
 					 ->addDynamicElement(":alter", '^(add|remove)$')
