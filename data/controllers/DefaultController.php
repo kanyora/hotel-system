@@ -5,7 +5,20 @@
 			if($request->user->belongsToGroups('admin')){
 				redirectToPage('order-list');
 			}else{
-				redirectToPage('user-dashboard');
+				global $smarty;
+				if ($request->method == 'GET'){
+				    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+				    $smarty->assign("cart", $item_list);
+					
+					$sum = 0;
+					foreach ($item_list as $item) {
+						$sum += intval($item['subtotal']);
+					}
+					$smarty->assign("total", $sum);
+				}
+				$smarty->assign("dishes", R::find('dish'));
+				$smarty->assign("request", $request);
+				$smarty->display('index.tpl');
 			}
 		}
 		
@@ -84,13 +97,33 @@
 			$smarty->display('services.tpl');
 		}
 		
+		public function contact($args){
+			$request = $args["request"];
+			global $smarty;
+			
+			if ($request->method == 'GET'){
+			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
+			    $smarty->assign("cart", $item_list);
+				
+				$sum = 0;
+				foreach ($item_list as $item) {
+					$sum += intval($item['subtotal']);
+				}
+				$smarty->assign("total", $sum);
+			}
+						
+			$smarty->assign("dishes", R::find('dish'));
+			$smarty->assign("categories", R::find('category'));
+			$smarty->assign("request", $request);
+			$smarty->display('contact.tpl');
+		}
+		
 		public function search($args){
 			$request = $args["request"];
 			global $smarty;
 			if($request->method == "GET" && isset($request->GET['q'])){
-				$results = R::find("dish", "name = ?", array($request->GET['q']));
-				$smarty->assign("dishes", $results);
-			    
+				$smarty->assign("dishes", R::find("dish", "name like '%".$request->GET['q']."%'"));
+
 			    $item_list = array_values(isset($_SESSION['cart']) ? $_SESSION['cart'] : array());
 			    $smarty->assign("cart", $item_list);
 				

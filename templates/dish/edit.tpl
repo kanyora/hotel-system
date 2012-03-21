@@ -2,7 +2,7 @@
 
 {block "right"}
 	<h2>Add Dish:</h2>
-	<form method="POST" action="." class="i-validate" novalidate="novalidate" enctype="multipart/form-data">
+	<form method="POST" action="." class="i-validate" enctype="multipart/form-data">
 		<input type="hidden" name="dish[type]" value="dish" />
 		<fieldset>
 			<section>

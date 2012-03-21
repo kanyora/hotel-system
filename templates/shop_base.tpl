@@ -31,10 +31,10 @@
 		<link rel='stylesheet' id='jigoshop_frontend_styles-css'  href='{#BASE_URL#}/static/css/frontend.css' type='text/css' media='all' />
 		<link rel='stylesheet' id='jqueryui_styles-css'  href='{#BASE_URL#}/static/css/ui.css' type='text/css' media='all' />
 		<link rel='stylesheet' id='jigoshop_fancybox_styles-css'  href='{#BASE_URL#}/static/css/fancybox.css' type='text/css' media='all' />
-		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?ver=1.4.4'></script>
-		<script type='text/javascript' src='{#BASE_URL#}/static/js/jquery.fancybox-1.3.4.pack.js?ver=1.0'></script>
-		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js?ver=1.0'></script>
-		<script type='text/javascript' src='{#BASE_URL#}/static/js/jigoshop_frontend.js?ver=1.0'></script>
+		<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="{#BASE_URL#}/static/js/jquery-ui.min.js"></script>
+		<script type='text/javascript' src='{#BASE_URL#}/static/js/jquery.fancybox-1.3.4.pack.js'></script>
+		<script type='text/javascript' src='{#BASE_URL#}/static/js/jigoshop_frontend.js'></script>
 		<script type='text/javascript'>
 			{literal}
 				/* <![CDATA[ */
@@ -77,6 +77,7 @@
 		<script type='text/javascript' src='{#BASE_URL#}/static/js/sft-fancycart.js'></script>
 		<script type='text/javascript' src='{#BASE_URL#}/static/js/jquery.blueberry.js'></script>
 		<script type='text/javascript' src='{#BASE_URL#}/static/js/jquery.flexslider-min.js'></script>
+		<script language="javascript" type="text/javascript" src="{#BASE_URL#}/static/js/jquery.validate.min.js"></script>
 		<script type='text/javascript' src='{#BASE_URL#}/static/js/buddynav.js'></script>
 		<link href="{#BASE_URL#}/static/css/custom.css" rel="stylesheet" type="text/css" />
 		<!-- storefront Styling -->
@@ -226,6 +227,12 @@
 										<li id="menu-item-209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-209">
 											<a href="{#BASE_URL#}/categories/">Categories</a>
 										</li>
+										<li id="menu-item-209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-209">
+											<a href="{#BASE_URL#}/services/">Services</a>
+										</li>
+										<li id="menu-item-209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-209">
+											<a href="{#BASE_URL#}/contact-us/">Contact Us</a>
+										</li>
 										<li></li>
 									{/block}
 								</ul>
@@ -256,28 +263,30 @@
 			<div id="main">
 				{block "main"}
 					<div id="primary">
-						<div id="content" class="row box homerow">
-							<div class="col_12">
-								<div id="entry" class="pad20both pad20vertical">
-									<div id="breadcrumb">
-										<a class="home" href="{#BASE_URL#}/">Home</a> &rsaquo; <a href="{#BASE_URL#}/orders/cart/">Shop</a>
-									</div>
-									<h1 class="page-title">{block "title"}All Products{/block}</h1>
-									<ul class="products" style="width: 100%;">
-										{block "dishes"}
-										{/block}
-									</ul>
-									<div class="clear"></div>
-								</div><!-- #pad20both -->
-							</div><!-- #col_12 -->
-							<div class="clear"></div>
-							<div id="content-bottom-border" class="col_12"></div>
-							<div id="content-bottom" class="col_12">
-								&nbsp;&nbsp; <a href="{#BASE_URL#}/menu/">Menu</a> | 
-								<a href="{#BASE_URL#}/services/">Services</a> | 
-								<a href="{#BASE_URL#}/orders/cart/">Cart</a>
-							</div><!-- #content-bottom -->
-						</div><!-- #content -->
+						{block "primary"}
+							<div id="content" class="row box homerow">
+								<div class="col_12">
+									<div id="entry" class="pad20both pad20vertical">
+										<div id="breadcrumb">
+											<a class="home" href="{#BASE_URL#}/">Home</a> &rsaquo; <a href="{#BASE_URL#}/orders/cart/">Shop</a>
+										</div>
+										<h1 class="page-title">{block "title"}All Products{/block}</h1>
+										<ul class="products" style="width: 100%;">
+											{block "dishes"}
+											{/block}
+										</ul>
+										<div class="clear"></div>
+									</div><!-- #pad20both -->
+								</div><!-- #col_12 -->
+								<div class="clear"></div>
+								<div id="content-bottom-border" class="col_12"></div>
+								<div id="content-bottom" class="col_12">
+									&nbsp;&nbsp; <a href="{#BASE_URL#}/menu/">Menu</a> | 
+									<a href="{#BASE_URL#}/services/">Services</a> | 
+									<a href="{#BASE_URL#}/orders/cart/">Cart</a>
+								</div><!-- #content-bottom -->
+							</div><!-- #content -->
+						{/block}
 					</div><!-- #primary -->
 				{/block}
 			</div><!-- //End of Main -->

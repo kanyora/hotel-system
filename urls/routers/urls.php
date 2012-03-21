@@ -19,6 +19,10 @@
 	$user_dashboard->setMapClass("Default")->setMapMethod("service");
 	$router->addRoute( "service", $user_dashboard );
 	
+	$user_dashboard = new Route("$BASE_URL/contact-us/");
+	$user_dashboard->setMapClass("Default")->setMapMethod("contact");
+	$router->addRoute( "contact", $user_dashboard );
+	
 	$admin_dashboard = new Route("$BASE_URL/admin/");
 	$admin_dashboard->setMapClass("Default")->setMapMethod("admin_dashboard");
 	$router->addRoute( "admin-dashboard", $admin_dashboard );

@@ -1,15 +1,15 @@
-jQuery.fn.animateHighlight = function(highlightColor, duration) {
+$.fn.animateHighlight = function(highlightColor, duration) {
 	var highlightBg = highlightColor || "#FFFF9C";
 	var animateMs = duration || 1500;
 	var originalBg = this.css("backgroundColor");
 	this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 };
 
-jQuery(function(){
-
+$(function(){
+	$("form.i-validate").validate();
 	// Lightbox
 	if (params.load_fancybox) {
-		jQuery('a.zoom').fancybox({
+		$('a.zoom').fancybox({
 			'transitionIn'	:	'elastic',
 			'transitionOut'	:	'elastic',
 			'speedIn'		:	600,
@@ -19,18 +19,18 @@ jQuery(function(){
 	}
 
 	// Star ratings
-	jQuery('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
+	$('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
 
-	jQuery('p.stars a').click(function(){
-		jQuery('#rating').val(jQuery(this).text());
-		jQuery('p.stars a').removeClass('active');
-		jQuery(this).addClass('active');
+	$('p.stars a').click(function(){
+		$('#rating').val($(this).text());
+		$('p.stars a').removeClass('active');
+		$(this).addClass('active');
 		return false;
 	});
 
 	// Price slider
-	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
-	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
+	var min_price = parseInt($('.price_slider_amount #min_price').val());
+	var max_price = parseInt($('.price_slider_amount #max_price').val());
 
 	if (params.min_price) {
 		current_min_price = params.min_price;
@@ -44,62 +44,62 @@ jQuery(function(){
 		current_max_price = max_price;
 	}
 
-	jQuery('.price_slider').slider({
+	$('.price_slider').slider({
 		range: true,
 		min: min_price,
 		max: max_price,
 		values: [ current_min_price, current_max_price ],
 		create : function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + current_min_price + " - " + params.currency_symbol + current_max_price );
-			jQuery( ".price_slider_amount #min_price" ).val(current_min_price);
-			jQuery( ".price_slider_amount #max_price" ).val(current_max_price);
+			$( ".price_slider_amount span" ).html( params.currency_symbol + current_min_price + " - " + params.currency_symbol + current_max_price );
+			$( ".price_slider_amount #min_price" ).val(current_min_price);
+			$( ".price_slider_amount #max_price" ).val(current_max_price);
 		},
 		slide: function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + ui.values[ 0 ] + " - " + params.currency_symbol + ui.values[ 1 ] );
-			jQuery( "input#min_price" ).val(ui.values[ 0 ]);
-			jQuery( "input#max_price" ).val(ui.values[ 1 ]);
+			$( ".price_slider_amount span" ).html( params.currency_symbol + ui.values[ 0 ] + " - " + params.currency_symbol + ui.values[ 1 ] );
+			$( "input#min_price" ).val(ui.values[ 0 ]);
+			$( "input#max_price" ).val(ui.values[ 1 ]);
 		}
 	});
 
 	// Quantity buttons
-	jQuery("div.quantity, td.quantity").append('<input type="button" value="+" id="add1" class="plus" />').prepend('<input type="button" value="-" id="minus1" class="minus" />');
-	jQuery(".plus").click(function()
+	$("div.quantity, td.quantity").append('<input type="button" value="+" id="add1" class="plus" />').prepend('<input type="button" value="-" id="minus1" class="minus" />');
+	$(".plus").click(function()
 	{
-		var currentVal = parseInt(jQuery(this).prev(".qty").val());
+		var currentVal = parseInt($(this).prev(".qty").val());
 
 		if (!currentVal || currentVal=="" || currentVal == "NaN") currentVal = 0;
 
-		jQuery(this).prev(".qty").val(currentVal + 1);
+		$(this).prev(".qty").val(currentVal + 1);
 	});
 
-	jQuery(".minus").click(function()
+	$(".minus").click(function()
 	{
-		var currentVal = parseInt(jQuery(this).next(".qty").val());
+		var currentVal = parseInt($(this).next(".qty").val());
 		if (currentVal == "NaN") currentVal = 0;
 		if (currentVal > 0)
 		{
-			jQuery(this).next(".qty").val(currentVal - 1);
+			$(this).next(".qty").val(currentVal - 1);
 		}
 	});
 
 	/* states */
     var states_json = params.countries.replace(/&quot;/g, '"');
-    var states = jQuery.parseJSON( states_json );
+    var states = $.parseJSON( states_json );
 
-    jQuery('select.country_to_state').change(function(){
+    $('select.country_to_state').change(function(){
 
-        var country = jQuery(this).val();
-        var state_box = jQuery('#' + jQuery(this).attr('rel'));
+        var country = $(this).val();
+        var state_box = $('#' + $(this).attr('rel'));
 
-        var input_name = jQuery(state_box).attr('name');
-        var input_id = jQuery(state_box).attr('id');
+        var input_name = $(state_box).attr('name');
+        var input_id = $(state_box).attr('id');
 
         if (states[country]) {
             var options = '';
             var state = states[country];
             var state_selected = params.billing_state;
             if (input_name == 'calc_shipping_state') {
-                state_selected = jQuery('#calc_shipping_state').val();
+                state_selected = $('#calc_shipping_state').val();
             }
             else {
                 state_selected = params.shipping_state;
@@ -112,64 +112,64 @@ jQuery(function(){
                     options = options + '<option value="' + index + '">' + state[index] + '</option>';
                 }
             }
-            if (jQuery(state_box).is('input')) {
+            if ($(state_box).is('input')) {
                 // Change for select
-                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
-                state_box = jQuery('#' + jQuery(this).attr('rel'));
+                $(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
+                state_box = $('#' + $(this).attr('rel'));
             }
-            jQuery(state_box).html(options);
+            $(state_box).html(options);
         } else {
-            if (jQuery(state_box).is('select')) {
-                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
-                state_box = jQuery('#' + jQuery(this).attr('rel'));
+            if ($(state_box).is('select')) {
+                $(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+                state_box = $('#' + $(this).attr('rel'));
             }
         }
 
     }).change();
 
 	/* Tabs */
-	jQuery('#tabs .panel:not(#tabs .panel)').hide();
-	jQuery('#tabs li a').click(function(){
-		var href = jQuery(this).attr('href');
-		jQuery('#tabs li').removeClass('active');
-		jQuery('div.panel').hide();
-		jQuery('div' + href).show();
-		jQuery(this).parent().addClass('active');
-		jQuery.cookie('current_tab', href);
+	$('#tabs .panel:not(#tabs .panel)').hide();
+	$('#tabs li a').click(function(){
+		var href = $(this).attr('href');
+		$('#tabs li').removeClass('active');
+		$('div.panel').hide();
+		$('div' + href).show();
+		$(this).parent().addClass('active');
+		$.cookie('current_tab', href);
 		return false;
 	});
-	if (jQuery('#tabs li.active').size()==0) {
-		jQuery('#tabs li:first a').click();
+	if ($('#tabs li.active').size()==0) {
+		$('#tabs li:first a').click();
 	} else {
-		jQuery('#tabs li.active a').click();
+		$('#tabs li.active a').click();
 	}
 
 	/* Shipping calculator */
 
-	jQuery('.shipping-calculator-form').hide();
+	$('.shipping-calculator-form').hide();
 
-	jQuery('.shipping-calculator-button').click(function() {
-	  jQuery('.shipping-calculator-form').slideToggle('slow', function() {
+	$('.shipping-calculator-button').click(function() {
+	  $('.shipping-calculator-form').slideToggle('slow', function() {
 		// Animation complete.
 	  });
 	});
 
 	// Stop anchors moving the viewport
 
-	jQuery(".shipping-calculator-button").click(function() {return false;});
+	$(".shipping-calculator-button").click(function() {return false;});
 
-	jQuery("input[name=shipping_rates]").click(function(){
-		var dataString = 'shipping_rates=' + jQuery(this).val();
-		var cart_url = jQuery("input[name=cart-url]").val();
-		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-		jQuery.ajax({
+	$("input[name=shipping_rates]").click(function(){
+		var dataString = 'shipping_rates=' + $(this).val();
+		var cart_url = $("input[name=cart-url]").val();
+		$('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		$.ajax({
 			type: "POST",
 			url: cart_url,
 			data: dataString,
 			success: function(ret) {
-				var jqObj = jQuery(ret);
-				jQuery('.cart_totals_table').replaceWith(jqObj.find('.cart_totals_table'));
-				jQuery('.cart_totals_table').unblock();
+				var jqObj = $(ret);
+				$('.cart_totals_table').replaceWith(jqObj.find('.cart_totals_table'));
+				$('.cart_totals_table').unblock();
 			}
 		});
 	});
@@ -209,9 +209,9 @@ jQuery(function(){
 	function update_variation_values(variations) {
 
         // Loop through selects and disable/enable options based on selections
-        jQuery('.variations select').each(function( index, el ){
+        $('.variations select').each(function( index, el ){
 
-        	current_attr_select = jQuery(el);
+        	current_attr_select = $(el);
 
         	// Disable all
         	current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
@@ -242,114 +242,114 @@ jQuery(function(){
 
 	//show single variation details (price, stock, image)
 	function show_variation(variation) {
-		var img = jQuery('div.images img:eq(0)');
-		var link = jQuery('div.images a.zoom:eq(0)');
-		var o_src = jQuery(img).attr('original-src');
-		var o_link = jQuery(link).attr('original-href');
+		var img = $('div.images img:eq(0)');
+		var link = $('div.images a.zoom:eq(0)');
+		var o_src = $(img).attr('original-src');
+		var o_link = $(link).attr('original-href');
 
 		var variation_image = variation.image_src;
 		var variation_link = variation.image_link;
 
-		jQuery('.single_variation').html( variation.price_html + variation.availability_html );
+		$('.single_variation').html( variation.price_html + variation.availability_html );
 
 		if (!o_src) {
-			jQuery(img).attr('original-src', jQuery(img).attr('src'));
+			$(img).attr('original-src', $(img).attr('src'));
 		}
 
 		if (!o_link) {
-			jQuery(link).attr('original-href', jQuery(link).attr('href'));
+			$(link).attr('original-href', $(link).attr('href'));
 		}
 
 		if (variation_image && variation_image.length > 1) {
-			jQuery(img).attr('src', variation_image);
-			jQuery(link).attr('href', variation_link);
+			$(img).attr('src', variation_image);
+			$(link).attr('href', variation_link);
 		} else {
-			jQuery(img).attr('src', o_src);
-			jQuery(link).attr('href', o_link);
+			$(img).attr('src', o_src);
+			$(link).attr('href', o_link);
 		}
 
-		jQuery('.product_meta .sku').remove();
-		jQuery('.product_meta').append(variation.sku);
+		$('.product_meta .sku').remove();
+		$('.product_meta').append(variation.sku);
 
-		jQuery('.shop_attributes').find('.weight').remove();
+		$('.shop_attributes').find('.weight').remove();
 		if ( variation.a_weight ) {
-			jQuery('.shop_attributes').append(variation.a_weight);
+			$('.shop_attributes').append(variation.a_weight);
 		}
 
-		jQuery('.shop_attributes').find('.length').remove();
+		$('.shop_attributes').find('.length').remove();
 		if ( variation.a_length ) {
-			jQuery('.shop_attributes').append(variation.a_length);
+			$('.shop_attributes').append(variation.a_length);
 		}
 
-		jQuery('.shop_attributes').find('.width').remove();
+		$('.shop_attributes').find('.width').remove();
 		if ( variation.a_width ) {
-			jQuery('.shop_attributes').append(variation.a_width);
+			$('.shop_attributes').append(variation.a_width);
 		}
 
-		jQuery('.shop_attributes').find('.height').remove();
+		$('.shop_attributes').find('.height').remove();
 		if ( variation.a_height ) {
-			jQuery('.shop_attributes').append(variation.a_height);
+			$('.shop_attributes').append(variation.a_height);
 		}
 
-		jQuery('.variations_button, .single_variation').slideDown();
+		$('.variations_button, .single_variation').slideDown();
 	}
 
 	//when one of attributes is changed - check everything to show only valid options
 	function check_variations() {
-		jQuery('form input[name=variation_id]').val('');
-		jQuery('.single_variation').text('');
-		jQuery('.variations_button, .single_variation').slideUp();
+		$('form input[name=variation_id]').val('');
+		$('.single_variation').text('');
+		$('.variations_button, .single_variation').slideUp();
 
-		jQuery('.product_meta .sku').remove();
-		jQuery('.shop_attributes').find('.weight').remove();
-		jQuery('.shop_attributes').find('.length').remove();
-		jQuery('.shop_attributes').find('.width').remove();
-		jQuery('.shop_attributes').find('.height').remove();
+		$('.product_meta .sku').remove();
+		$('.shop_attributes').find('.weight').remove();
+		$('.shop_attributes').find('.length').remove();
+		$('.shop_attributes').find('.width').remove();
+		$('.shop_attributes').find('.height').remove();
 
 		var all_set = true;
 		var current_attributes = {};
 
-		jQuery('.variations select').each(function(){
-			if (jQuery(this).val().length == 0) {
+		$('.variations select').each(function(){
+			if ($(this).val().length == 0) {
 				all_set = false;
 			}
 
-			current_attributes[jQuery(this).attr('name')] = jQuery(this).val();
+			current_attributes[$(this).attr('name')] = $(this).val();
 		});
 		var matching_variations = find_matching_variations(current_attributes);
 
 		if(all_set) {
 			var variation = matching_variations.pop();
 
-			jQuery('form input[name=variation_id]').val(variation.variation_id);
+			$('form input[name=variation_id]').val(variation.variation_id);
 			show_variation(variation);
 		} else {
 			update_variation_values(matching_variations);
 		}
 	}
 
-	jQuery('.variations select').change(function(){
+	$('.variations select').change(function(){
 		//make sure that only selects before this one, and one after this are enabled
-		var num = jQuery(this).data('num');
+		var num = $(this).data('num');
 
-		if(jQuery(this).val().length > 0) {
+		if($(this).val().length > 0) {
 			num += 1;
 		}
 
-		var selects = jQuery('.variations select');
+		var selects = $('.variations select');
 		selects.filter(':lt('+num+')').removeAttr('disabled');
 		selects.filter(':eq('+num+')').removeAttr('disabled').val('');
 		selects.filter(':gt('+num+')').attr('disabled', 'disabled').val('');
 
-		check_variations(jQuery(this));
+		check_variations($(this));
 	});
 
 	//disable all but first select field
-	jQuery('.variations select:gt(0)').attr('disabled', 'disabled');
+	$('.variations select:gt(0)').attr('disabled', 'disabled');
 
 	//numerate all selects
-	jQuery.each(jQuery('.variations select'), function(i, item){
-		jQuery(item).data('num', i);
+	$.each($('.variations select'), function(i, item){
+		$(item).data('num', i);
 	});
 
 });
@@ -363,24 +363,24 @@ if (params.is_checkout==1) {
 
 		if (jqxhr) jqxhr.abort();
 
-		var method		   = jQuery('#shipping_method').val();
-		var payment_method = jQuery('input[name=payment_method]:checked').val();
-		var country 	   = jQuery('#billing-country').val();
-		var state 		   = jQuery('#billing-state').val();
-		var postcode 	   = jQuery('input#billing-postcode').val();
+		var method		   = $('#shipping_method').val();
+		var payment_method = $('input[name=payment_method]:checked').val();
+		var country 	   = $('#billing-country').val();
+		var state 		   = $('#billing-state').val();
+		var postcode 	   = $('input#billing-postcode').val();
 
-		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
-			var s_country 	= jQuery('#billing-country').val();
-			var s_state 	= jQuery('#billing-state').val();
-			var s_postcode 	= jQuery('input#billing-postcode').val();
+		if ($('#shiptobilling input').is(':checked') || $('#shiptobilling input').size()==0) {
+			var s_country 	= $('#billing-country').val();
+			var s_state 	= $('#billing-state').val();
+			var s_postcode 	= $('input#billing-postcode').val();
 
 		} else {
-			var s_country 	= jQuery('#shipping-country').val();
-			var s_state 	= jQuery('#shipping-state').val();
-			var s_postcode 	= jQuery('input#shipping-postcode').val();
+			var s_country 	= $('#shipping-country').val();
+			var s_state 	= $('#shipping-state').val();
+			var s_postcode 	= $('input#shipping-postcode').val();
 		}
 
-		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		$('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 
 		var data = {
 			action: 			'jigoshop_update_order_review',
@@ -393,100 +393,100 @@ if (params.is_checkout==1) {
 			s_state: 			s_state,
 			s_postcode: 		s_postcode,
 			payment_method:     payment_method,
-			post_data:			jQuery('form.checkout').serialize()
+			post_data:			$('form.checkout').serialize()
 		};
 
-		jqxhr = jQuery.ajax({
+		jqxhr = $.ajax({
 			type: 		'POST',
 			url: 		params.ajax_url,
 			data: 		data,
 			success: 	function( response ) {
-				jQuery('#order_methods, #order_review').remove();
-				jQuery('#order_review_heading').after(response);
-				jQuery('#order_review input[name=payment_method]:checked').click();
+				$('#order_methods, #order_review').remove();
+				$('#order_review_heading').after(response);
+				$('#order_review input[name=payment_method]:checked').click();
 			}
 		});
 
 	}
 
-	jQuery(function(){
+	$(function(){
 
-		jQuery('p.password').hide();
+		$('p.password').hide();
 
-		jQuery('input.show_password').change(function(){
-			jQuery('p.password').slideToggle();
+		$('input.show_password').change(function(){
+			$('p.password').slideToggle();
 		});
 
-		jQuery('div.shipping-address').hide();
+		$('div.shipping-address').hide();
 
-		jQuery('#shiptobilling input').change(function(){
-			jQuery('div.shipping-address').hide();
-			if (!jQuery(this).is(':checked')) {
-				jQuery('div.shipping-address').slideDown();
+		$('#shiptobilling input').change(function(){
+			$('div.shipping-address').hide();
+			if (!$(this).is(':checked')) {
+				$('div.shipping-address').slideDown();
 			}
 		}).change();
 
 		if (params.option_guest_checkout=='yes') {
 
-			jQuery('div.create-account').hide();
+			$('div.create-account').hide();
 
-			jQuery('input#createaccount').change(function(){
-				jQuery('div.create-account').hide();
-				if (jQuery(this).is(':checked')) {
-					jQuery('div.create-account').slideDown();
+			$('input#createaccount').change(function(){
+				$('div.create-account').hide();
+				if ($(this).is(':checked')) {
+					$('div.create-account').slideDown();
 				}
 			}).change();
 
 		}
 
-		jQuery('.payment_methods input.input-radio').live('click', function(){
-			jQuery('div.payment_box').hide();
-			if (jQuery(this).is(':checked')) {
-				jQuery('div.payment_box.' + jQuery(this).attr('ID')).slideDown();
+		$('.payment_methods input.input-radio').live('click', function(){
+			$('div.payment_box').hide();
+			if ($(this).is(':checked')) {
+				$('div.payment_box.' + $(this).attr('ID')).slideDown();
 			}
 		});
 
-		jQuery('#order_review input[name=payment_method]:checked').click();
+		$('#order_review input[name=payment_method]:checked').click();
 
-		jQuery('form.login').hide();
+		$('form.login').hide();
 
-		jQuery('a.showlogin').click(function(e){
+		$('a.showlogin').click(function(e){
 			e.preventDefault();
-			jQuery('form.login').slideToggle();
+			$('form.login').slideToggle();
 		});
 
 		/* Update totals */
-		jQuery('#shipping_method').live('change', function(){
+		$('#shipping_method').live('change', function(){
 			clearTimeout(updateTimer);
 			update_checkout();
 		}).change();
-		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
+		$('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
 			clearTimeout(updateTimer);
 			updateTimer = setTimeout("update_checkout()", '5000');
 		});
-		jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
+		$('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
 			clearTimeout(updateTimer);
 			update_checkout();
 		});
 
 		/* AJAX Form Submission */
-		jQuery('form.checkout').submit(function(){
+		$('form.checkout').submit(function(){
 			var form = this;
-			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-			jQuery.ajax({
+			$(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+			$.ajax({
 				type: 		'POST',
 				url: 		params.checkout_url,
-				data: 		jQuery(form).serialize(),
+				data: 		$(form).serialize(),
 				success: 	function( code ) {
-								jQuery('.jigoshop_error, .jigoshop_message').remove();
+								$('.jigoshop_error, .jigoshop_message').remove();
 								try {
-									success = jQuery.parseJSON( code );
+									success = $.parseJSON( code );
 									window.location = decodeURI(success.redirect);
 								}
 								catch(err) {
-								  	jQuery(form).prepend( code );
-									jQuery(form).unblock();
-									jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
+								  	$(form).prepend( code );
+									$(form).unblock();
+									$.scrollTo($(form).parent(), {easing:'swing'});
 								}
 							},
 				dataType: 	"html"
@@ -498,7 +498,7 @@ if (params.is_checkout==1) {
 }
 
 //message fade in
-jQuery(document).ready(function(){
-	jQuery('.jigoshop_error, .jigoshop_message').css('opacity', 0);
-	setTimeout(function(){jQuery('.jigoshop_error, .jigoshop_message').animate({opacity:1}, 1500);},100);
+$(document).ready(function(){
+	$('.jigoshop_error, .jigoshop_message').css('opacity', 0);
+	setTimeout(function(){$('.jigoshop_error, .jigoshop_message').animate({opacity:1}, 1500);},100);
 });

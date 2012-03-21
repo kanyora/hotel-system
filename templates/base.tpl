@@ -46,7 +46,7 @@
 									<a href="#" class="user"><span class="bar">Welcome {$request->user->username}</span></a>
 								</li>
 								<li>
-									<a href="{#BASE_URL#}/auth/logout/" class="logout"></a>
+									<a href="{#BASE_URL#}/logout/" class="logout"></a>
 								</li>
 							</ul>
 						</div>

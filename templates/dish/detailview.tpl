@@ -14,10 +14,10 @@
 		<p>
 			{$dish->details}
 		</p>
-		<form action="{#BASE_URL#}/orders/dish/{$dish->id}/add/" class="cart" method="POST">
+		<form action="{#BASE_URL#}/orders/dish/{$dish->id}/add/" class="cart i-validate" method="POST">
 			<div class="quantity">
 				<input type="hidden" name="order[type]" value="order" />
-				<input name="order[quantity]" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12">
+				<input min="0" style="width: 48px;" name="order[quantity]" value="1" type="number" size="4" title="Qty" class="input-text qty text required" maxlength="12">
 			</div>
 			<br/>
 			<br/>

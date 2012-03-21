@@ -38,7 +38,7 @@
 	$smarty = new Smarty;
 			
 	$smarty->configLoad('conf/smarty.conf');
-	$smarty->debugging = $DEBUG;
+	$smarty->debugging = !$DEBUG;
 	$smarty->force_compile = !$DEBUG;
 	$smarty->caching = !$DEBUG;
 	$smarty->cache_lifetime = 120;
