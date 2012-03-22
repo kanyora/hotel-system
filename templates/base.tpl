@@ -64,6 +64,9 @@
 								<li class="">
 									<a href="{#BASE_URL#}/admin/categories/">Categories</a>
 								</li>
+								<li class="">
+									<a href="{#BASE_URL#}/admin/reports/">Reports</a>
+								</li>
 							</ul>
 						</div>
 					</div>
