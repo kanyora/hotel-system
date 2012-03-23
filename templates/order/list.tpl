@@ -16,7 +16,8 @@
 						<td>{$order->reference}</td>
 						<td>{$order->location}</td>
 						<td>
-							<a href="{#BASE_URL#}/orders/{$order->id}/">View</a>
+							<a href="{#BASE_URL#}/orders/{$order->id}/">View</a> |
+							<a href="{#BASE_URL#}/admin/reports/invoice/{$order->reference}/">Create Invoice</a>
 						</td>
 					</tr>
 				{foreachelse}

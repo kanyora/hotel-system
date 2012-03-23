@@ -26,4 +26,21 @@
 	$admin_dashboard = new Route("$BASE_URL/admin/");
 	$admin_dashboard->setMapClass("Default")->setMapMethod("admin_dashboard");
 	$router->addRoute( "admin-dashboard", $admin_dashboard );
+	
+	$admin_dashboard = new Route("$BASE_URL/admin/reports/");
+	$admin_dashboard->setMapClass("Default")->setMapMethod("reports");
+	$router->addRoute( "reports", $admin_dashboard );
+	
+	$admin_dashboard = new Route("$BASE_URL/admin/reports/invoice/:reference/");
+	$admin_dashboard->setMapClass("Default")->setMapMethod("invoice")
+					->addDynamicElement(":reference", '^[a-zA-E0-9]+$');
+	$router->addRoute( "invoice", $admin_dashboard );
+	
+	$admin_dashboard = new Route("$BASE_URL/admin/reports/invoices/");
+	$admin_dashboard->setMapClass("Default")->setMapMethod("invoice_reports");
+	$router->addRoute( "invoice-report", $admin_dashboard );
+	
+	$admin_dashboard = new Route("$BASE_URL/admin/reports/deliveries/");
+	$admin_dashboard->setMapClass("Default")->setMapMethod("delivery_reports");
+	$router->addRoute( "delivery", $admin_dashboard );
 ?>

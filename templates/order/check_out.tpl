@@ -8,7 +8,7 @@
 		<div class="row">
 		    <label>Phone Number:</label>
 		    <div class="right">
-		    	<input class="required" style="height:25px;width:200px;margin-bottom:20px" type="number" name="order[location]"/>
+		    	<input class="required" style="height:25px;width:200px;margin-bottom:20px" type="number" name="order[phone_number]"/>
 		    </div>
 		</div>
 		<div>

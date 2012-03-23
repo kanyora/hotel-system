@@ -137,5 +137,56 @@
 			$smarty->assign("request", $request);
 			$smarty->display('search_results.tpl');
 		}
+		
+		public function reports($args){
+			$request = $args["request"];
+			global $smarty;
+			if($request->method == "GET"){
+				$smarty->assign("request", $request);
+				$smarty->display('report.tpl');
+			}
+		}
+		
+		public function invoice($args){
+			$request = $args["request"];
+			global $smarty;
+			if($request->method == "GET"){
+				$reference = $args[":reference"];
+				$order = R::findOne('order', 'reference=?', array($reference));
+				$smarty->assign("order", $order);
+				
+				$total = 0;
+				foreach ($order->ownOrderitem as $orderitem) {
+					$total += $orderitem->dish->price * $orderitem->quantity;
+				}
+				
+				$smarty->assign("total", $total);
+				createPDF($smarty->fetch('invoice.tpl'), "Invoice");
+			}
+		}
+		
+		public function invoice_reports($args){
+			$request = $args["request"];
+			global $smarty;
+			if($request->method == "GET"){
+				$smarty->assign("request", $request);
+				$smarty->display('invoice_search.tpl');
+			}else{
+				$smarty->assign("status", $request->POST['status'] == "0" ? "Attended" : "Unattended");
+				$smarty->assign("orders", R::find('order', 'delivered=?', array($request->POST['status'])));
+				createPDF($smarty->fetch('invoice_report.tpl'), "Invoice-Results".date('d-m-Y'));
+			}
+		}
+		
+		public function delivery_reports($args){
+			$request = $args["request"];
+			global $smarty;
+			if($request->method == "GET"){
+				$smarty->assign("request", $request);
+				$smarty->display('search_results.tpl');	
+			}else{
+				createPDF($smarty->fetch('receipt.tpl'), $object->name);
+			}
+		}
 	}
 ?>

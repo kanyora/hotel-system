@@ -71,14 +71,6 @@
 						</div>
 					</div>
 					<div id="left">
-						<div class="box search">
-							<div class="content">
-								<form action="{#BASE_URL#}/search/">
-									<input type="text" name="q" placeholder="Search">
-									<button type="submit"></button>
-								</form>
-							</div>
-						</div>
 						<div class="box submenu">
 							<div class="content">
 								<ul>

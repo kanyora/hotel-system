@@ -102,6 +102,8 @@
 		    $order->reference = create_order_reference();
 		    $order->user = $request->user;
 		    $order->location = isset($_SESSION['location'])?$_SESSION['location']:'';
+			$order->time = time();
+			$order->status = 0;
 		    
 			R::store($order);
 		    
