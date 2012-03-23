@@ -67,7 +67,7 @@
 			
 			$smarty->assign("request", $request);
 			$smarty->assign("categories", R::find('category'));
-			$smarty->display('dish/detailview.tpl');
+			$smarty->display('dish/admin_detailview.tpl');
 		}
 		
 		public function view($args){

@@ -24,11 +24,11 @@
 				<tbody>
 					{foreach $dishes as $dish}
 						<tr class="odd">
-							<td><a href="{#BASE_URL#}/dishes/{$dish->id}/">{$dish->name}</a></td>
+							<td><a href="{#BASE_URL#}/admin/dishes/{$dish->id}/">{$dish->name}</a></td>
 							<td>{$dish->category->name}</td>
 							<td>{$dish->price}</td>
 							<td>
-								<a href="{#BASE_URL#}/dishes/{$dish->id}/">View</a> |
+								<a href="{#BASE_URL#}/admin/dishes/{$dish->id}/">View</a> |
 								<a href="{#BASE_URL#}/admin/dishes/{$dish->id}/edit/">Edit</a> |
 								<a href="{#BASE_URL#}/admin/dishes/{$dish->id}/delete/">Remove</a>
 							</td>

@@ -25,5 +25,5 @@
 			<li>No Order items</li>
 		{/foreach}
 	</ul>
-	<a class="submit" href="{#BASE_URL#}/orders/attend/">Attend to Order</a>
+	<a class="submit" href="{#BASE_URL#}/orders/{$order->id}/attend/">Attend to Order</a>
 {/block}

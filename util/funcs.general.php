@@ -9,7 +9,7 @@
 		$characters = 'ABCDE0123456789';
 	    while (true){
 			$reference = '';
-	        for ($i = 0; $i < 10; $i++) {
+	        for ($i = 0; $i < 6; $i++) {
 	        	$reference .= $characters[rand(0, strlen($characters)-1)];
 	        }
             if(!R::find("order", 'reference = ?', array($reference))){ 
