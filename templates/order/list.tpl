@@ -14,7 +14,7 @@
 					<tr>	
 						<td>{$order->user->username}</td>
 						<td>{$order->reference}</td>
-						<td>{$order->reference}</td>
+						<td>{$order->location}</td>
 						<td>
 							<a href="{#BASE_URL#}/orders/{$order->id}/">View</a>
 						</td>

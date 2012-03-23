@@ -6,29 +6,32 @@
 		<input type="hidden" name="dish[type]" value="dish" />
 		<fieldset>
 			<section>
-				<div class="section-left-s">
+				<span class="section-left-s">
 					<label for="id_name">Name:</label>
-				</div>
-				<div class="section-right">
+				</span>
+				<span class="section-right">
 					<input type="text" name="dish[name]" value="{$dish->name}" class="i-text"/>
-				</div>
+				</span>
 			</section>
 			<section>
-				<div class="section-left-s">
+				<span class="section-left-s">
 					<label for="id_category">Category:</label>
-				</div>
-				<div class="section-right">
+				</span>
+				<span class="section-right">
 					<select name="dish[category]">
 						<option>----</option>
 						{foreach $categories as $category}
 							<option value="{$category->id}" 
-								{if $category->id eq $dish->category->id }
-									selected="selected"
+								{if isset($dish->category)}
+									{if $category->id eq $dish->category->id }
+										selected="selected"
+									{/if}
 								{/if}>
+								{$category->name}
 							</option>
 						{/foreach}
 					</select>
-				</div>
+				</span>
 			</section>
 			<section>
 				<label for="id_price">Price:</label>

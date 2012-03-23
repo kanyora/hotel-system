@@ -229,8 +229,7 @@
 					PageError::show('404',NULL,'Dish not found!', "Dish with Id: $id not found!");
 				}
 				
-				$dish->is_active = false;
-				R::store($dish);
+				R::trash($dish);
 				redirectToPage('dish-list');
 			}else if ($request->method == "GET"){
 				$smarty->assign("request", $request);

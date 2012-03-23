@@ -6,40 +6,40 @@
 	<form class="form" method="POST" action=".">
 		<input type="hidden" name="order[type]" value="order" />
 		<div class="row">
-		    <label>M-Pesa Code:</label>
+		    <label>Phone Number:</label>
 		    <div class="right">
-		    	<input class="required" style="height:25px;width:200px;margin-bottom:20px" type="text" name="order[location]"/>
+		    	<input class="required" style="height:25px;width:200px;margin-bottom:20px" type="number" name="order[location]"/>
 		    </div>
 		</div>
 		<div>
 		    <label>Location of Delivery:</label>
 		    <div class="right">
 		    	<select class="required" style="height:30px;margin-bottom:20px" type="text" value="" name="order[location]">
-					  <option value="langata">Langata</option>
-					  <option value="rongai">Rongai</option>
-					  <option value="karen">Karen</option>
-					  <option value="madaraka">Madaraka</option>
-					  <option value="nairobi west">Nairobi West</option>
-					  <option value="south b">South B</option>
-					  <option value="south c">South C</option>
-					  <option value="ngumo">Ngumo</option>
-					  <option value="highrise">Highrise</option>
-					  <option value="adams arcade">Adams Arcade</option>
-					  <option value="mimosa">Mimosa</option>
-					  <option value="ngong">Ngong</option>
-					  <option value="westlands">Westlands</option>
-					  <option value="embakassi">Embakassi</option>
-					  <option value="buruburu">Buruburu</option>
-					  <option value="kasarani">Kasarani</option>
-					  <option value="city stadium">City Stadium</option>
-					  <option value="moi avenue">Moi AvenueHighrise</option>
-					  <option value="tom mboya street">Tom Mboya Street</option>
-					  <option value="ring road">Ring Road</option>
-					  <option value="bellevue">Bellevue</option>
-					  <option value="kilimani">Kilimani</option>
-					  <option value="lavington">Lavington</option>
-					  <option value="kileleshwa">Kileleshwa</option>
-					  <option value="hurlinghum">Hurlinghum</option>
+					  <option value="Langata">Langata</option>
+					  <option value="Rongai">Rongai</option>
+					  <option value="Karen">Karen</option>
+					  <option value="Madaraka">Madaraka</option>
+					  <option value="Nairobi west">Nairobi West</option>
+					  <option value="South b">South B</option>
+					  <option value="South c">South C</option>
+					  <option value="Ngumo">Ngumo</option>
+					  <option value="Highrise">Highrise</option>
+					  <option value="Adams Arcade">Adams Arcade</option>
+					  <option value="Mimosa">Mimosa</option>
+					  <option value="Ngong">Ngong</option>
+					  <option value="Westlands">Westlands</option>
+					  <option value="Embakassi">Embakassi</option>
+					  <option value="Buruburu">Buruburu</option>
+					  <option value="Kasarani">Kasarani</option>
+					  <option value="City Stadium">City Stadium</option>
+					  <option value="Moi Avenue">Moi AvenueHighrise</option>
+					  <option value="Tom Mboya Street">Tom Mboya Street</option>
+					  <option value="Ring Road">Ring Road</option>
+					  <option value="Bellevue">Bellevue</option>
+					  <option value="Kilimani">Kilimani</option>
+					  <option value="Lavington">Lavington</option>
+					  <option value="Kileleshwa">Kileleshwa</option>
+					  <option value="Hurlinghum">Hurlinghum</option>
 		    	</select>
 		    </div>
 		</div>

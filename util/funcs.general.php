@@ -6,7 +6,7 @@
 	}
 	
 	function create_order_reference(){
-		$characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+		$characters = 'ABCDE0123456789';
 	    while (true){
 			$reference = '';
 	        for ($i = 0; $i < 10; $i++) {
